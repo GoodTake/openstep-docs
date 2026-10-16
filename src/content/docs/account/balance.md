@@ -7,7 +7,7 @@ sidebar:
 
 Click **Balance** at the bottom of the left rail to open the Balance page. The **+ Top up** button on **Home** opens the same page.
 
-![The Balance page with the Available, Held for running work and Balance tiles, Top up and Refund on the left, and Activity on the right.](/images/account/balance-1.webp)
+![The Balance page: the Available, Held for running work and Balance tiles, Top up and Refund on the left, and the Activity list on the right.](/images/account/balance-1.webp)
 
 ## The three tiles
 
