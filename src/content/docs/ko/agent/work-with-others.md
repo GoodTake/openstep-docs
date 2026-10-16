@@ -29,19 +29,19 @@ Agent의 소유자는 한 명입니다. 워크스페이스의 다른 모든 사�
 ## Agent에 협업자 초대하기
 
 1. Agent를 열고 **Console**, **Settings**를 클릭합니다. **Collaborators** 아래의 **Manage collaborators**를 클릭합니다. **Agent collaborators** 대화 상자가 열립니다. **PEOPLE** 아래에 모든 사람이 역할과 함께 나열됩니다.
-2. 누군가를 편집자로 만들려면 **Add a workspace member**를 사용합니다. "0x… wallet address"라고 적힌 상자에 지갑 주소를 입력하고, 옆의 드롭다운에서 **Editor**나 **Viewer**를 고른 뒤 **Add**를 클릭합니다. 그 사람은 이미 워크스페이스의 멤버여야 합니다.
+2. 누군가를 편집자로 만들려면 **Add a workspace member**를 사용합니다. “0x… wallet address”라고 적힌 상자에 지갑 주소를 입력하고, 옆의 드롭다운에서 **Editor**나 **Viewer**를 고른 뒤 **Add**를 클릭합니다. 그 사람은 이미 워크스페이스의 멤버여야 합니다.
 3. 아직 워크스페이스에 없는 사람을 초대하려면 대신 **Invite link**를 사용합니다. **Create invite link** 옆의 드롭다운에서 **Editor**나 **Viewer**를 고르고 **Create invite link**를 클릭한 뒤 **Copy**로 링크를 복사합니다. 링크를 열고 로그인하는 사람은 누구나 선택한 역할로 이 팀 워크스페이스에 들어오며, 그 안의 모든 Agent를 볼 수 있습니다. 링크는 한 번만 쓸 수 있고 만료 시점이 표시됩니다.
 4. **Done**을 클릭합니다.
 
    ![개인 워크스페이스에 있는 Agent의 Agent collaborators 대화 상자: 개인 워크스페이스에는 다른 멤버가 없다는 안내와 People 아래의 소유자.](/images/agent/work-with-others-1.webp)
 
-개인 워크스페이스에서는 대화 상자에 초대 옵션 대신 그림의 안내가 표시됩니다. "A personal workspace has no other members. Move this agent to a team workspace to invite collaborators."
+개인 워크스페이스에서는 대화 상자에 초대 옵션 대신 그림의 안내가 표시됩니다. “A personal workspace has no other members. Move this agent to a team workspace to invite collaborators.”
 
 누군가의 편집 권한을 없애려면 이름 옆의 **Make viewer**를 클릭하고 확인합니다. 그 사람은 워크스페이스에 남아 있으며 Agent를 계속 볼 수 있습니다.
 
 ## 알아 두기
 
-- Agent를 관리하는 사람은 소유자만 바꿀 수 있습니다. 편집자와 뷰어에게는 "Only the owner adds or removes collaborators."라고 나옵니다.
+- Agent를 관리하는 사람은 소유자만 바꿀 수 있습니다. 편집자와 뷰어에게는 “Only the owner adds or removes collaborators.”라고 나옵니다.
 - 협업자는 Agent를 관리합니다. 코스에 참여하는 사람인 학습자는 다른 방식으로 참여하며 Console의 **Learners**에 나타납니다.
 - Agent를 다른 워크스페이스로 옮기면 협업자의 역할이 사라지고, 아직 쓰지 않은 초대 링크는 작동하지 않습니다. [Agent 관리하기](/ko/agent/manage-agents/)를 참고하세요.
 - 소유자가 아닌 워크스페이스 멤버는 **Settings**의 **Leave workspace**로 나갈 수 있습니다.

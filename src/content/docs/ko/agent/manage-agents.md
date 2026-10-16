@@ -9,7 +9,7 @@ sidebar:
 
 ## My agents
 
-왼쪽 레일에서 **My agents**를 클릭합니다. 페이지에 "Everything you own or collaborate on, newest activity first."라고 나오며 오른쪽 위에 **+ New agent**가 있습니다.
+왼쪽 레일에서 **My agents**를 클릭합니다. 페이지에 “Everything you own or collaborate on, newest activity first.”라고 나오며 오른쪽 위에 **+ New agent**가 있습니다.
 
 1. 탭으로 목록을 거릅니다: **All**, **Needs your answer**, **Building**, **Ready to publish**, **Live**, **Draft**. 이름으로 찾으려면 **Search agents…** 상자에 입력합니다.
 2. 카드를 읽습니다. 각 카드에는 상태 배지(**Building**, **Live**, **Draft**, **Ready to publish**), Agent의 이름, 지금 하는 일을 나타내는 한 줄(**Planning**, **Working**, **Unpublished changes** 등), 기반이 된 Agent, 마지막 활동 시점이 표시됩니다.
@@ -24,7 +24,7 @@ sidebar:
 Agent를 열고 헤더의 **Console**을 클릭한 뒤 **Settings**를 클릭합니다.
 
 - 이름 변경. **Display** 아래에서 **Agent name**을 바꾸고 **Save changes**를 클릭합니다. 여기서 **Avatar** 색상과 **Card image**도 고를 수 있으며, **Upload image** 또는 **Generate**를 사용합니다. **Language**와 **Tone**은 Agent가 쓰고 말하는 방식을 바꾸며 다음 빌드부터 적용됩니다. 소유자와 편집자가 이름을 바꿀 수 있습니다.
-- **Duplicate agent**. **Ownership and workspace** 아래에서 **Duplicate agent**를 클릭합니다. 원본을 건드리지 않고 바꿀 수 있도록, 모든 앱의 코드 사본이 담긴 새 Agent가 생깁니다. 데이터, 값, 비밀 값은 원본에 남습니다. 버튼 옆 상자에는 "&lt;Agent 이름&gt; (copy)"가 제안되어 있으며, 다른 이름을 쓰고 싶으면 거기에 입력합니다.
+- **Duplicate agent**. **Ownership and workspace** 아래에서 **Duplicate agent**를 클릭합니다. 원본을 건드리지 않고 바꿀 수 있도록, 모든 앱의 코드 사본이 담긴 새 Agent가 생깁니다. 데이터, 값, 비밀 값은 원본에 남습니다. 버튼 옆 상자에는 `<agent name> (copy)`가 제안되어 있으며, 다른 이름을 쓰고 싶으면 거기에 입력합니다.
 - **Move to another workspace**. **Choose a workspace**라고 적힌 메뉴를 열고 하나를 고른 뒤 **Move**를 클릭하고 **Move agent**로 확인합니다. Agent의 앱과 데이터가 함께 옮겨지며, 그 워크스페이스의 멤버는 Agent를 볼 수 있습니다. 협업자는 Agent에서의 역할을 잃고, 아직 쓰지 않은 초대 링크는 작동하지 않습니다.
 - **Transfer ownership**. **Choose a collaborator**라고 적힌 메뉴를 열고 사람을 고른 뒤 **Transfer ownership**을 클릭하고 **Transfer**로 확인합니다. 나는 편집자로 Agent에 남으며, 새 소유자만 Agent를 게시하고, 열 수 있는 사람을 바꾸고, 삭제할 수 있습니다. 이전하려면 Agent에 협업자가 있어야 합니다. [다른 사람과 함께 작업하기](/ko/agent/work-with-others/)를 참고하세요.
 - **Delete agent**. 맨 아래 **Danger zone**에서 **Delete agent**를 클릭합니다. **Delete agent permanently** 대화 상자는 Agent, 파일, 대화, 모든 앱과 그 데이터가 삭제되며 되돌릴 수 없다고 안내합니다. 확인을 위해 Agent의 이름을 입력한 뒤 **Delete agent**를 클릭합니다.
@@ -33,7 +33,7 @@ Agent의 복제, 이동, 이전, 삭제는 소유자만 할 수 있습니다. **
 
 ## 워크스페이스 설정
 
-왼쪽 레일의 **WORKSPACE** 아래에서 **Settings**를 클릭합니다. 페이지에 "Manage the workspace that holds your agents."라고 나옵니다. 레일 맨 위의 워크스페이스 메뉴에서 **Workspace settings**로도 들어갈 수 있습니다.
+왼쪽 레일의 **WORKSPACE** 아래에서 **Settings**를 클릭합니다. 페이지에 “Manage the workspace that holds your agents.”라고 나옵니다. 레일 맨 위의 워크스페이스 메뉴에서 **Workspace settings**로도 들어갈 수 있습니다.
 
 - **GENERAL**에는 워크스페이스의 **Name**과 **Slug**가 있습니다. 팀 워크스페이스에서는 소유자가 이름을 바꾸고 **Save**를 클릭할 수 있습니다. 개인 워크스페이스의 이름은 고정되어 있습니다.
 - **Usage & balance**는 SSU 단위의 **Available balance**와 이 워크스페이스의 **Your agents** 수를 보여 줍니다.

@@ -41,4 +41,4 @@ sidebar:
 ## 알아 두기
 
 - **Top up**과 **Request refund**는 연결된 지갑을 사용합니다. 로그인할 때 쓴 지갑이어야 합니다. 지갑이 다른 네트워크에 있으면 페이지가 Base mainnet으로 전환하라고 안내하고 **Switch network**를 제공합니다.
-- 차감은 빌드하는 동안과 앱이 실행되는 동안 잔액에서 저절로 나갑니다. 무엇이 SSU를 쓰는지는 [SSU란](/ko/account/what-is-ssu/)을 읽어 보세요.
+- 차감은 빌드하는 동안과 앱이 실행되는 동안 잔액에서 저절로 나갑니다. 무엇이 SSU를 쓰는지는 [SSU란](/ko/account/what-is-ssu/) 페이지를 읽어 보세요.

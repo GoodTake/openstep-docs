@@ -20,17 +20,17 @@ sidebar:
 
 - **Frontend** 값은 웹 페이지에 포함됩니다. 모든 방문자가 읽을 수 있으므로 사이트 이름처럼 공개해도 되는 것만 넣습니다. 이 값의 이름은 `VITE_`로 시작하며, 양식이 접두사를 자동으로 붙여 줍니다.
 - **Backend** 값은 서버에 남고 브라우저에는 전달되지 않습니다. 외부 서비스의 키는 여기에 둡니다.
-- **Builder** 값은 builder가 빌드하는 동안 읽을 수 있는 변수입니다. Secret은 builder에게 제공되지 않습니다.
+- **Builder** 값은 builder가 빌드하는 동안 읽을 수 있는 변수입니다. 비밀 값은 builder에게 절대 제공되지 않습니다.
 
-## Variable과 Secret
+## Variable과 비밀 값
 
-**Variable**은 저장한 뒤에도 다시 읽을 수 있습니다. **Secret**은 쓰기 전용입니다. 저장하고 나면 페이지에는 설정되었다는 사실과 설정된 시점만 표시되고 값은 표시되지 않습니다. Secret을 바꾸려면 새 값으로 교체합니다. Secret은 백엔드에서만 쓸 수 있으며, 값을 만든 뒤에는 종류를 바꿀 수 없습니다.
+**Variable**은 저장한 뒤에도 다시 읽을 수 있습니다. **Secret**은 쓰기 전용입니다. 저장하고 나면 페이지에는 설정되었다는 사실과 설정된 시점만 표시되고 값은 표시되지 않습니다. 비밀 값을 바꾸려면 새 값으로 교체합니다. 비밀 값은 백엔드에서만 쓸 수 있으며, 값을 만든 뒤에는 종류를 바꿀 수 없습니다.
 
 ## 개발용과 라이브용
 
 - **Development · Preview**는 바로 적용됩니다. **Frontend** 값을 바꾸면 Preview가 다시 시작됩니다.
 - **Production · Live** 변수는 **Applied with the next Publish.** 상태가 됩니다. 변경한 뒤에는 **Publish**를 클릭합니다. 코드가 바뀌지 않았더라도 대화 상자에는 앱이 **Live values changed**로 표시됩니다.
-- **Production** Secret은 저장하는 즉시 **Available to the live backend runtime** 상태가 됩니다. Secret은 게시된 버전에 포함되지 않으므로, [롤백](/ko/build/go-live/)해도 예전 값이 돌아오지 않습니다.
+- **Production** 비밀 값은 저장하는 즉시 **Available to the live backend runtime** 상태가 됩니다. 비밀 값은 게시된 버전에 포함되지 않으므로, [롤백](/ko/build/go-live/)해도 예전 값이 돌아오지 않습니다.
 - 개발용 값은 소유자와 편집자가 설정합니다. 라이브용 값은 소유자만 바꿀 수 있습니다.
 
 ## builder가 값을 요청할 때
@@ -40,7 +40,7 @@ sidebar:
 ## 알아 두기
 
 - 스크린샷의 값은 builder가 직접 만들었습니다. 사이트 이름과 공개용 지갑 연결 ID입니다. builder는 알 수 없는 것만 묻습니다.
-- Secret을 채팅에 붙여 넣을 필요는 없습니다. **Environment**나 builder가 여는 대화 상자를 사용하세요.
+- 비밀 값을 채팅에 붙여 넣을 필요는 없습니다. **Environment**나 builder가 여는 대화 상자를 사용하세요.
 - 이메일처럼 값이 필요할 수 있는 기능은 [사이트가 할 수 있는 일](/ko/build/what-your-site-can-do/)에 설명되어 있습니다.
 
 다음: [라이브로 전환하기](/ko/build/go-live/).

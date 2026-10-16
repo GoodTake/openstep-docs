@@ -38,7 +38,7 @@ SSU는 OpenStep이 빌드, 앱이 쓰는 플랫폼 기능, 앱의 라이브 운�
 ## 알아 두기
 
 - USDC로 구매하려면 지갑에 Base의 USDC와 가스용 Base ETH가 조금 필요합니다. 하나라도 부족하면 페이지에 **Your wallet does not have enough USDC.** 또는 **Your wallet needs more ETH on Base for gas.** 문구가 나타납니다.
-- **카드 정보는 Stripe에만 있습니다.** Stripe Checkout 페이지에서 입력하며, OpenStep에는 입력하지 않습니다.
+- **Card details stay with Stripe.** 카드 정보는 Stripe Checkout 페이지에서 입력하며, OpenStep에는 입력하지 않습니다.
 - 빌드나 앱 호출이 진행되는 동안 SSU 일부는 **Held for running work** 상태가 됩니다. 각 차감 내역은 [Balance](/ko/account/balance/) 페이지의 **Activity**에 표시됩니다.
 - 쓰지 않은 SSU는 [Balance](/ko/account/balance/) 페이지에서 지갑으로 환불받을 수 있습니다.
 

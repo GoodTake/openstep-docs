@@ -37,7 +37,7 @@ sidebar:
 
 ## 알아 두기
 
-- 빌드, 이 기능들, 그리고 사이트의 라이브 운영은 모두 SSU로 차감됩니다. 각 차감 내역은 [Balance](/ko/account/balance/) 페이지에 나열됩니다. [SSU란](/ko/account/what-is-ssu/)도 참고하세요.
+- 빌드, 이 기능들, 그리고 사이트의 라이브 운영은 모두 SSU로 차감됩니다. 각 차감 내역은 [Balance](/ko/account/balance/) 페이지에 나열됩니다. [SSU란](/ko/account/what-is-ssu/) 페이지도 참고하세요.
 - 기능이 있는지 확실하지 않다면 builder에게 물어보세요. 할 수 있는 일과 없는 일을 알려 줍니다.
 
 다음: [환경 값](/ko/build/environment-values/).

@@ -9,8 +9,8 @@ sidebar:
 
 ## 처음 게시하기
 
-1. 헤더의 **Publish**를 클릭합니다. 빌드가 끝나면 버튼이 밝아집니다. 회색으로 비활성화되어 있으면 옆의 문구가 이유를 알려 줍니다. 예를 들어 Agent가 아직 빌드 중이면 "Publishing opens once the build stops."라고 나옵니다.
-2. 대화 상자를 읽습니다. 이름은 **Publish your agent**이며 "Every app of this agent goes live together."라고 나옵니다. **What happens next** 아래에는 **Check** › **Build** › **Go live**와 "You can keep working while it runs."가 있습니다. 그 아래의 "Publish 1 app · Data and learner progress stay as they are."에는 각 앱이 상태와 함께 나열되며, 처음에는 **Not live yet**입니다. 버튼 위의 **Show the review**를 펼치면 빌드의 최종 검토가 나옵니다.
+1. 헤더의 **Publish**를 클릭합니다. 빌드가 끝나면 버튼이 밝아집니다. 회색으로 비활성화되어 있으면 옆의 문구가 이유를 알려 줍니다. 예를 들어 Agent가 아직 빌드 중이면 “Publishing opens once the build stops.”라고 나옵니다.
+2. 대화 상자를 읽습니다. 이름은 **Publish your agent**이며 “Every app of this agent goes live together.”라고 나옵니다. **What happens next** 아래에는 **Check** › **Build** › **Go live**와 “You can keep working while it runs.”가 있습니다. 그 아래의 “Publish 1 app · Data and learner progress stay as they are.”에는 각 앱이 상태와 함께 나열되며, 처음에는 **Not live yet**입니다. 버튼 위의 **Show the review**를 펼치면 빌드의 최종 검토가 나옵니다.
 
    ![Three Day Strength의 Publish your agent 대화 상자: Check, Build, Go live가 있는 What happens next, Not live yet으로 표시된 Three Day Strength 행, Show the review, 그리고 Cancel과 Publish 버튼.](/images/agent/publish-and-share-1.webp)
 
@@ -36,13 +36,13 @@ sidebar:
 
 ## 나중에 변경 게시하기
 
-앱을 바꾸고 다시 게시하면 대화 상자의 이름은 **Publish your changes**입니다. **Production**에서 각 앱에 무엇이 바뀌었는지가 **No changes**, **Code changed**, **Live values changed** 중 하나로 표시됩니다. 게시해도 데이터와 학습자 진행 상황은 유지되며 새 세션이 시작되지 않습니다. 업데이트가 데이터를 제거하게 되는 경우, 예를 들어 새 버전에 더 이상 없는 테이블이나 필드가 있으면 **Publish**를 클릭하기 전에 Publish 대화 상자가 "This version may remove data from …"이라고 알려 주며, 그렇게 제거된 데이터는 되돌릴 수 없습니다. 이전 버전으로 되돌리거나 앱을 오프라인으로 내리거나 다시 올리는 방법은 [라이브로 전환하기](/ko/build/go-live/)를, 내 주소를 추가하는 방법은 [도메인](/ko/build/domains/)을 참고하세요.
+앱을 바꾸고 다시 게시하면 대화 상자의 이름은 **Publish your changes**입니다. **Production**에서 각 앱에 무엇이 바뀌었는지가 **No changes**, **Code changed**, **Live values changed** 중 하나로 표시됩니다. 게시해도 데이터와 학습자 진행 상황은 유지되며 새 세션이 시작되지 않습니다. 업데이트가 데이터를 제거하게 되는 경우, 예를 들어 새 버전에 더 이상 없는 테이블이나 필드가 있으면 **Publish**를 클릭하기 전에 Publish 대화 상자가 “This version may remove data from …”이라고 알려 주며, 그렇게 제거된 데이터는 되돌릴 수 없습니다. 이전 버전으로 되돌리거나 앱을 오프라인으로 내리거나 다시 올리는 방법은 [라이브로 전환하기](/ko/build/go-live/)를, 내 주소를 추가하는 방법은 [도메인](/ko/build/domains/)을 참고하세요.
 
 ## 새 세션 시작하기
 
-**Start a new session**은 예를 들어 새로운 그룹을 위해 깨끗한 상태로 돌아가는 기능입니다. 소유자만 할 수 있습니다. **Console**을 열고 **Sessions**를 연 뒤 **Start a new session**을 클릭합니다. 대화 상자에 "Start a new session?"이라는 질문이 나오고, 모든 앱의 데이터와 모든 학습자의 진행 상황을 지운다는 설명이 있습니다. 멤버, 역할, 이름은 유지됩니다. 진행하려면 **Clear and start again**을 클릭하고, 취소하려면 **Cancel**을 클릭합니다.
+**Start a new session**은 예를 들어 새로운 그룹을 위해 깨끗한 상태로 돌아가는 기능입니다. 소유자만 할 수 있습니다. **Console**을 열고 **Sessions**를 연 뒤 **Start a new session**을 클릭합니다. 대화 상자에 “Start a new session?”이라는 질문이 나오고, 모든 앱의 데이터와 모든 학습자의 진행 상황을 지운다는 설명이 있습니다. 멤버, 역할, 이름은 유지됩니다. 진행하려면 **Clear and start again**을 클릭하고, 취소하려면 **Cancel**을 클릭합니다.
 
-게시는 절대 이렇게 하지 않습니다. 버튼이 회색으로 비활성화되어 있으면 페이지에 "There is no session to clear yet."라고 나옵니다. Agent가 아직 빌드 중이면 먼저 빌드를 중지하거나 끝나기를 기다리세요.
+게시는 절대 이렇게 하지 않습니다. 버튼이 회색으로 비활성화되어 있으면 페이지에 “There is no session to clear yet.”라고 나옵니다. Agent가 아직 빌드 중이면 먼저 빌드를 중지하거나 끝나기를 기다리세요.
 
 ## 알아 두기
 

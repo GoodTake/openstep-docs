@@ -51,13 +51,13 @@ openstep env targets VITE_SITE_NAME --targets frontend,backend --app admin
 openstep env delete BOOKING_EMAIL --app admin
 ```
 
-- `env list`는 각 값의 이름, 종류, 제공 여부를 보여 줍니다. secret은 표시하지 않습니다.
+- `env list`는 각 값의 이름, 종류, 제공 여부를 보여 줍니다. 비밀 값은 표시하지 않습니다.
 - `env define`은 값을 만듭니다. 이름은 대문자, 숫자, 밑줄을 사용합니다.
 - `env set`은 이미 정의된 값에 새 값을 지정합니다. `env clear`는 그 값을 제거합니다.
 - `env targets`는 값을 읽을 수 있는 위치를 바꿉니다. `env delete`는 더 이상 아무도 쓰지 않는 정의를 제거합니다.
-- 대상에는 두 가지 규칙이 있습니다. `frontend` 대상은 `variable` 종류이고 이름이 `VITE_`로 시작해야 하며, 이름이 `VITE_`로 시작하는 값은 반드시 `frontend`를 대상으로 해야 합니다. secret은 `builder`를 대상으로 할 수 없고, variable은 체인 주소를 담고 있거나 체인의 RPC URL을 담은 `BASE_RPC_URL`일 때만 `builder`를 대상으로 할 수 있습니다.
+- 대상에는 두 가지 규칙이 있습니다. `frontend` 대상은 `variable` 종류이고 이름이 `VITE_`로 시작해야 하며, 이름이 `VITE_`로 시작하는 값은 반드시 `frontend`를 대상으로 해야 합니다. 비밀 값은 `builder`를 대상으로 할 수 없고, variable은 체인 주소를 담고 있거나 체인의 RPC URL을 담은 `BASE_RPC_URL`일 때만 `builder`를 대상으로 할 수 있습니다.
 - `--environment`는 `development` 또는 `production`입니다. 생략하면 `development`를 사용합니다.
-- secret은 명령줄에 직접 주지 않습니다. CLI가 숨김 입력으로 묻거나 표준 입력에서 읽습니다. secret에는 `--value`가 거부됩니다.
+- 비밀 값은 명령줄에 직접 주지 않습니다. CLI가 숨김 입력으로 묻거나 표준 입력에서 읽습니다. 비밀 값에는 `--value`가 거부됩니다.
 
 소유자는 값을 정의하고, 대상을 바꾸고, 삭제할 수 있습니다. 편집자는 개발용 값을 설정하고 지울 수 있습니다. 프로덕션 값은 소유자 전용입니다.
 
@@ -93,7 +93,7 @@ openstep capabilities list --app admin
 openstep capabilities enable contract --app admin
 ```
 
-`list`는 앱이 켜 둔 기능과 사용할 수 있는 플랫폼 기능을 보여 줍니다. `enable`은 앱에 `web`, `server`, `contract` 중 하나의 capability를 추가합니다. CLI에서는 capability를 끌 수 없습니다. 두 명령 모두 소유자 전용입니다.
+`list`는 앱이 켜 둔 기능과 사용할 수 있는 플랫폼 기능을 보여 줍니다. `enable`은 앱에 `web`, `server`, `contract` 중 하나의 기능을 추가합니다. CLI에서는 기능을 끌 수 없습니다. 두 명령 모두 소유자 전용입니다.
 
 ## 컨트랙트
 
@@ -148,7 +148,7 @@ openstep capabilities enable contract --app admin
 ## 알아 두기
 
 - CLI는 컨트랙트를 대신 컴파일하지 않습니다. 내가 준 JSON 파일을 읽습니다.
-- Secret과 토큰은 소스 파일에 넣지 않습니다. 환경 값을 사용하세요.
+- 비밀 값과 토큰은 소스 파일에 넣지 않습니다. 환경 값을 사용하세요.
 - SSU를 쓰는 모든 일은 잔액에 나타납니다. [잔액 확인](/ko/account/balance/)을 참고하세요.
 
 [CLI가 하는 일](/ko/cli/what-it-does/)로 돌아가기.

@@ -7,8 +7,8 @@ sidebar:
 
 Marketplace에는 준비된 Agent가 나열되어 있습니다. 각 Agent는 특정한 종류의 일에 맞춰 만들어져 있어서, 필요한 것을 묻고, 계획을 세우고, 앱을 만들어 줍니다. 하나를 고르고 생각하는 바를 말하면 나만의 Agent가 생깁니다. 이 섹션의 모든 페이지는 **Health & fitness**라는 하나의 예를 따라갑니다. 이 예에서 만들어진 Agent의 이름은 Three Day Strength입니다.
 
-1. 왼쪽 레일에서 **Marketplace**를 클릭합니다. 페이지 제목은 **Agent marketplace**이며 "Choose a product to create your own agent. Continue existing work from My agents."라는 안내가 있습니다.
-2. 카드를 둘러봅니다. **All agents**는 모든 Agent를, **By OpenStep**은 OpenStep이 만든 Agent를 보여 줍니다. 찾으려면 **Search agents…** 상자에 입력합니다. 각 카드에는 그림, 이름과 카테고리, 무엇을 만드는지 설명하는 한 줄, 그리고 **Use this agent →** 버튼이 있습니다. **Health & fitness** 카드에는 "Training plan, workout log, weight and measurements."라고 적혀 있습니다.
+1. 왼쪽 레일에서 **Marketplace**를 클릭합니다. 페이지 제목은 **Agent marketplace**이며 “Choose a product to create your own agent. Continue existing work from My agents.”라는 안내가 있습니다.
+2. 카드를 둘러봅니다. **All agents**는 모든 Agent를, **By OpenStep**은 OpenStep이 만든 Agent를 보여 줍니다. 찾으려면 **Search agents…** 상자에 입력합니다. 각 카드에는 그림, 이름과 카테고리, 무엇을 만드는지 설명하는 한 줄, 그리고 **Use this agent →** 버튼이 있습니다. **Health & fitness** 카드에는 “Training plan, workout log, weight and measurements.”라고 적혀 있습니다.
 
    ![Agent marketplace 페이지: Agent 카드가 격자로 나열되어 있고, Health & fitness 카드에 Use this agent 버튼이 있음.](/images/agent/pick-agent-1.webp)
 
