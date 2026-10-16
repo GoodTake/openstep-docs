@@ -17,7 +17,7 @@
   --sl-font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --sl-color-text-accent: var(--brand);
   /* The theme sets 40rem; at JetBrains Mono's width that left wide empty margins. */
-  --sl-content-width: 50rem;
+  --sl-content-width: 60rem;
 }
 
 /* The theme also hard-codes the main column at 40rem on pages with a sidebar and a table of contents. */
@@ -44,7 +44,9 @@ a.entry-link[aria-current='page'],
 }
 
 /* The theme scrolls .sidebar-content, but Starlight saves and restores the scroll of the pane
-   (#starlight__sidebar), so the sidebar jumped back to the top on every page. Scroll the pane. */
+   (#starlight__sidebar), so the sidebar jumped back to the top on every page. Scroll the pane, and
+   let .sidebar-content grow to its full height: the theme's mask only covers that box, so a box
+   squeezed to the pane height hid every link below it. The theme's scroll fade (mask) goes with it. */
 @media (min-width: 50em) {
   .sidebar-pane {
     overflow-y: auto;
@@ -52,8 +54,11 @@ a.entry-link[aria-current='page'],
   }
 
   .sidebar-content {
+    flex-shrink: 0;
     height: auto;
+    min-height: max-content;
     overflow: visible;
+    mask-image: none;
   }
 }
 
