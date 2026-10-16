@@ -15,6 +15,9 @@ Open http://localhost:4321
     npm run check
     npm run build
 
+The doc sections are defined in `src/sections.mjs`, and the redirects for old
+page paths are in `src/moved-pages.mjs`.
+
 ## Publish
 
 Push to `main`. Cloudflare Pages builds and deploys it automatically
