@@ -16,6 +16,13 @@
   --sl-font: 'JetBrains Mono', ui-monospace, monospace;
   --sl-font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --sl-color-text-accent: var(--brand);
+  /* The theme sets 40rem; at JetBrains Mono's width that left wide empty margins. */
+  --sl-content-width: 50rem;
+}
+
+/* The theme also hard-codes the main column at 40rem on pages with a sidebar and a table of contents. */
+[data-has-sidebar][data-has-toc] .main-pane {
+  max-width: var(--sl-content-width);
 }
 
 .sl-markdown-content a:not([class]):not(:where(.not-content *)) {
@@ -25,9 +32,6 @@
 
 a.entry-link[aria-current='page'],
 .sidebar-content a[aria-current='page'] {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
   color: var(--brand-strong);
   background-color: var(--brand-soft);
 }
@@ -39,12 +43,30 @@ a.entry-link[aria-current='page'],
   box-sizing: border-box;
 }
 
+/* The theme scrolls .sidebar-content, but Starlight saves and restores the scroll of the pane
+   (#starlight__sidebar), so the sidebar jumped back to the top on every page. Scroll the pane. */
+@media (min-width: 50em) {
+  .sidebar-pane {
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .sidebar-content {
+    height: auto;
+    overflow: visible;
+  }
+}
+
 starlight-toc a[aria-current='true'] {
   color: var(--brand);
 }
 
-/* The theme fixes sidebar links at 30px for Geist; JetBrains Mono is wider, so long titles wrap. */
+/* The theme fixes sidebar links at 30px for Geist; JetBrains Mono is wider, so long titles wrap.
+   Full width (not the theme's fit-content) so the hover and current highlights span the sidebar. */
 a.entry-link {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   height: auto;
   min-height: 30px;
 }
