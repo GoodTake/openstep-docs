@@ -14,7 +14,7 @@ You never have to read code to build a site, but you can. **Code** shows the fil
 
 ![Console → Code for The Cozy Coffee Table: the FILES tree on the left and src/App.tsx open in a read-only editor.](/images/build/code-1.webp)
 
-The toolbar above the editor has the buttons **Files**, **Quick Open**, **Search**, **Refresh**, **Copy path**, **Copy content**, **Download file** and **Copy link**, plus **More actions**.
+The toolbar above the editor has the buttons **Files**, **Quick Open**, **Search**, **Refresh**, **Copy path**, **Copy content**, **Download file** and **Copy link**.
 
 ## Good to know
 
