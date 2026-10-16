@@ -1,12 +1,68 @@
 ---
 title: What is OpenStep
-description: Describe the system you want. AI builds it so you can preview and publish.
+description: OpenStep turns a conversation into a working app that you can preview and publish.
 sidebar:
   order: 1
 ---
 
-OpenStep is an AI full-stack builder. At [builder.openstep.academy](https://builder.openstep.academy) you describe the system you want in chat, and the platform builds it in an isolated environment — ready to preview and to publish.
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-You do not need your own server or git repository first. Open the product, sign in with a wallet, create a project, and say what you want.
+OpenStep turns a conversation into a working app. You start an agent, tell it what you need, and it builds one or more apps that you can preview and publish at [builder.openstep.academy](https://builder.openstep.academy).
 
-This site covers **how to use the OpenStep builder**. What your published app can do (take payment, send email, store data) is a short overview under Build your app — not an API catalog.
+## How the pieces fit
+
+<div class="how-fits not-content">
+  <div class="node"><b>You</b><small>describe, answer, approve</small></div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="node accent"><b>Agent</b><small>conversation · plan · builds</small></div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="stack">
+    <div class="node"><b>App</b><small>preview · code · data</small></div>
+    <div class="node"><b>App</b><small>as many as needed</small></div>
+  </div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="node"><b>Live link</b><small>after Publish</small></div>
+</div>
+
+An agent keeps your conversation and its builds in one place, and can build several apps for you. **Publish** puts all of them live together.
+
+## Three ways to use OpenStep
+
+<div class="ways">
+  <CardGrid>
+    <LinkCard title="Use a ready-made agent" description="Pick one in the Marketplace, such as Health & fitness, and answer its questions." href="/agent/pick-agent/" />
+    <LinkCard title="Build a website" description="Start from Web builder and describe the site you want." href="/build/start-website/" />
+    <LinkCard title="Develop locally" description="Check out an agent with the OpenStep CLI and work in your own editor." href="/cli/what-it-does/" />
+  </CardGrid>
+</div>
+
+## An agent at work
+
+This is a Health & fitness agent: the conversation and its plan are on the left, and the app it built is on the right.
+
+![The work page of a Health & fitness agent, with the chat and plan on the left and the app on the right.](/images/start/what-is-1.webp)
+
+## Words you will see
+
+| Word | What it means |
+| --- | --- |
+| **Agent** | What you create and keep working on: the conversation, its builds and its apps. |
+| **App** | One site inside an agent, with its own preview, code, data and live link. |
+| **Marketplace** | The list of ready-made agents you can start from. |
+| **Brainstorm** / **Build** | Two ways to work. **Brainstorm** asks questions and makes a plan first; **Build** changes your apps right away. |
+| **Publish** | Puts every app of the agent live together. |
+| **SSU** | What building and app features spend. See [Get SSU](/start/get-ssu/). |
+
+## What happens after your first message
+
+<ol class="flow not-content">
+  <li>The agent asks a few questions</li>
+  <li>You approve its plan</li>
+  <li>It builds, task by task</li>
+  <li>You try it in **Preview**</li>
+  <li>You **Publish** and share</li>
+</ol>
+
+This is the **Brainstorm** path. In **Build** mode there are no questions and no plan to approve: the agent starts changing your apps right away.
+
+Next: [Sign in](/start/sign-in/).
