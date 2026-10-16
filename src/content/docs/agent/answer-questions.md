@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-Before it plans anything, a Brainstorm agent asks you a few questions in a pop-up. It asks only what your first message left open. The first message in this example, *I want to get stronger. I can train 3 days a week at the gym, about 45 minutes each time.*, already gave the goal, the equipment, the days and the session length. So the Health & fitness agent asked three questions: about health, experience and units.
+Before it plans anything, an agent working in **Brainstorm** mode asks you a few questions in a pop-up. It asks only what your first message left open. The first message in this example, *I want to get stronger. I can train 3 days a week at the gym, about 45 minutes each time.*, already gave the goal, the equipment, the days and the session length. So the Health & fitness agent asked three questions: about health, experience and units.
 
 1. Wait for the agent to read your message. It writes a short note in the chat, here "I'll shape Three Day Strength around three 45-minute gym sessions, with a strength plan and private workout and body logs. A few details will help tailor it to you." Then the step **Ask a question** appears and a dialog opens. The first reply can take a few minutes while the agent starts up.
 2. Read the question. The small label at the top is the topic (**HEALTH**), and beside it is where you are in the round (**1 / 3**). Under the question is a short list of answers, and the first one is marked **(Recommended)**.

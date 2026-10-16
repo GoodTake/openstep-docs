@@ -33,7 +33,7 @@ Open **Console**, then **Settings**, and look at **Access**. Only the owner can 
 
 ## Publish changes later
 
-When you change the app and publish again, the dialog is called **Publish your changes**. In **Production**, each App says what changed: **No changes**, **Code changed** or **Live values changed**. Publishing never touches your data. To go back to an earlier version, take the app offline, or put it back, see [Go live](/build/go-live/). To add your own address, see [Domains](/build/domains/).
+When you change the app and publish again, the dialog is called **Publish your changes**. In **Production**, each App says what changed: **No changes**, **Code changed** or **Live values changed**. Publishing keeps your data and learner progress, and never starts a new session. If an update would remove data, for example a table or field the new version no longer has, the Publish dialog says "This version may remove data from …" before you click **Publish**, and data removed that way cannot be brought back. To go back to an earlier version, take the app offline, or put it back, see [Go live](/build/go-live/). To add your own address, see [Domains](/build/domains/).
 
 ## Start a new session
 

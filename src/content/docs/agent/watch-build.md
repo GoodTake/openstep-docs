@@ -40,7 +40,7 @@ If the chat shows **Reconnecting…** for a long time, reload the page. The buil
 ## Good to know
 
 - A build takes several minutes. The agent checks each task before it moves on, and repairs it if a check fails, so some tasks take more than one round.
-- Only the owner and editors can pause, stop or continue a build. Viewers can watch.
-- You cannot publish while a build is running or paused. Publish becomes available once the build has stopped or finished. See [Publish and share](/agent/publish-and-share/).
+- Only the owner and editors can **Pause**, **Stop** or **Continue** a build. Viewers can watch.
+- You cannot publish while a build is running or paused. **Publish** becomes available once the build has stopped or finished. See [Publish and share](/agent/publish-and-share/).
 
 Next: [Use your app](/agent/use-your-app/).
