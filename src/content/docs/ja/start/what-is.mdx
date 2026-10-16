@@ -1,12 +1,68 @@
 ---
 title: OpenStep とは
-description: 作りたいシステムを伝える。AI が構築し、プレビューと公開ができる。
+description: OpenStep は会話を、プレビューして公開できる動くアプリに変えます。
 sidebar:
   order: 1
 ---
 
-OpenStep は AI フルスタックビルダーです。[builder.openstep.academy](https://builder.openstep.academy) でチャットに作りたいシステムを書くと、プラットフォームが隔離環境で構築します。プレビューも公開もできます。
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-最初に自分のサーバーや git リポジトリは不要です。製品を開き、ウォレットでサインインし、プロジェクトを作り、欲しいものを伝えてください。
+OpenStep は会話を動くアプリに変えます。agent を作成して必要なものを伝えると、agent が 1 つ以上の App を構築します。できあがった App は [builder.openstep.academy](https://builder.openstep.academy) でプレビューと公開ができます。
 
-このサイトは **OpenStep builder の使い方** です。公開したアプリができること（決済、メール、データ保存）は「アプリを作る」の短い概要であり、API カタログではありません。
+## 全体の仕組み
+
+<div class="how-fits not-content">
+  <div class="node"><b>あなた</b><small>説明・回答・承認</small></div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="node accent"><b>Agent</b><small>会話 · 計画 · 構築</small></div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="stack">
+    <div class="node"><b>App</b><small>プレビュー · コード · データ</small></div>
+    <div class="node"><b>App</b><small>必要な数だけ</small></div>
+  </div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="node"><b>公開リンク</b><small>Publish のあと</small></div>
+</div>
+
+agent は会話と構築の結果を 1 か所にまとめて保持し、複数のアプリを構築できます。**Publish** は、そのすべてをまとめて公開します。
+
+## OpenStep の使い方は 3 通り
+
+<div class="ways">
+  <CardGrid>
+    <LinkCard title="用意された agent を使う" description="Marketplace で Health & fitness などを選び、agent の質問に答えます。" href="/ja/agent/pick-agent/" />
+    <LinkCard title="ウェブサイトを作る" description="Web builder から始めて、欲しいサイトを説明します。" href="/ja/build/start-website/" />
+    <LinkCard title="ローカルで開発する" description="OpenStep CLI で agent をチェックアウトし、自分のエディターで作業します。" href="/ja/cli/what-it-does/" />
+  </CardGrid>
+</div>
+
+## agent が動いている様子
+
+これは Health & fitness agent です。左に会話と計画、右に構築されたアプリが表示されています。
+
+![Health & fitness agent の作業ページ。左にチャットと計画、右にアプリ。](/images/start/what-is-1.webp)
+
+## 出てくる用語
+
+| 用語 | 意味 |
+| --- | --- |
+| **Agent** | 作成して作業を続ける対象です。会話、構築、そして App がまとまっています。 |
+| **App** | agent の中の 1 つのサイトです。独自のプレビュー、コード、データ、公開リンクを持ちます。 |
+| **Marketplace** | 出発点にできる、用意された agent の一覧です。 |
+| **Brainstorm** / **Build** | 作業の進め方 2 種類です。**Brainstorm** は先に質問して計画を作り、**Build** は App をすぐに変更します。 |
+| **Publish** | agent のすべての App をまとめて公開します。 |
+| **SSU** | 構築と App の機能で消費されるものです。[SSU を入手する](/ja/start/get-ssu/) を参照してください。 |
+
+## 最初のメッセージのあと
+
+<ol class="flow not-content">
+  <li>agent がいくつか質問する</li>
+  <li>計画を承認する</li>
+  <li>タスクごとに構築が進む</li>
+  <li>**Preview** で試す</li>
+  <li>**Publish** して共有する</li>
+</ol>
+
+これは **Brainstorm** の流れです。**Build** モードでは、質問も承認する計画もありません。agent がすぐに App の変更を始めます。
+
+次へ：[サインイン](/ja/start/sign-in/)。

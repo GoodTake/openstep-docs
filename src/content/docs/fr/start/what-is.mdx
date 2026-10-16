@@ -1,12 +1,68 @@
 ---
 title: Qu'est-ce qu'OpenStep
-description: Décrivez le système que vous voulez. L'IA le construit pour que vous puissiez prévisualiser et publier.
+description: OpenStep transforme une conversation en une app fonctionnelle que vous pouvez prévisualiser et publier.
 sidebar:
   order: 1
 ---
 
-OpenStep est un builder full-stack IA. Sur [builder.openstep.academy](https://builder.openstep.academy), vous décrivez le système voulu dans le chat, et la plateforme le construit dans un environnement isolé — prêt à prévisualiser et à publier.
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-Vous n'avez pas besoin d'un serveur ou d'un dépôt git au départ. Ouvrez le produit, connectez-vous avec un wallet, créez un projet, et dites ce que vous voulez.
+OpenStep transforme une conversation en une app fonctionnelle. Vous démarrez un agent, vous lui dites ce dont vous avez besoin, et il construit une ou plusieurs apps que vous pouvez prévisualiser et publier sur [builder.openstep.academy](https://builder.openstep.academy).
 
-Ce site explique **comment utiliser le builder OpenStep**. Ce que votre app publiée peut faire (encaisser, envoyer un e-mail, stocker des données) est un aperçu court sous Créer votre app — pas un catalogue d'API.
+## Comment les éléments s'articulent
+
+<div class="how-fits not-content">
+  <div class="node"><b>Vous</b><small>décrivez, répondez, approuvez</small></div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="node accent"><b>Agent</b><small>conversation · plan · constructions</small></div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="stack">
+    <div class="node"><b>App</b><small>aperçu · code · données</small></div>
+    <div class="node"><b>App</b><small>autant que nécessaire</small></div>
+  </div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="node"><b>Lien en ligne</b><small>après Publish</small></div>
+</div>
+
+Un agent garde votre conversation et ses constructions au même endroit, et peut construire plusieurs apps pour vous. **Publish** les met toutes en ligne en même temps.
+
+## Trois façons d'utiliser OpenStep
+
+<div class="ways">
+  <CardGrid>
+    <LinkCard title="Utiliser un agent prêt à l'emploi" description="Choisissez-en un dans le Marketplace, comme Health & fitness, et répondez à ses questions." href="/fr/agent/pick-agent/" />
+    <LinkCard title="Créer un site web" description="Partez de Web builder et décrivez le site que vous voulez." href="/fr/build/start-website/" />
+    <LinkCard title="Développer en local" description="Récupérez un agent avec la CLI OpenStep et travaillez dans votre propre éditeur." href="/fr/cli/what-it-does/" />
+  </CardGrid>
+</div>
+
+## Un agent à l'œuvre
+
+Voici un agent Health & fitness : la conversation et son plan sont à gauche, et l'app qu'il a construite est à droite.
+
+![La page de travail d'un agent Health & fitness, avec le chat et le plan à gauche et l'app à droite.](/images/start/what-is-1.webp)
+
+## Les mots que vous allez voir
+
+| Terme | Signification |
+| --- | --- |
+| **Agent** | Ce que vous créez et sur quoi vous continuez à travailler : la conversation, ses constructions et ses apps. |
+| **App** | Un site à l'intérieur d'un agent, avec son propre aperçu, son code, ses données et son lien en ligne. |
+| **Marketplace** | La liste des agents prêts à l'emploi à partir desquels vous pouvez démarrer. |
+| **Brainstorm** / **Build** | Deux façons de travailler. **Brainstorm** pose d'abord des questions et fait un plan ; **Build** modifie vos apps tout de suite. |
+| **Publish** | Met toutes les apps de l'agent en ligne en même temps. |
+| **SSU** | Ce que dépensent la construction et les fonctions des apps. Voir [Obtenir du SSU](/fr/start/get-ssu/). |
+
+## Ce qui se passe après votre premier message
+
+<ol class="flow not-content">
+  <li>L'agent pose quelques questions</li>
+  <li>Vous approuvez son plan</li>
+  <li>Il construit, tâche par tâche</li>
+  <li>Vous l'essayez dans **Preview**</li>
+  <li>Vous faites **Publish** et vous partagez</li>
+</ol>
+
+C'est le parcours **Brainstorm**. En mode **Build**, il n'y a ni questions ni plan à approuver : l'agent commence tout de suite à modifier vos apps.
+
+Suite : [Se connecter](/fr/start/sign-in/).

@@ -1,12 +1,68 @@
 ---
 title: OpenStep 是什麼
-description: 描述你要的系統。AI 把它建出來，讓你可以預覽與發布。
+description: OpenStep 把一段對話變成可以預覽與發布的 App。
 sidebar:
   order: 1
 ---
 
-OpenStep 是 AI 全端建造工具。在 [builder.openstep.academy](https://builder.openstep.academy) 用對話描述你要的系統，平台在隔離環境裡把它建出來——可預覽、可發布。
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-你不必先自備伺服器或 git 倉庫。打開產品、用錢包登入、建立專案，然後說你要什麼。
+OpenStep 把一段對話變成一個能運作的 App。你建立一個 Agent，告訴它你需要什麼，它就會建出一個或多個 App，讓你在 [builder.openstep.academy](https://builder.openstep.academy) 預覽與發布。
 
-本站說明 **如何使用 OpenStep builder**。你發布的應用能做什麼（收款、寄信、存資料）在「打造你的應用」裡有短覽，不是 API 目錄。
+## 各部分如何組合
+
+<div class="how-fits not-content">
+  <div class="node"><b>你</b><small>描述、回答、核准</small></div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="node accent"><b>Agent</b><small>對話 · 計畫 · 建造</small></div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="stack">
+    <div class="node"><b>App</b><small>預覽 · 程式碼 · 資料</small></div>
+    <div class="node"><b>App</b><small>需要幾個就有幾個</small></div>
+  </div>
+  <span class="arrow" aria-hidden="true">→</span>
+  <div class="node"><b>上線連結</b><small>Publish 之後</small></div>
+</div>
+
+一個 Agent 會把你的對話與它的建造內容放在同一個地方，而且可以替你建出好幾個 App。**Publish** 會把它們一起上線。
+
+## 使用 OpenStep 的三種方式
+
+<div class="ways">
+  <CardGrid>
+    <LinkCard title="使用現成的 Agent" description="在 Marketplace 挑一個，例如 Health & fitness，然後回答它的問題。" href="/zh-tw/agent/pick-agent/" />
+    <LinkCard title="建立網站" description="從 Web builder 開始，描述你想要的網站。" href="/zh-tw/build/start-website/" />
+    <LinkCard title="在本機開發" description="用 OpenStep CLI 取出一個 Agent，在你自己的編輯器裡工作。" href="/zh-tw/cli/what-it-does/" />
+  </CardGrid>
+</div>
+
+## 運作中的 Agent
+
+這是一個 Health & fitness Agent：左邊是對話與計畫，右邊是它建出來的 App。
+
+![Health & fitness Agent 的工作頁，左邊是對話與計畫，右邊是 App。](/images/start/what-is-1.webp)
+
+## 你會看到的詞彙
+
+| 詞彙 | 意思 |
+| --- | --- |
+| **Agent** | 你建立並持續使用的東西：對話、它的建造內容，以及它的 App。 |
+| **App** | Agent 裡的一個網站，有自己的預覽、程式碼、資料與上線連結。 |
+| **Marketplace** | 可以直接拿來起步的現成 Agent 清單。 |
+| **Brainstorm** / **Build** | 兩種工作方式。**Brainstorm** 先提問並擬出計畫；**Build** 直接修改你的 App。 |
+| **Publish** | 讓 Agent 的每個 App 一起上線。 |
+| **SSU** | 建造與 App 功能所花費的額度。見 [取得 SSU](/zh-tw/start/get-ssu/)。 |
+
+## 你送出第一則訊息之後
+
+<ol class="flow not-content">
+  <li>Agent 會問幾個問題</li>
+  <li>你核准它的計畫</li>
+  <li>它一個任務接一個任務地建造</li>
+  <li>你在 **Preview** 試用</li>
+  <li>你 **Publish** 並分享</li>
+</ol>
+
+這是 **Brainstorm** 的流程。在 **Build** 模式下，沒有問題，也沒有需要核准的計畫：Agent 會直接開始修改你的 App。
+
+下一步：[登入](/zh-tw/start/sign-in/)。

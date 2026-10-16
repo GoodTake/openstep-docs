@@ -1,20 +1,39 @@
 ---
-title: 描述你要什麼
-description: 如何寫一段有用的第一句提示。
+title: 描述你想要的東西
+description: 如何寫出 builder 能執行的需求、加入圖片或 PDF，以及要求全新的外觀。
 sidebar:
   order: 4
 ---
 
-有用的描述短而具體。請包含：
+好的需求簡短又具體。你可以像我們對咖啡店那樣，從一句話開始，然後一則訊息一則訊息地調整網站。
 
-- 給誰用
-- 他們先看到的畫面
-- 兩三個必備動作
+1. 說明網站是什麼、給誰用。*A website for a small coffee shop.*
+2. 說出頁面，或訪客必須能做的事。*The menu, opening hours, and a form to book a table.*
+3. 補上你在意的任何事：名稱、語氣、顏色、你真正的菜單與價格、你真正的營業時間。你沒說的部分，builder 會用合理的預設值補上，之後你可以請它修改。
+4. 按 Enter 送出訊息。換行請用 Shift + Enter。
 
-例如：
+![在 New agent 輸入框中輸入的咖啡店需求，尚未送出。](/images/build/start-website-1.webp)
 
-> A claim page for a token launch. Visitors connect a wallet, see remaining supply, and claim. The owner can pause claims.
+## 一則訊息一則訊息地修改網站
 
-不要在第一輪傾倒完整規格。先做核心迴圈，預覽後再迭代。
+一次提出一個修改，每次之後都看一下 Preview。*Make the booking form ask for a phone number.* *Change the opening hours to 8:00 to 17:00 on weekdays.* *Add a Weekend brunch section to the menu.* 描述你希望訪客看到或做到什麼，而不是怎麼寫程式。
 
-在 **Brainstorm** 可以先模糊——AI 會問。在 **Build** 請更具體，讓第一次生成就能用。
+## 加入圖片或 PDF
+
+點選輸入框左下角的 **+**（**Attach file**），或把檔案拖放到輸入框上，或貼上螢幕截圖。你可以附加 JPEG、PNG 和 WebP 圖片以及 PDF 檔，每則訊息最多 5 個。每個檔案會顯示成一個晶片，帶有名稱、大小和一個移除按鈕。如果上傳失敗，晶片會提供 **Retry**。單獨貼上一張螢幕截圖本身就是一則完整的訊息，所以你可以給 builder 看點東西，不加文字就送出。
+
+## 指向頁面上的某個東西
+
+當 Preview 支援時，Preview 工具列會出現一支鉛筆。點選它就會開啟 **Edit mode**，然後點選頁面上的任何元素即可選取。它會以晶片的形式出現在你的訊息上方，所以你可以直接說 *make this heading smaller*，不用解釋它在哪裡。在 **Edit mode** 中，你也可以直接在頁面上修改文字或樣式。**Apply** 按鈕會顯示你做了多少處修改，按下去就保留，**Discard** 則放棄。
+
+## 要求全新的外觀
+
+一般的需求會在目前的設計範圍內修改網站。如果你要求完全不同的外觀，builder 可以在輸入框上方提供 **Redesign the visual style**，並附上一行簡短的文字說明它理解了什麼。點選它就會依該需求進行。
+
+## 注意事項
+
+- 不確定要提什麼？選擇 **Brainstorm**，讓 builder 來問。見 [Build 與 Brainstorm](/zh-tw/build/modes/)。
+- builder 工作期間你不能送出訊息。請等到 **Done**，或停止這一輪。見 [追蹤進度](/zh-tw/build/progress/)。
+- 你想要的是頁面以外的東西，例如寄送電子郵件或收款？見 [你的網站能做什麼](/zh-tw/build/what-your-site-can-do/)。
+
+下一步：[選擇模型](/zh-tw/build/choose-model/)。

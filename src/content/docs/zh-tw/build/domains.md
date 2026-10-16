@@ -1,19 +1,35 @@
 ---
-title: 網址與自訂網域
-description: 在 Domains 查看專案子網域並綁定自己的網域。
+title: 網域
+description: 每個 App 在 openstep.academy 上都有一個網址。連接你自己的網域，就能有專屬品牌的網址。
 sidebar:
   order: 13
 ---
 
-打開 Console → PUBLISH → **Domains**。
+你發布時，每個 App 都會有自己的網址。你可以沿用這個網址，也可以連接自己的網域，例如 `cafe.example.com`。開啟 **Console**，然後開啟 **Domains**。它作用於頂部指名的 App，**App: The Cozy Coffee Table**，所以如果 Agent 有不只一個 App，請先在標題列選好 App。
 
-**Default domain** 是專案發佈版本的自動產生主機名稱，可在面板上 **Copy**。
+![The Cozy Coffee Table 的 Console → Domains：預設的 STEPS 網域，附有 Open 和 Copy URL，下方是空的自訂網域列。](/images/build/domains-1.webp)
 
-專案 owner 可以在 **Custom domain** 輸入一個完整主機名稱，再選 **Save domain**。
-綁定會先顯示 `DNS check needed`，此時尚未加入路由。
+## 預設網址
 
-依面板建立 DNS-only CNAME，關閉 DNS 供應商的 proxy 或 CNAME flattening，再選 **Check DNS**。
-只有 STEPS 確認 CNAME 後才會顯示 `Configured`。第一次 HTTPS 存取會申請憑證並打開目前的 Live
-release。只輸入像 `app.example.com` 的主機名稱，不要包含 `https://`、連接埠或路徑。
+在 **Default STEPS domain** 底下，**HTTPS URL** 就是 App 的網址，長得像 `https://app-<id>.openstep.academy`。即使連接了自訂網域，它也一直可用。你[發布](/zh-tw/build/go-live/)之後，它會顯示你的線上網站。點選 **Open** 前往，或點選 **Copy URL** 複製。
 
-選 **Remove** 可解除綁定；也要刪除 DNS 記錄，避免它繼續指向 STEPS。
+## 連接你自己的網域
+
+1. 在 **Custom domain** 底下，於 **CUSTOM HOSTNAME** 輸入名稱。只填主機名稱，不要加 `https://`、連接埠或路徑，並使用子網域，例如 `app.example.com`，不要用裸網域。
+2. 點選 **Add domain**。標記會顯示 **CUSTOM · DNS SETUP REQUIRED**，並出現 **Configure your DNS record** 與一張 **DNS record** 表格：**Type** 是 CNAME，**Name / Host** 是你的主機名稱，**Target / Value** 是它必須指向的位置，**TTL** 是 Auto。**Copy all** 會一次複製全部。
+3. 在你的 DNS 供應商建立那筆 CNAME 紀錄。請關閉 DNS 代理，也不要使用 apex flattening，讓公開的 CNAME 直接指向 OpenStep。
+4. 回到這裡點選 **Check connection**。找到 CNAME 之後，標記會顯示 **CUSTOM · DNS-MANAGED**，而 **Custom domain** 那一列會顯示 **DNS connected · Opens the Live version after you publish**。
+
+如果你看到 **CNAME not detected**，請稍候再檢查一次，因為 DNS 變更需要時間才會傳開。**Having trouble?** 列出了常見的原因。
+
+## 移除網域
+
+點選 **Remove custom domain**，或在它還在等待 DNS 時點選 **Cancel setup**。對話框會說明該主機名稱將不再導向 App，而預設網域仍然可用。點選 **Keep domain** 可以改變主意。也請到你的 DNS 供應商那裡刪除不用的 CNAME。
+
+## 注意事項
+
+- 只有擁有者能連接或移除自訂網域。
+- 每個 App 有自己的網域。一個主機名稱不能附加到兩個 App。
+- 如果 Agent 設為 **Learners only**，就不會提供自訂網域。要使用自訂網域，請在 **Settings** 把存取設為 **Anyone with the link**。見 [發布與分享](/zh-tw/agent/publish-and-share/)。
+
+下一步：[發布與分享](/zh-tw/agent/publish-and-share/)。
