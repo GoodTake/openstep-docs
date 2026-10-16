@@ -16,6 +16,7 @@ La page de travail peut accomplir les mêmes tâches dans le navigateur. Utilise
 - Exécuter des Apps en local. Démarrez le frontend et le back-end d'une App sur votre machine. Voir [Exécuter des apps en local](/fr/cli/dev/).
 - Push et publication. Enregistrez vos changements dans l'agent, puis mettez toutes les Apps en ligne ensemble. Voir [Push et publication](/fr/cli/push-publish/).
 - Gérer les Apps, les données et les contrats. Ajoutez une App, définissez des valeurs d'environnement, exécutez du SQL sur les données de développement, et déployez un smart contract qu'utilise une App. Voir [Apps, données et contrats](/fr/cli/apps-data-contracts/).
+- Apporter votre code existant. Déplacez un site que vous avez déjà créé dans une App et utilisez, depuis cette App, la connexion OpenStep, l'e-mail, l'IA et les actions on-chain. Voir [Apporter votre code existant](/fr/cli/bring-your-code/).
 
 ## Une session, du début à la fin
 

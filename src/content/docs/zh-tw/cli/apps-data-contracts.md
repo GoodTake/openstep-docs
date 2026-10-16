@@ -151,4 +151,4 @@ openstep capabilities enable contract --app admin
 - 機密值和 token 不應該放在原始碼檔案中。請使用環境值。
 - 任何會花費 SSU 的操作都會顯示在你的餘額中。見 [查看餘額](/zh-tw/account/balance/)。
 
-回到 [CLI 能做什麼](/zh-tw/cli/what-it-does/)。
+下一步：[帶入你現有的程式碼](/zh-tw/cli/bring-your-code/)。

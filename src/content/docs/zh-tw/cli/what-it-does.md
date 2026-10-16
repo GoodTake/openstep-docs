@@ -16,6 +16,7 @@ OpenStep CLI 讓你在自己的電腦上處理 Agent。你把 Agent 的 App 複�
 - 在本機執行 App：在你的機器上啟動 App 的前端和後端。見 [在本機執行 App](/zh-tw/cli/dev/)。
 - 推送與發布：把你的變更存回 Agent，然後讓每個 App 一起上線。見 [推送與發布](/zh-tw/cli/push-publish/)。
 - 管理 App、資料與合約：新增 App、設定環境值、對開發資料執行 SQL，以及部署 App 使用的智慧合約。見 [App、資料與合約](/zh-tw/cli/apps-data-contracts/)。
+- 帶入你現有的程式碼：把你已經做好的網站搬進 App，並從中使用 OpenStep 登入、電子郵件、AI 和鏈上操作。見 [帶入你現有的程式碼](/zh-tw/cli/bring-your-code/)。
 
 ## 從頭到尾的一次工作階段
 

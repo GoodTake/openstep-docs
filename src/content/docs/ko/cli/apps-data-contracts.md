@@ -151,4 +151,4 @@ openstep capabilities enable contract --app admin
 - 비밀 값과 토큰은 소스 파일에 넣지 않습니다. 환경 값을 사용하세요.
 - SSU를 쓰는 모든 일은 잔액에 나타납니다. [잔액 확인](/ko/account/balance/)을 참고하세요.
 
-[CLI가 하는 일](/ko/cli/what-it-does/)로 돌아가기.
+다음: [기존 코드 가져오기](/ko/cli/bring-your-code/).

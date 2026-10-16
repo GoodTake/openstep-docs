@@ -16,6 +16,7 @@ The work page can do the same jobs in the browser. Use the CLI when you want you
 - Run Apps locally. Start an App's frontend and backend on your machine. See [Run apps locally](/cli/dev/).
 - Push and publish. Save your changes to the agent, then put every App live together. See [Push and publish](/cli/push-publish/).
 - Manage Apps, data and contracts. Add an App, set environment values, run SQL on development data, and deploy a smart contract an App uses. See [Apps, data and contracts](/cli/apps-data-contracts/).
+- Bring your existing code. Move a site you already built into an App and use OpenStep sign-in, email, AI and on-chain actions from it. See [Bring your existing code](/cli/bring-your-code/).
 
 ## One session, start to finish
 

@@ -44,6 +44,7 @@ const ROOT_PAGES = [
   'cli/dev.md',
   'cli/push-publish.md',
   'cli/apps-data-contracts.md',
+  'cli/bring-your-code.md',
   'account/what-is-ssu.md',
   'account/balance.md',
   'account/redeem.md',
