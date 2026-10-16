@@ -97,7 +97,7 @@ openstep capabilities enable contract --app admin
 
 ## 合約
 
-這裡的合約是你的某個 App 使用的智慧合約。你要編譯它、註冊它、查看部署要花多少，然後把它部署到 Base。準備與報價都是免費的。**Deploying spends SSU. Quote and deploy are owner-only.** 部署會花費 SSU，報價與部署僅限擁有者。
+這裡的合約是你的某個 App 使用的智慧合約。你要編譯它、註冊它、查看部署要花多少，然後把它部署到 Base。準備與報價都是免費的。部署會花費 SSU。報價與部署僅限擁有者。
 
 1. 在 App 的 Foundry 設定中編譯合約。
 

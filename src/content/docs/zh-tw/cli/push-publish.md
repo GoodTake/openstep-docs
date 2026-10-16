@@ -5,7 +5,7 @@ sidebar:
   order: 6
 ---
 
-推送與發布是兩個步驟。**Push** 會把你的原始碼存到 Agent。**Publish** 會讓存好的原始碼上線。推送絕不會發布。
+推送與發布是兩個步驟。推送會把你的原始碼存到 Agent。發布會讓存好的原始碼上線。推送絕不會發布。
 
 兩者都作用於整個 Agent，所以每個 App 一起移動。
 
@@ -69,9 +69,9 @@ openstep unpublish --note "Take the agent offline"
 openstep republish --note "Bring back the last live version"
 ```
 
-- **rollback** 會還原 Agent 仍保留的某個較早發行版本。成功的 publish 會回報它所建立的發行版本的 ID。
-- **unpublish** 會讓每個 App 下線。
-- **republish** 會把你用 unpublish 下線的那個版本帶回來。
+- rollback 會還原 Agent 仍保留的某個較早發行版本。成功的 publish 會回報它所建立的發行版本的 ID。
+- unpublish 會讓每個 App 下線。
+- republish 會把你用 unpublish 下線的那個版本帶回來。
 
 在瀏覽器中做同樣的操作，見 [讓網站上線](/zh-tw/build/go-live/)。
 

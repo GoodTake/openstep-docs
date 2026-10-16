@@ -37,8 +37,8 @@ SSU をすでに自分で送った場合は、**Already sent? Paste transaction 
 
 ## 知っておくこと
 
-- **USDC で購入する**には、Base 上のウォレットに USDC と、ガス用の少量の ETH（Base 上）が必要です。どちらかが足りないと、ページに **Your wallet does not have enough USDC.** または **Your wallet needs more ETH on Base for gas.** と表示されます。
-- **カード情報は Stripe が扱います。** カード情報は OpenStep ではなく、Stripe Checkout のページで入力します。
+- USDC で購入するには、Base 上のウォレットに USDC と、ガス用の少量の ETH（Base 上）が必要です。どちらかが足りないと、ページに **Your wallet does not have enough USDC.** または **Your wallet needs more ETH on Base for gas.** と表示されます。
+- **Card details stay with Stripe.** カード情報は OpenStep ではなく、Stripe Checkout のページで入力します。
 - 構築や App の呼び出しが実行されている間、SSU の一部は **Held for running work** になります。各課金は [Balance](/ja/account/balance/) ページの **Activity** に表示されます。
 - 使っていない SSU は、[Balance](/ja/account/balance/) ページからウォレットに返金できます。
 

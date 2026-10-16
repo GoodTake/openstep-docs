@@ -11,11 +11,11 @@ La page de travail peut accomplir les mêmes tâches dans le navigateur. Utilise
 
 ## Ce que vous pouvez faire
 
-- **Récupérer un agent.** Copiez toutes les Apps d'un agent dans un dossier. Voir [Récupérer un agent](/fr/cli/checkout/).
-- **Discuter depuis le terminal.** Parlez au builder, répondez à ses questions, approuvez son plan, et mettez-le en pause ou arrêtez-le. Voir [Discuter depuis le terminal](/fr/cli/chat/).
-- **Exécuter des Apps en local.** Démarrez le frontend et le back-end d'une App sur votre machine. Voir [Exécuter des apps en local](/fr/cli/dev/).
-- **Push et publication.** Enregistrez vos changements dans l'agent, puis mettez toutes les Apps en ligne ensemble. Voir [Push et publication](/fr/cli/push-publish/).
-- **Gérer les Apps, les données et les contrats.** Ajoutez une App, définissez des valeurs d'environnement, exécutez du SQL sur les données de développement, et déployez un smart contract qu'utilise une App. Voir [Apps, données et contrats](/fr/cli/apps-data-contracts/).
+- Récupérer un agent. Copiez toutes les Apps d'un agent dans un dossier. Voir [Récupérer un agent](/fr/cli/checkout/).
+- Discuter depuis le terminal. Parlez au builder, répondez à ses questions, approuvez son plan, et mettez-le en pause ou arrêtez-le. Voir [Discuter depuis le terminal](/fr/cli/chat/).
+- Exécuter des Apps en local. Démarrez le frontend et le back-end d'une App sur votre machine. Voir [Exécuter des apps en local](/fr/cli/dev/).
+- Push et publication. Enregistrez vos changements dans l'agent, puis mettez toutes les Apps en ligne ensemble. Voir [Push et publication](/fr/cli/push-publish/).
+- Gérer les Apps, les données et les contrats. Ajoutez une App, définissez des valeurs d'environnement, exécutez du SQL sur les données de développement, et déployez un smart contract qu'utilise une App. Voir [Apps, données et contrats](/fr/cli/apps-data-contracts/).
 
 ## Une session, du début à la fin
 

@@ -62,9 +62,9 @@ sidebar:
 
 ## À savoir
 
-- **Ce sont de vraies données.** Une exécution locale utilise les mêmes données de développement que l'aperçu de l'App sur la page de travail. Le SQL que vous exécutez modifie ces données. Ce n'est pas une copie jetable. Voir [Données du site](/fr/build/data/).
-- **Cela coûte du SSU.** Les capacités de la plateforme comme l'IA, l'e-mail et les appels on-chain sont facturées comme d'habitude, même quand l'App tourne sur votre ordinateur. Voir [Vérifier votre solde](/fr/account/balance/).
-- **Ne mettez pas de secrets dans le code source.** La CLI donne à chaque exécution ses propres identifiants et les valeurs d'environnement de cette App. Pour définir une valeur, voir [Apps, données et contrats](/fr/cli/apps-data-contracts/) et [Valeurs d'environnement](/fr/build/environment-values/).
+- Ce sont de vraies données. Une exécution locale utilise les mêmes données de développement que l'aperçu de l'App sur la page de travail. Le SQL que vous exécutez modifie ces données. Ce n'est pas une copie jetable. Voir [Données du site](/fr/build/data/).
+- Cela coûte du SSU. Les capacités de la plateforme comme l'IA, l'e-mail et les appels on-chain sont facturées comme d'habitude, même quand l'App tourne sur votre ordinateur. Voir [Vérifier votre solde](/fr/account/balance/).
+- Ne mettez pas de secrets dans le code source. La CLI donne à chaque exécution ses propres identifiants et les valeurs d'environnement de cette App. Pour définir une valeur, voir [Apps, données et contrats](/fr/cli/apps-data-contracts/) et [Valeurs d'environnement](/fr/build/environment-values/).
 - Chaque App que vous démarrez a besoin d'une entrée dans `openstep.config.json`. Si vous démarrez toutes les Apps et que l'une n'a pas d'entrée, la commande s'arrête et la nomme.
 - Si un processus que vous avez configuré se termine, `openstep dev` arrête toutes les Apps qu'il a démarrées et met fin à la commande. Un code de sortie non nul la termine avec l'erreur `App runtime exited with code N`. Lisez la sortie propre du processus en échec pour comprendre pourquoi.
 - Les chemins de la configuration doivent rester dans le dossier de l'agent.

@@ -5,7 +5,7 @@ sidebar:
   order: 6
 ---
 
-Pousser et publier sont deux étapes. **Push** enregistre votre code source dans l'agent. **Publish** met en ligne le code source enregistré. Pousser ne publie jamais.
+Pousser et publier sont deux étapes. Pousser enregistre votre code source dans l'agent. Publier met en ligne le code source enregistré. Pousser ne publie jamais.
 
 Les deux agissent sur l'agent entier : toutes les Apps avancent donc ensemble.
 
@@ -69,9 +69,9 @@ openstep unpublish --note "Take the agent offline"
 openstep republish --note "Bring back the last live version"
 ```
 
-- **rollback** restaure une version antérieure que l'agent conserve encore. Une publication réussie indique l'ID de la version qu'elle a créée.
-- **unpublish** met toutes les Apps hors ligne.
-- **republish** ramène la version que vous aviez mise hors ligne avec unpublish.
+- rollback restaure une version antérieure que l'agent conserve encore. Une publication réussie indique l'ID de la version qu'elle a créée.
+- unpublish met toutes les Apps hors ligne.
+- republish ramène la version que vous aviez mise hors ligne avec unpublish.
 
 Pour les mêmes actions dans le navigateur, voir [Mettre en ligne](/fr/build/go-live/).
 

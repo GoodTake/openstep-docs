@@ -13,7 +13,7 @@ sidebar:
 
 上から順に次のとおりです。
 
-- **ワークスペース切り替え**（最初は **Personal**）：作業中のワークスペースです。agent はいずれかのワークスペースに属します。
+- ワークスペース切り替え（最初は **Personal**）：作業中のワークスペースです。agent はいずれかのワークスペースに属します。
 - **+ New agent**：agent を始める **New agent** を開きます。[最初の agent を作る](/ja/start/create-agent/) を参照してください。
 - **Home**：開始ページです（下記参照）。
 - **Marketplace**：出発点にできる、用意された agent です。[Marketplace から agent を選ぶ](/ja/agent/pick-agent/) を参照してください。

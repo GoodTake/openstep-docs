@@ -17,7 +17,7 @@ sidebar:
 
 ## 注意事項
 
-- **OpenStep runs on Base.** OpenStep 執行在 Base 上。如果你的錢包在其他網路，頁面會說你的錢包在錯誤的網路，並顯示 **STEPS runs on Base. Switch, and we'll pick up where you left off.** 點選 **Switch to Base**，登入就會繼續。
+- OpenStep 執行在 Base 上。如果你的錢包在其他網路，頁面會說你的錢包在錯誤的網路，並顯示 **STEPS runs on Base. Switch, and we'll pick up where you left off.** 點選 **Switch to Base**，登入就會繼續。
 - 登入是免費的。它不會送出交易，也不花 gas，而且 OpenStep 永遠看不到你的私鑰。
 - 想換一個錢包，請在登入過程中點選 **Use a different wallet**。
 - 如果你已經登入又開啟登入頁，會直接進入 **Home**。

@@ -17,7 +17,7 @@ sidebar:
 
 ## 知っておくこと
 
-- **OpenStep は Base 上で動きます。** ウォレットが別のネットワークにある場合、ページにウォレットが誤ったネットワークにあると表示され、**STEPS runs on Base. Switch, and we'll pick up where you left off.** と案内されます。**Switch to Base** をクリックすると、サインインが続きます。
+- OpenStep は Base 上で動きます。ウォレットが別のネットワークにある場合、ページにウォレットが誤ったネットワークにあると表示され、**STEPS runs on Base. Switch, and we'll pick up where you left off.** と案内されます。**Switch to Base** をクリックすると、サインインが続きます。
 - サインインは無料です。トランザクションは送られず、ガスも消費されません。OpenStep があなたの秘密鍵を見ることもありません。
 - 別のウォレットを使うには、サインイン中に **Use a different wallet** をクリックします。
 - すでにサインインしている状態でサインインページを開くと、そのまま **Home** に移動します。

@@ -13,7 +13,7 @@ sidebar:
 
 由上到下：
 
-- **Workspace switcher**（工作區切換器，一開始是 **Personal**）：你目前所在的工作區。你的 Agent 屬於某個工作區。
+- 工作區切換器（一開始是 **Personal**）：你目前所在的工作區。你的 Agent 屬於某個工作區。
 - **+ New agent**：開啟 **New agent**，在那裡建立 Agent。見 [建立你的第一個 Agent](/zh-tw/start/create-agent/)。
 - **Home**：你的起始頁（見下文）。
 - **Marketplace**：可以直接拿來起步的現成 Agent。見 [從 Marketplace 挑選 Agent](/zh-tw/agent/pick-agent/)。

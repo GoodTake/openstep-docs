@@ -31,7 +31,7 @@ Vous avez besoin de Node.js 24 ou d'une version plus récente. Vérifiez avec `n
    openstep login https://builder.openstep.academy
    ```
 
-2. La CLI affiche une URL d'autorisation d'appareil. Ouvrez-la dans **Chrome avec votre extension de wallet**. La CLI n'ouvre pas de navigateur à votre place.
+2. La CLI affiche une URL d'autorisation d'appareil. Ouvrez-la dans Chrome avec votre extension de wallet. La CLI n'ouvre pas de navigateur à votre place.
 3. Si vous n'êtes pas encore connecté, connectez votre wallet et signez. Voir [Se connecter](/fr/start/sign-in/). La page revient ensuite au lien d'autorisation.
 4. Vérifiez le cadre **Requesting device**. Il doit montrer l'ordinateur sur lequel vous venez d'exécuter `openstep login`.
 5. Cliquez sur **Authorize openstep CLI**. La page indique que vous pouvez retourner à votre terminal.

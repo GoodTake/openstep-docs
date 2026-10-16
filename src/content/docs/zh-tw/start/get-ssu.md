@@ -37,7 +37,7 @@ SSU 是 OpenStep 用來計費的餘額：建造、你的 App 所使用的平台�
 
 ## 注意事項
 
-- **Buying with USDC**（用 USDC 購買）需要你的錢包在 Base 上有 USDC，以及少量 Base 上的 ETH 作為 gas。如果任一項不足，頁面會顯示 **Your wallet does not have enough USDC.** 或 **Your wallet needs more ETH on Base for gas.**
+- 用 USDC 購買需要你的錢包在 Base 上有 USDC，以及少量 Base 上的 ETH 作為 gas。如果任一項不足，頁面會顯示 **Your wallet does not have enough USDC.** 或 **Your wallet needs more ETH on Base for gas.**
 - **Card details stay with Stripe.** 信用卡資料由 Stripe 保管：你是在 Stripe Checkout 頁面輸入，不是在 OpenStep。
 - 在建造或 App 呼叫進行期間，你的一部分 SSU 會被 **Held for running work**。每一筆扣款都會出現在 [Balance](/zh-tw/account/balance/) 頁面的 **Activity** 底下。
 - 你可以在 [Balance](/zh-tw/account/balance/) 頁面，把尚未花掉的 SSU 退回你的錢包。

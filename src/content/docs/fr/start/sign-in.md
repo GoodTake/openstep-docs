@@ -17,7 +17,7 @@ Une fois votre signature vérifiée, vous arrivez sur **Home**. Si vous aviez é
 
 ## À savoir
 
-- **OpenStep fonctionne sur Base.** Si votre wallet est sur un autre réseau, la page indique que votre wallet est sur le mauvais réseau et affiche **STEPS runs on Base. Switch, and we'll pick up where you left off.** Cliquez sur **Switch to Base** et la connexion se poursuit.
+- OpenStep fonctionne sur Base. Si votre wallet est sur un autre réseau, la page indique que votre wallet est sur le mauvais réseau et affiche **STEPS runs on Base. Switch, and we'll pick up where you left off.** Cliquez sur **Switch to Base** et la connexion se poursuit.
 - La connexion est gratuite. Elle n'envoie aucune transaction, ne dépense pas de gas, et OpenStep ne voit jamais vos clés privées.
 - Pour utiliser un autre wallet, cliquez sur **Use a different wallet** pendant la connexion.
 - Si vous êtes déjà connecté et que vous ouvrez la page de connexion, vous allez directement sur **Home**.

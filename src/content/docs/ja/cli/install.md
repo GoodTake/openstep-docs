@@ -31,7 +31,7 @@ Node.js 24 以降が必要です。`node --version` で確認してください�
    openstep login https://builder.openstep.academy
    ```
 
-2. CLI がデバイス認可の URL を表示します。これを**ウォレット拡張機能のある Chrome** で開いてください。CLI がブラウザーを開くことはありません。
+2. CLI がデバイス認可の URL を表示します。これをウォレット拡張機能のある Chrome で開いてください。CLI がブラウザーを開くことはありません。
 3. まだサインインしていない場合は、ウォレットを接続して署名します。[サインイン](/ja/start/sign-in/) を参照してください。そのあと、ページは認可リンクに戻ります。
 4. **Requesting device** のボックスを確認します。いま `openstep login` を実行したコンピューターが表示されているはずです。
 5. **Authorize openstep CLI** をクリックします。ページにターミナルに戻ってよいと表示されます。

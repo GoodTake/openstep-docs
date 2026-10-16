@@ -62,9 +62,9 @@ sidebar:
 
 ## 注意事項
 
-- **It is real data.** 這是真實資料：在本機執行時，用的是和工作頁上該 App 的預覽相同的開發資料。你執行的 SQL 會改動那些資料。它不是用完即丟的副本。見 [網站資料](/zh-tw/build/data/)。
-- **It costs SSU.** 這會花費 SSU：AI、電子郵件和鏈上呼叫等平台功能照常計費，即使 App 是在你的電腦上執行。見 [查看餘額](/zh-tw/account/balance/)。
-- **Do not put secrets in source.** 不要把 Secret 放進原始碼：CLI 會為每次執行提供它自己的憑證，以及該 App 的環境值。要設定某個值，見 [App、資料與合約](/zh-tw/cli/apps-data-contracts/) 和 [環境值](/zh-tw/build/environment-values/)。
+- 這是真實資料：在本機執行時，用的是和工作頁上該 App 的預覽相同的開發資料。你執行的 SQL 會改動那些資料。它不是用完即丟的副本。見 [網站資料](/zh-tw/build/data/)。
+- 這會花費 SSU：AI、電子郵件和鏈上呼叫等平台功能照常計費，即使 App 是在你的電腦上執行。見 [查看餘額](/zh-tw/account/balance/)。
+- 不要把 Secret 放進原始碼：CLI 會為每次執行提供它自己的憑證，以及該 App 的環境值。要設定某個值，見 [App、資料與合約](/zh-tw/cli/apps-data-contracts/) 和 [環境值](/zh-tw/build/environment-values/)。
 - 你啟動的每個 App 都需要在 `openstep.config.json` 中有一個項目。如果你啟動所有 App，而其中一個沒有項目，指令會停止並指出它。
 - 如果你設定的任何一個處理程序結束，`openstep dev` 會停止它啟動的每個 App 並結束指令。非零的結束碼會讓它以錯誤 `App runtime exited with code N` 結束。請閱讀失敗的處理程序自己的輸出，了解原因。
 - 設定檔中的路徑必須留在 Agent 資料夾之內。

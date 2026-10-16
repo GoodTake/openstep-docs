@@ -37,8 +37,8 @@ Si un cours vous a remis un code, l'utiliser vous inscrit au cours et vous donne
 
 ## À savoir
 
-- **Acheter en USDC** demande des USDC dans votre wallet sur Base et un peu d'ETH sur Base pour le gas. S'il en manque, la page affiche **Your wallet does not have enough USDC.** ou **Your wallet needs more ETH on Base for gas.**
-- **Les données de carte restent chez Stripe.** Vous les saisissez sur la page Stripe Checkout, pas sur OpenStep.
+- Acheter en USDC demande des USDC dans votre wallet sur Base et un peu d'ETH sur Base pour le gas. S'il en manque, la page affiche **Your wallet does not have enough USDC.** ou **Your wallet needs more ETH on Base for gas.**
+- **Card details stay with Stripe.** Vous les saisissez sur la page Stripe Checkout, pas sur OpenStep.
 - Pendant qu'une construction ou un appel d'app s'exécute, une partie de votre SSU est **Held for running work**. Chaque débit apparaît sous **Activity** sur la page [Balance](/fr/account/balance/).
 - Vous pouvez faire rembourser vers votre wallet le SSU que vous n'avez pas dépensé, depuis la page [Balance](/fr/account/balance/).
 

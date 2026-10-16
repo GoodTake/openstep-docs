@@ -97,7 +97,7 @@ openstep capabilities enable contract --app admin
 
 ## Contrats
 
-Un contrat, ici, est un smart contract qu'utilise l'une de vos Apps. Vous le compilez, vous l'enregistrez, vous vérifiez ce que coûterait le déploiement, puis vous le déployez sur Base. Préparer et demander un devis sont gratuits. **Déployer dépense du SSU. Demander un devis et déployer sont réservés au propriétaire.**
+Un contrat, ici, est un smart contract qu'utilise l'une de vos Apps. Vous le compilez, vous l'enregistrez, vous vérifiez ce que coûterait le déploiement, puis vous le déployez sur Base. Préparer et demander un devis sont gratuits. Déployer dépense du SSU. Demander un devis et déployer sont réservés au propriétaire.
 
 1. Compilez le contrat dans la configuration Foundry de l'App.
 

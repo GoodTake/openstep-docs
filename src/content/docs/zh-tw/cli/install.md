@@ -31,7 +31,7 @@ sidebar:
    openstep login https://builder.openstep.academy
    ```
 
-2. CLI 會印出一個裝置授權網址。請在 **Chrome with your wallet extension**（裝有你錢包擴充功能的 Chrome）中開啟它。CLI 不會替你開啟瀏覽器。
+2. CLI 會印出一個裝置授權網址。請在裝有你錢包擴充功能的 Chrome 中開啟它。CLI 不會替你開啟瀏覽器。
 3. 如果你還沒登入，請連接錢包並簽署。見 [登入](/zh-tw/start/sign-in/)。頁面接著會回到授權連結。
 4. 檢查 **Requesting device** 方塊。它應該顯示你剛才執行 `openstep login` 的那台電腦。
 5. 點選 **Authorize openstep CLI**。頁面會告訴你可以回到終端機。

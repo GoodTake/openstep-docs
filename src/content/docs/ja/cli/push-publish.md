@@ -5,7 +5,7 @@ sidebar:
   order: 6
 ---
 
-push と公開は、2 つの別のステップです。**Push** はソースを agent に保存します。**Publish** は、保存したソースを公開します。push が公開までしてしまうことはありません。
+push と公開は、2 つの別のステップです。push はソースを agent に保存します。publish は、保存したソースを公開します。push が公開までしてしまうことはありません。
 
 どちらも agent 全体に作用するので、すべての App がまとめて動きます。
 
@@ -69,9 +69,9 @@ openstep unpublish --note "Take the agent offline"
 openstep republish --note "Bring back the last live version"
 ```
 
-- **rollback** は、agent がまだ保持している以前のリリースを復元します。publish が成功すると、作成したリリースの ID が報告されます。
-- **unpublish** はすべての App をオフラインにします。
-- **republish** は、unpublish でオフラインにしたバージョンを元に戻します。
+- rollback は、agent がまだ保持している以前のリリースを復元します。publish が成功すると、作成したリリースの ID が報告されます。
+- unpublish はすべての App をオフラインにします。
+- republish は、unpublish でオフラインにしたバージョンを元に戻します。
 
 ブラウザーで同じ操作をするには、[公開する](/ja/build/go-live/) を参照してください。
 

@@ -13,7 +13,7 @@ Après la connexion, vous arrivez sur **Home**. Le rail gauche est présent sur 
 
 De haut en bas :
 
-- **Workspace switcher** (**Personal** au départ) : le workspace dans lequel vous travaillez. Vos agents appartiennent à un workspace.
+- Sélecteur de workspace (**Personal** au départ) : le workspace dans lequel vous travaillez. Vos agents appartiennent à un workspace.
 - **+ New agent** : ouvre **New agent**, où vous démarrez un agent. Voir [Créer votre premier agent](/fr/start/create-agent/).
 - **Home** : votre page de départ (voir ci-dessous).
 - **Marketplace** : les agents prêts à l'emploi à partir desquels vous pouvez démarrer. Voir [Choisir un agent dans le Marketplace](/fr/agent/pick-agent/).
