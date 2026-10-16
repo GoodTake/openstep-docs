@@ -13,7 +13,7 @@ After you sign in you land on **Home**. The left rail is on every page, so you c
 
 From top to bottom:
 
-- **Workspace switcher** (**Personal** to start with): the workspace you are working in. Your agents belong to a workspace.
+- Workspace switcher (**Personal** to start with): the workspace you are working in. Your agents belong to a workspace.
 - **+ New agent**: opens **New agent**, where you start an agent. See [Create your first agent](/start/create-agent/).
 - **Home**: your starting page (see below).
 - **Marketplace**: the ready-made agents you can start from. See [Pick an agent from the Marketplace](/agent/pick-agent/).

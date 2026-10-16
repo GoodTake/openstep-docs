@@ -5,7 +5,7 @@ sidebar:
   order: 6
 ---
 
-Pushing and publishing are two steps. **Push** saves your source to the agent. **Publish** puts the saved source live. Pushing never publishes.
+Pushing and publishing are two steps. Push saves your source to the agent. Publish puts the saved source live. Pushing never publishes.
 
 Both act on the whole agent, so every App moves together.
 
@@ -69,9 +69,9 @@ openstep unpublish --note "Take the agent offline"
 openstep republish --note "Bring back the last live version"
 ```
 
-- **rollback** restores an earlier release the agent still keeps. A successful publish reports the ID of the release it made.
-- **unpublish** takes every App offline.
-- **republish** brings back the version you took offline with unpublish.
+- rollback restores an earlier release the agent still keeps. A successful publish reports the ID of the release it made.
+- unpublish takes every App offline.
+- republish brings back the version you took offline with unpublish.
 
 For the same actions in the browser, see [Go live](/build/go-live/).
 

@@ -37,7 +37,7 @@ If a course gave you a code, redeeming it joins you to the course and gives you 
 
 ## Good to know
 
-- **Buying with USDC** needs USDC in your wallet on Base and a little ETH on Base for gas. If either is short, the page says **Your wallet does not have enough USDC.** or **Your wallet needs more ETH on Base for gas.**
+- Buying with USDC needs USDC in your wallet on Base and a little ETH on Base for gas. If either is short, the page says **Your wallet does not have enough USDC.** or **Your wallet needs more ETH on Base for gas.**
 - **Card details stay with Stripe.** You enter them on the Stripe Checkout page, not on OpenStep.
 - While a build or an app call is running, some of your SSU is **Held for running work**. Each charge shows up under **Activity** on the [Balance](/account/balance/) page.
 - You can refund SSU you have not spent to your wallet from the [Balance](/account/balance/) page.

@@ -11,11 +11,11 @@ The work page can do the same jobs in the browser. Use the CLI when you want you
 
 ## What you can do
 
-- **Check out an agent.** Copy every App of an agent into a folder. See [Check out an agent](/cli/checkout/).
-- **Chat from the terminal.** Talk to the builder, answer its questions, approve its plan, and pause or stop it. See [Chat from the terminal](/cli/chat/).
-- **Run Apps locally.** Start an App's frontend and backend on your machine. See [Run apps locally](/cli/dev/).
-- **Push and publish.** Save your changes to the agent, then put every App live together. See [Push and publish](/cli/push-publish/).
-- **Manage Apps, data and contracts.** Add an App, set environment values, run SQL on development data, and deploy a smart contract an App uses. See [Apps, data and contracts](/cli/apps-data-contracts/).
+- Check out an agent. Copy every App of an agent into a folder. See [Check out an agent](/cli/checkout/).
+- Chat from the terminal. Talk to the builder, answer its questions, approve its plan, and pause or stop it. See [Chat from the terminal](/cli/chat/).
+- Run Apps locally. Start an App's frontend and backend on your machine. See [Run apps locally](/cli/dev/).
+- Push and publish. Save your changes to the agent, then put every App live together. See [Push and publish](/cli/push-publish/).
+- Manage Apps, data and contracts. Add an App, set environment values, run SQL on development data, and deploy a smart contract an App uses. See [Apps, data and contracts](/cli/apps-data-contracts/).
 
 ## One session, start to finish
 

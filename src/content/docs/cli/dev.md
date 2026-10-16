@@ -62,9 +62,9 @@ sidebar:
 
 ## Good to know
 
-- **It is real data.** A local run uses the same development data as the App's preview on the work page. SQL you run changes that data. It is not a throwaway copy. See [Site data](/build/data/).
-- **It costs SSU.** Platform abilities such as AI, email and chain calls are charged as usual, even when the App runs on your computer. See [Check your balance](/account/balance/).
-- **Do not put secrets in source.** The CLI gives each run its own credentials and the environment values for that App. To set a value, see [Apps, data and contracts](/cli/apps-data-contracts/) and [Environment values](/build/environment-values/).
+- It is real data. A local run uses the same development data as the App's preview on the work page. SQL you run changes that data. It is not a throwaway copy. See [Site data](/build/data/).
+- It costs SSU. Platform abilities such as AI, email and chain calls are charged as usual, even when the App runs on your computer. See [Check your balance](/account/balance/).
+- Do not put secrets in source. The CLI gives each run its own credentials and the environment values for that App. To set a value, see [Apps, data and contracts](/cli/apps-data-contracts/) and [Environment values](/build/environment-values/).
 - Every App you start needs an entry in `openstep.config.json`. If you start all Apps and one has no entry, the command stops and names it.
 - If any process you configured exits, `openstep dev` stops every App it started and ends the command. A non-zero exit code ends it with the error `App runtime exited with code N`. Read the failing process's own output to see why.
 - Paths in the config must stay inside the agent folder.

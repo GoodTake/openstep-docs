@@ -97,7 +97,7 @@ openstep capabilities enable contract --app admin
 
 ## Contracts
 
-A contract here is a smart contract one of your Apps uses. You compile it, register it, check what deployment would cost, and then deploy it to Base. Preparing and quoting are free. **Deploying spends SSU. Quote and deploy are owner-only.**
+A contract here is a smart contract one of your Apps uses. You compile it, register it, check what deployment would cost, and then deploy it to Base. Preparing and quoting are free. Deploying spends SSU. Quote and deploy are owner-only.
 
 1. Compile the contract in the App's Foundry setup.
 

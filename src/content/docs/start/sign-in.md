@@ -17,7 +17,7 @@ After your signature is verified you land on **Home**. If you were sent to the s
 
 ## Good to know
 
-- **OpenStep runs on Base.** If your wallet is on another network, the page says your wallet is on the wrong network and **STEPS runs on Base. Switch, and we'll pick up where you left off.** Click **Switch to Base** and sign-in carries on.
+- OpenStep runs on Base. If your wallet is on another network, the page says your wallet is on the wrong network and **STEPS runs on Base. Switch, and we'll pick up where you left off.** Click **Switch to Base** and sign-in carries on.
 - Signing in is free. It sends no transaction and spends no gas, and OpenStep never sees your private keys.
 - To use a different wallet, click **Use a different wallet** while you sign in.
 - If you are already signed in and open the sign-in page, you go straight to **Home**.

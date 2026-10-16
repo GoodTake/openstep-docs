@@ -31,7 +31,7 @@ You need Node.js 24 or newer. Check with `node --version`.
    openstep login https://builder.openstep.academy
    ```
 
-2. The CLI prints a device authorization URL. Open it in **Chrome with your wallet extension**. The CLI does not open a browser for you.
+2. The CLI prints a device authorization URL. Open it in Chrome with your wallet extension. The CLI does not open a browser for you.
 3. If you are not signed in yet, connect your wallet and sign. See [Sign in](/start/sign-in/). The page then returns to the authorization link.
 4. Check the **Requesting device** box. It should show the computer where you just ran `openstep login`.
 5. Click **Authorize openstep CLI**. The page says you can return to your terminal.
