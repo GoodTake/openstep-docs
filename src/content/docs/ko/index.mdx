@@ -1,0 +1,30 @@
+---
+title: OpenStep 문서
+template: splash
+hero:
+  title: 만들고 싶은 시스템을 설명하세요. AI가 구축합니다.
+  tagline: builder.openstep.academy에서 OpenStep builder를 사용하는 방법.
+  actions:
+    - text: 시작하기
+      link: /ko/start/what-is/
+      icon: right-arrow
+      variant: primary
+    - text: Sign in
+      link: /ko/start/sign-in/
+      icon: right-arrow
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+  <Card title="앱 만들기" icon="open-book">
+    채팅으로 계획을 맞추고 코드를 씁니다. 오른쪽은 Preview. 확정할 때 Start building.
+  </Card>
+  <Card title="게시하기" icon="rocket">
+    준비되면 Publish하세요.
+  </Card>
+  <Card title="SSU" icon="star">
+    구축과 플랫폼 기능은 SSU를 사용합니다. 앱 내 결제는 SSU만 가능합니다.
+  </Card>
+</CardGrid>

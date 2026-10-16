@@ -1,0 +1,30 @@
+---
+title: OpenStep ドキュメント
+template: splash
+hero:
+  title: 作りたいシステムを伝える。AI が構築する。
+  tagline: builder.openstep.academy の OpenStep builder の使い方。
+  actions:
+    - text: はじめる
+      link: /ja/start/what-is/
+      icon: right-arrow
+      variant: primary
+    - text: Sign in
+      link: /ja/start/sign-in/
+      icon: right-arrow
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+  <Card title="アプリを作る" icon="open-book">
+    チャットで方針を合わせ、コードを書く。右側は Preview。確定したら Start building。
+  </Card>
+  <Card title="公開する" icon="rocket">
+    準備できたら Publish。
+  </Card>
+  <Card title="SSU" icon="star">
+    構築とプラットフォーム機能は SSU を消費する。アプリ内決済は SSU のみ。
+  </Card>
+</CardGrid>
