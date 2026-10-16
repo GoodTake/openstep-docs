@@ -24,6 +24,11 @@ export default defineConfig({
             href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap',
           },
         },
+        {
+          tag: 'script',
+          content:
+            "try { if (localStorage.getItem('starlight-theme') === null) localStorage.setItem('starlight-theme', 'dark'); } catch {}",
+        },
       ],
       defaultLocale: 'root',
       locales: {

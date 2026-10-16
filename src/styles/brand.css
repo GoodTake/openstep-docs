@@ -25,6 +25,9 @@
 
 a.entry-link[aria-current='page'],
 .sidebar-content a[aria-current='page'] {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   color: var(--brand-strong);
   background-color: var(--brand-soft);
 }
