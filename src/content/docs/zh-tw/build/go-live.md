@@ -14,7 +14,7 @@ sidebar:
 
 ![The Cozy Coffee Table 的 Publish your agent 對話框，顯示三個步驟，App 列為 Not live yet。](/images/build/go-live-2.webp)
 
-接著開啟 **Console** 和 **Production**。它會顯示帶有日期的 **Live since**、每個 App 的網址、複製可直接傳出去的網址的 **Copy invitation**，以及 **Versions**，也就是你發布過的每個版本的清單。目前的版本標示為 **Live**。
+接著開啟 **Console** 和 **Production**。它會顯示帶有日期的 **Live since**、每個 App 的網址、複製一則簡短邀請訊息（附上每個 App 的網址，**Access** 設為 **Learners only** 時還包含加入連結）的 **Copy invitation**，以及 **Versions**，也就是你發布過的每個版本的清單。目前的版本標示為 **Live**。
 
 ![第一次 Publish 之後的 Console → Production：Live since 日期、The Cozy Coffee Table 的網址，以及一個標示為 Live 的版本。](/images/build/go-live-1.webp)
 
@@ -22,7 +22,7 @@ sidebar:
 
 - 每個 App 一起上線。只要有任何一個 App 失敗，整次 Publish 就失敗，什麼都不會改變，線上網站維持原樣。狀態會說明出了什麼問題，並以 **The live version did not change.** 結尾。
 - 如果檢查在某個 App 發現問題，builder 可以自己修好並再次發布。如果它需要你提供某樣東西，例如一個值，狀態會顯示 **Publishing waits for you.**
-- Publish 永遠不會清除你的資料。訂位與其他上線的紀錄都會保留。唯一的例外是刻意移除線上網站已有的資料表或欄位的更新。發布前對話框會告訴你是哪個 App，被移除的內容就是真的移除了。
+- Publish 會保留你的資料與學習者的進度，而且絕不會開啟新的 session。訂位與其他上線的紀錄都會保留。如果更新會移除資料，例如新版本不再有的資料表或欄位，Publish 對話框會在你發布之前先提出警告，以這種方式移除的資料無法復原。
 - 發布之後，Preview 繼續作為你的草稿。之後的變更在你再次發布之前，不會到達線上網站。
 - 誰可以開啟網站，**Anyone with the link** 或 **Learners only**，是 Agent 的設定。見 [發布與分享](/zh-tw/agent/publish-and-share/)。
 

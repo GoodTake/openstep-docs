@@ -9,7 +9,7 @@ Publier met toutes les Apps de votre agent en ligne ensemble, à une adresse que
 
 ## Publier pour la première fois
 
-1. Cliquez sur **Publish** dans l'en-tête. Le bouton s'illumine quand la construction est terminée. S'il est grisé, la ligne à côté dit pourquoi, par exemple « Publishing opens once the build stops. » parce que l'agent est encore en construction.
+1. Cliquez sur **Publish** dans l'en-tête. Le bouton s'illumine quand la construction est terminée. S'il est grisé, survolez le bouton pour voir pourquoi, par exemple « Publishing opens once the build stops. » parce que l'agent est encore en construction.
 2. Lisez la boîte de dialogue. Elle s'appelle **Publish your agent** et dit « Every app of this agent goes live together. » Sous **What happens next**, elle montre **Check** › **Build** › **Go live**, et « You can keep working while it runs. » En dessous, « Publish 1 app · Data and learner progress stay as they are. » liste chaque App avec son état, qui est **Not live yet** la première fois. Au-dessus des boutons, **Show the review** déplie la revue finale de la construction.
 
    ![La boîte de dialogue Publish your agent pour Three Day Strength : What happens next avec Check, Build et Go live, la ligne Three Day Strength marquée Not live yet, Show the review, et les boutons Cancel et Publish.](/images/agent/publish-and-share-1.webp)
@@ -19,7 +19,7 @@ Publier met toutes les Apps de votre agent en ligne ensemble, à une adresse que
 
 ## Partager le lien
 
-Envoyez l'adresse de la carte à toute personne que vous voulez voir essayer l'app. Vous la retrouvez dans la Console, sous **Production**. Elle montre **Live since** avec la date et l'heure, avec **Unpublish** à côté, puis l'adresse en ligne de chaque App et **Copy invitation**, qui copie un court message avec le lien de l'App, à coller. Sous **Versions**, la version en ligne est marquée **Live**.
+Envoyez l'adresse de la carte à toute personne que vous voulez voir essayer l'app. Vous la retrouvez dans la Console, sous **Production**. Elle montre **Live since** avec la date et l'heure, avec **Unpublish** à côté, puis l'adresse en ligne de chaque App et **Copy invitation**, qui copie un court message d'invitation avec l'adresse de chaque App (plus le lien d'inscription quand **Access** est sur **Learners only**), à coller. Sous **Versions**, la version en ligne est marquée **Live**.
 
 ![Console, Production, après Publish : Live since 16 Oct 2026, 8:13 pm avec Unpublish, l'adresse en ligne de Three Day Strength, Copy invitation, et Versions avec la version en ligne marquée Live.](/images/agent/publish-and-share-2.webp)
 

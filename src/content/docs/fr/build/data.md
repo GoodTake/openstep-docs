@@ -17,7 +17,7 @@ La plupart des sites enregistrent quelque chose : des réservations, des command
 ## À savoir
 
 - La réservation de la capture d'écran est apparue quand nous avons envoyé le formulaire de réservation dans [Preview](/fr/build/preview/). Une table se remplit à mesure que les gens utilisent le site.
-- Ce sont des données de développement : celles que Preview lit et écrit. Après que vous avez [publié](/fr/build/go-live/), le site en ligne a ses propres données, séparées. Les réservations de test faites dans Preview n'atteignent pas le site en ligne, et les réservations faites sur le site en ligne n'apparaissent pas ici. **Publish** ne copie jamais les données de développement vers le site en ligne et n'efface jamais les données en ligne.
+- Ce sont des données de développement : celles que Preview lit et écrit. Après que vous avez [publié](/fr/build/go-live/), le site en ligne a ses propres données, séparées. Les réservations de test faites dans Preview n'atteignent pas le site en ligne, et les réservations faites sur le site en ligne n'apparaissent pas ici. **Publish** ne copie jamais les données de développement vers le site en ligne. Il conserve les données en ligne et la progression des apprenants, et ne démarre jamais de nouvelle session. Si une mise à jour devait supprimer des données, par exemple une table ou un champ que la nouvelle version n'a plus, la boîte de dialogue Publish vous avertit d'abord, et les données supprimées ainsi ne peuvent pas être récupérées.
 - Vous modifiez les lignes ici. Pour ajouter une table ou un nouveau champ, demandez au builder dans le chat. Il crée les tables au fil de la construction.
 - Le propriétaire et les éditeurs peuvent modifier les lignes. Les lecteurs peuvent seulement regarder.
 

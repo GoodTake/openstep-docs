@@ -17,7 +17,7 @@ sidebar:
 ## Console의 구성
 
 - **Overview**: Agent의 이름과 제품, 열람할 수 있는 사람, 내 역할, 게시 여부, 그리고 앱 목록.
-- **Build**: 승인된 계획에 따라 진행되는 빌드의 작업, 계획, 앱. 그런 빌드가 있을 때 나타납니다. [진행 상황 확인하기](/ko/build/progress/)를 참고하세요.
+- **Build**: 승인된 계획에 따라 진행되는 빌드의 작업, 계획, 앱. 그런 빌드가 있을 때 나타납니다. [빌드 지켜보기](/ko/agent/watch-build/)를 참고하세요.
 - **Code**: 앱의 파일(읽기 전용). [코드 보기](/ko/build/code/)를 참고하세요.
 - **Files**: builder에게 참고 자료로 줄 수 있는 PDF, PowerPoint, Word 파일(선택 사항).
 - **Memory**: Agent가 기록한 내용으로, 내가 내린 결정도 포함됩니다.

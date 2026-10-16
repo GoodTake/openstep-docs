@@ -32,4 +32,4 @@ Click **Remove custom domain**, or **Cancel setup** while it is still waiting fo
 - Each App has its own domains. A hostname cannot be attached to two Apps.
 - If the agent is set to **Learners only**, custom domains are not served. Set access to **Anyone with the link** in **Settings** to use one. See [Publish and share](/agent/publish-and-share/).
 
-Next: [Publish and share](/agent/publish-and-share/).
+Next: [What the CLI does](/cli/what-it-does/).

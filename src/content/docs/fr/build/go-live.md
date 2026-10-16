@@ -14,7 +14,7 @@ sidebar:
 
 ![La boîte de dialogue Publish your agent pour The Cozy Coffee Table, avec ses trois étapes et l'App listée comme Not live yet.](/images/build/go-live-2.webp)
 
-Ouvrez ensuite **Console** puis **Production**. Elle affiche **Live since** avec la date, l'adresse de chaque App, **Copy invitation**, qui copie l'adresse prête à envoyer, et **Versions**, une liste de toutes les versions que vous avez publiées. La version actuelle est marquée **Live**.
+Ouvrez ensuite **Console** puis **Production**. Elle affiche **Live since** avec la date, l'adresse de chaque App, **Copy invitation**, qui copie un court message d'invitation avec l'adresse de chaque App (plus le lien d'inscription quand **Access** est sur **Learners only**), et **Versions**, une liste de toutes les versions que vous avez publiées. La version actuelle est marquée **Live**.
 
 ![Console → Production après le premier Publish : Live since la date, l'adresse de The Cozy Coffee Table, et une version marquée Live.](/images/build/go-live-1.webp)
 
@@ -22,7 +22,7 @@ Ouvrez ensuite **Console** puis **Production**. Elle affiche **Live since** avec
 
 - Toutes les Apps passent en ligne ensemble. Si une App échoue, tout le Publish échoue, rien ne change, et le site en ligne reste tel qu'il était. Le statut dit ce qui s'est mal passé et se termine par **The live version did not change.**
 - Si la vérification trouve un problème dans une App, le builder peut le corriger et publier à nouveau tout seul. S'il a besoin de quelque chose de votre part, comme une valeur, le statut indique **Publishing waits for you.**
-- Publish n'efface jamais vos données. Les réservations et autres enregistrements en ligne restent. La seule exception est une mise à jour qui supprime volontairement une table ou un champ que le site en ligne possède déjà. La boîte de dialogue vous dit de quelle App il s'agit avant que vous publiiez, et ce qui est supprimé reste supprimé.
+- Publish conserve vos données et la progression des apprenants, et ne démarre jamais de nouvelle session. Les réservations et autres enregistrements en ligne restent. Si une mise à jour devait supprimer des données, par exemple une table ou un champ que la nouvelle version n'a plus, la boîte de dialogue Publish vous avertit avant que vous publiiez, et les données supprimées ainsi ne peuvent pas être récupérées.
 - Après la publication, Preview continue comme votre brouillon. Les changements ultérieurs n'atteignent pas le site en ligne tant que vous n'avez pas publié à nouveau.
 - Qui peut ouvrir le site, **Anyone with the link** ou **Learners only**, est un réglage de l'agent. Voir [Publier et partager](/fr/agent/publish-and-share/).
 

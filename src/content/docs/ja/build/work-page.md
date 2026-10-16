@@ -17,7 +17,7 @@ sidebar:
 ## Console にあるもの
 
 - **Overview**：agent の名前と製品、開ける人、あなたのロール、公開されているか、そして App の一覧です。
-- **Build**：承認済みの計画に沿った構築のタスク、計画、App です。そのような構築がある agent に表示されます。[進捗を見る](/ja/build/progress/) を参照してください。
+- **Build**：承認済みの計画に沿った構築のタスク、計画、App です。そのような構築がある agent に表示されます。[構築を見守る](/ja/agent/watch-build/) を参照してください。
 - **Code**：App のファイルを読み取り専用で表示します。[コードを見る](/ja/build/code/) を参照してください。
 - **Files**：builder に参考として渡せる、PDF、PowerPoint、Word のファイル（任意）です。
 - **Memory**：あなたが下した判断を含め、agent が記録した内容です。

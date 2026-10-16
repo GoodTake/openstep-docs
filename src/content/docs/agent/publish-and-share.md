@@ -9,7 +9,7 @@ Publishing puts every App of your agent live together, at an address you can sen
 
 ## Publish for the first time
 
-1. Click **Publish** in the header. The button turns bright when the build has finished. If it is greyed out, the line next to it says why, for example "Publishing opens once the build stops." because the agent is still building.
+1. Click **Publish** in the header. The button turns bright when the build has finished. If it is greyed out, hover over the button to see why, for example "Publishing opens once the build stops." because the agent is still building.
 2. Read the dialog. It is called **Publish your agent** and says "Every app of this agent goes live together." Under **What happens next** it shows **Check** › **Build** › **Go live**, and "You can keep working while it runs." Below that, "Publish 1 app · Data and learner progress stay as they are." lists each App with its state, which is **Not live yet** the first time. Above the buttons, **Show the review** folds out the final review of the build.
 
    ![The Publish your agent dialog for Three Day Strength: What happens next with Check, Build and Go live, the row Three Day Strength marked Not live yet, Show the review, and the Cancel and Publish buttons.](/images/agent/publish-and-share-1.webp)
@@ -19,7 +19,7 @@ Publishing puts every App of your agent live together, at an address you can sen
 
 ## Share the link
 
-Send the address from the card to anyone you want to try the app. You can find it again in the Console, in **Production**. It shows **Live since** with the date and time, with **Unpublish** beside it, then each App's live address and **Copy invitation**, which copies a short message with the App's link for you to paste. Under **Versions**, the version that is live is marked **Live**.
+Send the address from the card to anyone you want to try the app. You can find it again in the Console, in **Production**. It shows **Live since** with the date and time, with **Unpublish** beside it, then each App's live address and **Copy invitation**, which copies a short invitation message with each App's address (plus the join link when **Access** is **Learners only**), for you to paste. Under **Versions**, the version that is live is marked **Live**.
 
 ![Console, Production, after Publish: Live since 16 Oct 2026, 8:13 pm with Unpublish, the live address of Three Day Strength, Copy invitation, and Versions with the live version marked Live.](/images/agent/publish-and-share-2.webp)
 

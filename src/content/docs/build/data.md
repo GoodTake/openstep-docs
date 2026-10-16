@@ -17,7 +17,7 @@ Most sites store something: bookings, orders, messages. The **Data** tab lists w
 ## Good to know
 
 - The booking in the screenshot appeared when we submitted the booking form in [Preview](/build/preview/). A table fills as people use the site.
-- This is development data: the data Preview reads and writes. After you [publish](/build/go-live/), the live site has its own separate data. Test bookings made in Preview do not reach the live site, and bookings made on the live site do not show here. **Publish** never copies development data to the live site and never clears live data.
+- This is development data: the data Preview reads and writes. After you [publish](/build/go-live/), the live site has its own separate data. Test bookings made in Preview do not reach the live site, and bookings made on the live site do not show here. **Publish** never copies development data to the live site. It keeps the live data and learner progress, and never starts a new session. If an update would remove data, for example a table or field the new version no longer has, the Publish dialog warns you first, and data removed that way cannot be brought back.
 - You edit rows here. To add a table or a new field, ask the builder in the chat. It creates tables as it builds.
 - The owner and editors can change rows. Viewers can only look.
 

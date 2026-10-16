@@ -14,7 +14,7 @@ sidebar:
 
 ![The Cozy Coffee Table の Publish your agent ダイアログ。3 つのステップと、Not live yet と表示された App がある。](/images/build/go-live-2.webp)
 
-そのあと **Console** を開いて **Production** を選びます。日付付きの **Live since**、各 App のアドレス、アドレスを送れる形でコピーする **Copy invitation**、公開した全バージョンの一覧 **Versions** が表示されます。現在のバージョンには **Live** の印が付きます。
+そのあと **Console** を開いて **Production** を選びます。日付付きの **Live since**、各 App のアドレス、短い招待メッセージ（各 App のアドレス入り。**Access** が **Learners only** のときは参加リンクも入ります）をコピーする **Copy invitation**、公開した全バージョンの一覧 **Versions** が表示されます。現在のバージョンには **Live** の印が付きます。
 
 ![最初の Publish 後の Console → Production。日付付きの Live since、The Cozy Coffee Table のアドレス、Live の印が付いた 1 つのバージョン。](/images/build/go-live-1.webp)
 
@@ -22,7 +22,7 @@ sidebar:
 
 - すべての App がまとめて公開されます。どれか 1 つの App が失敗すると、Publish 全体が失敗し、何も変わらず、公開中のサイトはそのままです。ステータスには何が問題だったかが書かれ、**The live version did not change.** で終わります。
 - チェックで App に問題が見つかった場合、builder が自分で修正して再度公開することがあります。値など、あなたから必要なものがあるときは、ステータスに **Publishing waits for you.** と表示されます。
-- Publish はデータを消去しません。予約など、公開中のレコードは残ります。唯一の例外は、公開中のサイトにすでにあるテーブルやフィールドを意図的に削除する更新です。公開する前に、ダイアログがどの App かを知らせます。削除されたものは削除されたままです。
+- Publish はデータと学習者の進捗を保持し、新しいセッションを始めることもありません。予約など、公開中のレコードは残ります。更新によってデータが消える場合、たとえば新しいバージョンにはもうないテーブルやフィールドがあるときは、公開する前に Publish ダイアログが警告します。そのように削除されたデータは、元に戻せません。
 - 公開後も、Preview は引き続き下書きです。あとの変更は、もう一度公開するまで公開中のサイトには届きません。
 - サイトを開ける人（**Anyone with the link** か **Learners only**）は、agent の設定です。[公開と共有](/ja/agent/publish-and-share/) を参照してください。
 

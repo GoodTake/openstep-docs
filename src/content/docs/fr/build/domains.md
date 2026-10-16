@@ -32,4 +32,4 @@ Cliquez sur **Remove custom domain**, ou sur **Cancel setup** tant qu'il attend 
 - Chaque App a ses propres domaines. Un nom d'hôte ne peut pas être rattaché à deux Apps.
 - Si l'agent est réglé sur **Learners only**, les domaines personnalisés ne sont pas servis. Réglez l'accès sur **Anyone with the link** dans **Settings** pour en utiliser un. Voir [Publier et partager](/fr/agent/publish-and-share/).
 
-Suite : [Publier et partager](/fr/agent/publish-and-share/).
+Suite : [Ce que fait la CLI](/fr/cli/what-it-does/).

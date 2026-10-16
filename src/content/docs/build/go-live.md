@@ -14,7 +14,7 @@ sidebar:
 
 ![The Publish your agent dialog for The Cozy Coffee Table, with its three steps and the App listed as Not live yet.](/images/build/go-live-2.webp)
 
-Then open **Console** and **Production**. It shows **Live since** with the date, the address of each App, **Copy invitation**, which copies the address ready to send, and **Versions**, a list of every version you have published. The current one is marked **Live**.
+Then open **Console** and **Production**. It shows **Live since** with the date, the address of each App, **Copy invitation**, which copies a short invitation message with each App's address (plus the join link when **Access** is **Learners only**), and **Versions**, a list of every version you have published. The current one is marked **Live**.
 
 ![Console → Production after the first Publish: Live since the date, the address of The Cozy Coffee Table, and one version marked Live.](/images/build/go-live-1.webp)
 
@@ -22,7 +22,7 @@ Then open **Console** and **Production**. It shows **Live since** with the date,
 
 - Every App goes live together. If any App fails, the whole Publish fails, nothing changes, and the live site stays as it was. The status says what went wrong and ends with **The live version did not change.**
 - If the check finds a problem in an App, the builder can fix it and publish again by itself. If it needs something from you, such as a value, the status says **Publishing waits for you.**
-- Publish never clears your data. Bookings and other live records stay. The one exception is an update that deliberately removes a table or a field the live site already has. The dialog tells you which App before you publish, and what it removes stays removed.
+- Publish keeps your data and learner progress, and never starts a new session. Bookings and other live records stay. If an update would remove data, for example a table or field the new version no longer has, the Publish dialog warns you before you publish, and data removed that way cannot be brought back.
 - After you publish, Preview carries on as your draft. Later changes do not reach the live site until you publish again.
 - Who may open the site, **Anyone with the link** or **Learners only**, is a setting of the agent. See [Publish and share](/agent/publish-and-share/).
 

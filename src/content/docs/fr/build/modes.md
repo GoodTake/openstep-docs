@@ -21,7 +21,7 @@ Utilisez **Build** quand vous savez ce que vous voulez et que le changement est 
 
 ## Brainstorm
 
-Le builder vous pose des questions, en une ou plusieurs séries. Il rédige ensuite un plan et s'arrête jusqu'à ce que vous l'approuviez. Après votre approbation, il construit le plan tâche par tâche, vérifie chaque tâche, et termine par une revue finale, prêt pour **Publish**. Voir [Approuver le plan](/fr/agent/approve-plan/) pour savoir comment fonctionnent les questions et les plans.
+Le builder vous pose des questions, en une ou plusieurs séries. Il rédige ensuite un plan et s'arrête jusqu'à ce que vous l'approuviez. Après votre approbation, il construit le plan tâche par tâche, vérifie chaque tâche, et termine par une revue finale, prêt pour **Publish**. Voir [Répondre à ses questions](/fr/agent/answer-questions/) pour les questions et [Approuver le plan](/fr/agent/approve-plan/) pour le plan.
 
 Utilisez **Brainstorm** quand l'idée est encore ouverte, ou que le site est assez grand pour mériter un plan, par exemple un café qui prend aussi des commandes et envoie des e-mails de confirmation.
 

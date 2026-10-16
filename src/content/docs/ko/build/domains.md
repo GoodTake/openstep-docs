@@ -32,4 +32,4 @@ sidebar:
 - 앱마다 자체 도메인이 있습니다. 호스트 이름 하나를 두 앱에 연결할 수는 없습니다.
 - Agent가 **Learners only**로 설정되어 있으면 커스텀 도메인은 제공되지 않습니다. 커스텀 도메인을 쓰려면 **Settings**에서 접근 권한을 **Anyone with the link**로 설정하세요. [게시와 공유](/ko/agent/publish-and-share/)를 참고하세요.
 
-다음: [게시와 공유](/ko/agent/publish-and-share/).
+다음: [CLI가 하는 일](/ko/cli/what-it-does/).

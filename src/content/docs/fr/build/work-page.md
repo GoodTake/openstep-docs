@@ -17,7 +17,7 @@ Chaque agent a une page de travail, et c'est là que vous passez votre temps : v
 ## Ce que contient la Console
 
 - **Overview** : le nom de l'agent et son produit, qui peut l'ouvrir, votre rôle, s'il est publié, et ses Apps.
-- **Build** : les tâches, le plan et les Apps d'une construction qui suit un plan approuvé. Elle apparaît quand l'agent a une telle construction. Voir [Suivre l'avancement](/fr/build/progress/).
+- **Build** : les tâches, le plan et les Apps d'une construction qui suit un plan approuvé. Elle apparaît quand l'agent a une telle construction. Voir [Regarder la construction](/fr/agent/watch-build/).
 - **Code** : les fichiers de l'App, en lecture seule. Voir [Parcourir le code](/fr/build/code/).
 - **Files** : des fichiers PDF, PowerPoint et Word facultatifs que vous donnez au builder comme référence.
 - **Memory** : ce que l'agent a enregistré, y compris les décisions que vous avez prises.

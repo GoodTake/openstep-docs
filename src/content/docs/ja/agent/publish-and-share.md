@@ -9,7 +9,7 @@ sidebar:
 
 ## はじめて公開する
 
-1. ヘッダーの **Publish** をクリックします。構築が終わるとボタンが明るくなります。グレー表示のときは、横の行が理由を教えてくれます。たとえば agent がまだ構築中なら、「Publishing opens once the build stops.」と表示されます。
+1. ヘッダーの **Publish** をクリックします。構築が終わるとボタンが明るくなります。グレー表示のときは、ボタンにカーソルを合わせると理由が表示されます。たとえば agent がまだ構築中なら、「Publishing opens once the build stops.」と表示されます。
 2. ダイアログを読みます。ダイアログの名前は **Publish your agent** で、「Every app of this agent goes live together.」と表示されます。**What happens next** の下に **Check** › **Build** › **Go live** と「You can keep working while it runs.」が表示されます。その下の「Publish 1 app · Data and learner progress stay as they are.」に、各 App が状態付きで一覧され、初回は **Not live yet** です。ボタンの上の **Show the review** を開くと、構築の最終レビューが展開されます。
 
    ![Three Day Strength の Publish your agent ダイアログ。Check、Build、Go live のある What happens next、Not live yet と表示された Three Day Strength の行、Show the review、Cancel と Publish ボタン。](/images/agent/publish-and-share-1.webp)
@@ -19,7 +19,7 @@ sidebar:
 
 ## リンクを共有する
 
-アプリを試してほしい人に、カードのアドレスを送ります。あとで Console の **Production** でも確認できます。日時付きの **Live since** と、その横の **Unpublish** が表示され、続いて各 App の公開アドレスと **Copy invitation** があります。これは App のリンクが入った短いメッセージをコピーするので、貼り付けて送れます。**Versions** では、公開中のバージョンに **Live** の印が付きます。
+アプリを試してほしい人に、カードのアドレスを送ります。あとで Console の **Production** でも確認できます。日時付きの **Live since** と、その横の **Unpublish** が表示され、続いて各 App の公開アドレスと **Copy invitation** があります。これは短い招待メッセージをコピーします。メッセージには各 App のアドレスが入り（**Access** が **Learners only** のときは参加リンクも入ります）、貼り付けて送れます。**Versions** では、公開中のバージョンに **Live** の印が付きます。
 
 ![Publish 後の Console の Production。Unpublish の付いた Live since 16 Oct 2026, 8:13 pm、Three Day Strength の公開アドレス、Copy invitation、Live の印が付いたバージョンのある Versions。](/images/agent/publish-and-share-2.webp)
 

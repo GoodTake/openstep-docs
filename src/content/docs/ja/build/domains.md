@@ -32,4 +32,4 @@ sidebar:
 - ドメインは App ごとに持ちます。1 つのホスト名を 2 つの App に付けることはできません。
 - agent が **Learners only** に設定されている場合、カスタムドメインは配信されません。カスタムドメインを使うには、**Settings** でアクセスを **Anyone with the link** にしてください。[公開と共有](/ja/agent/publish-and-share/) を参照してください。
 
-次へ：[公開と共有](/ja/agent/publish-and-share/)。
+次へ：[CLI でできること](/ja/cli/what-it-does/)。

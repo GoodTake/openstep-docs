@@ -11,7 +11,7 @@ SSU is the token OpenStep uses. You keep a balance of it on the platform, and th
 2. Platform features your apps use, such as AI calls, email and contract operations.
 3. Running an app live. After you publish an agent, keeping its Apps online is charged to your balance too.
 
-If your published app takes payment from its own visitors, in-app payment is SSU only. OpenStep has no other payment method.
+If your published app takes payment from its own visitors, in-app payment is SSU only. There is no other payment method for payments inside your apps.
 
 ## Where you see your SSU
 

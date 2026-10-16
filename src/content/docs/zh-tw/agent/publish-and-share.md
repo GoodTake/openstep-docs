@@ -9,7 +9,7 @@ sidebar:
 
 ## 第一次發布
 
-1. 點選標題列的 **Publish**。建造完成時，按鈕會變亮。如果它呈現灰色，旁邊那一行會說明原因，例如 Agent 還在建造時會顯示「Publishing opens once the build stops.」。
+1. 點選標題列的 **Publish**。建造完成時，按鈕會變亮。如果它呈現灰色，把游標移到按鈕上就會看到原因，例如 Agent 還在建造時會顯示「Publishing opens once the build stops.」。
 2. 閱讀對話框。它叫做 **Publish your agent**，內容是「Every app of this agent goes live together.」在 **What happens next** 底下，它顯示 **Check** › **Build** › **Go live**，以及「You can keep working while it runs.」再往下，「Publish 1 app · Data and learner progress stay as they are.」列出每個 App 與它的狀態，第一次是 **Not live yet**。按鈕上方的 **Show the review** 會展開這次建造的最終審查。
 
    ![Three Day Strength 的 Publish your agent 對話框：What happens next 顯示 Check、Build 和 Go live，Three Day Strength 那一列標示為 Not live yet，還有 Show the review，以及 Cancel 和 Publish 按鈕。](/images/agent/publish-and-share-1.webp)
@@ -19,7 +19,7 @@ sidebar:
 
 ## 分享連結
 
-把卡片上的網址傳給任何你希望試用這個 App 的人。你之後可以在 Console 的 **Production** 再找到它。它會顯示帶有日期與時間的 **Live since**，旁邊是 **Unpublish**，接著是每個 App 的上線網址和 **Copy invitation**，它會複製一則附有 App 連結的簡短訊息，供你貼上。在 **Versions** 底下，目前上線的版本標示為 **Live**。
+把卡片上的網址傳給任何你希望試用這個 App 的人。你之後可以在 Console 的 **Production** 再找到它。它會顯示帶有日期與時間的 **Live since**，旁邊是 **Unpublish**，接著是每個 App 的上線網址和 **Copy invitation**，它會複製一則簡短的邀請訊息，附上每個 App 的網址（**Access** 設為 **Learners only** 時還包含加入連結），供你貼上。在 **Versions** 底下，目前上線的版本標示為 **Live**。
 
 ![發布後 Console 的 Production：Live since 16 Oct 2026, 8:13 pm，旁邊是 Unpublish，Three Day Strength 的上線網址、Copy invitation，以及 Versions，其中上線的版本標示為 Live。](/images/agent/publish-and-share-2.webp)
 

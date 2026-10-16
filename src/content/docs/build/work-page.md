@@ -17,7 +17,7 @@ Every agent has a work page, and the work page is where you spend your time: you
 ## What is in the Console
 
 - **Overview**: the agent's name and product, who can open it, your role, whether it is published, and its Apps.
-- **Build**: the tasks, plan and Apps of a build that follows an approved plan. It shows up when the agent has such a build. See [Follow progress](/build/progress/).
+- **Build**: the tasks, plan and Apps of a build that follows an approved plan. It shows up when the agent has such a build. See [Watch it build](/agent/watch-build/).
 - **Code**: the App's files, read only. See [Browse the code](/build/code/).
 - **Files**: optional PDF, PowerPoint and Word files that you give the builder as reference.
 - **Memory**: what the agent has recorded, including the decisions you made.

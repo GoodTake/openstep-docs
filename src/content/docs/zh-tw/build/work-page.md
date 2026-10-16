@@ -17,7 +17,7 @@ sidebar:
 ## Console 裡有什麼
 
 - **Overview**：Agent 的名稱與產品、誰可以開啟它、你的角色、是否已發布，以及它的 App。
-- **Build**：依照已核准計畫進行的建造所包含的任務、計畫與 App。Agent 有這類建造時才會出現。見 [追蹤進度](/zh-tw/build/progress/)。
+- **Build**：依照已核准計畫進行的建造所包含的任務、計畫與 App。Agent 有這類建造時才會出現。見 [看它建造](/zh-tw/agent/watch-build/)。
 - **Code**：App 的檔案，唯讀。見 [瀏覽程式碼](/zh-tw/build/code/)。
 - **Files**：你提供給 builder 當參考資料的 PDF、PowerPoint 和 Word 檔案，皆為選用。
 - **Memory**：Agent 記錄下來的內容，包括你做過的決定。

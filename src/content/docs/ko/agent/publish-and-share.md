@@ -9,7 +9,7 @@ sidebar:
 
 ## 처음 게시하기
 
-1. 헤더의 **Publish**를 클릭합니다. 빌드가 끝나면 버튼이 밝아집니다. 회색으로 비활성화되어 있으면 옆의 문구가 이유를 알려 줍니다. 예를 들어 Agent가 아직 빌드 중이면 “Publishing opens once the build stops.”라고 나옵니다.
+1. 헤더의 **Publish**를 클릭합니다. 빌드가 끝나면 버튼이 밝아집니다. 회색으로 비활성화되어 있으면 버튼에 마우스를 올려 이유를 확인하세요. 예를 들어 Agent가 아직 빌드 중이면 “Publishing opens once the build stops.”라고 나옵니다.
 2. 대화 상자를 읽습니다. 이름은 **Publish your agent**이며 “Every app of this agent goes live together.”라고 나옵니다. **What happens next** 아래에는 **Check** › **Build** › **Go live**와 “You can keep working while it runs.”가 있습니다. 그 아래의 “Publish 1 app · Data and learner progress stay as they are.”에는 각 앱이 상태와 함께 나열되며, 처음에는 **Not live yet**입니다. 버튼 위의 **Show the review**를 펼치면 빌드의 최종 검토가 나옵니다.
 
    ![Three Day Strength의 Publish your agent 대화 상자: Check, Build, Go live가 있는 What happens next, Not live yet으로 표시된 Three Day Strength 행, Show the review, 그리고 Cancel과 Publish 버튼.](/images/agent/publish-and-share-1.webp)
@@ -19,7 +19,7 @@ sidebar:
 
 ## 링크 공유하기
 
-카드의 주소를 앱을 써 보게 하고 싶은 누구에게나 보내세요. Console의 **Production**에서 다시 찾을 수 있습니다. 날짜와 시간이 있는 **Live since**와 그 옆의 **Unpublish**, 각 앱의 라이브 주소, 그리고 앱 링크가 담긴 짧은 메시지를 복사해 붙여 넣을 수 있게 해 주는 **Copy invitation**이 표시됩니다. **Versions** 아래에서는 라이브 중인 버전에 **Live** 표시가 붙습니다.
+카드의 주소를 앱을 써 보게 하고 싶은 누구에게나 보내세요. Console의 **Production**에서 다시 찾을 수 있습니다. 날짜와 시간이 있는 **Live since**와 그 옆의 **Unpublish**, 각 앱의 라이브 주소, 그리고 각 앱의 주소(**Access**가 **Learners only**일 때는 참여 링크도)가 담긴 짧은 초대 메시지를 복사해 붙여 넣을 수 있게 해 주는 **Copy invitation**이 표시됩니다. **Versions** 아래에서는 라이브 중인 버전에 **Live** 표시가 붙습니다.
 
 ![Publish 이후의 Console, Production: 16 Oct 2026, 8:13 pm의 Live since와 Unpublish, Three Day Strength의 라이브 주소, Copy invitation, 그리고 라이브 버전에 Live가 표시된 Versions.](/images/agent/publish-and-share-2.webp)
 

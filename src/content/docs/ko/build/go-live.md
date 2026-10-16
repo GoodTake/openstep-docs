@@ -14,7 +14,7 @@ sidebar:
 
 ![The Cozy Coffee Table의 Publish your agent 대화 상자. 세 단계가 있고 앱이 Not live yet으로 나열됨.](/images/build/go-live-2.webp)
 
-그런 다음 **Console**을 열고 **Production**을 클릭합니다. 날짜와 함께 **Live since**, 각 앱의 주소, 보낼 수 있는 형태로 주소를 복사하는 **Copy invitation**, 게시한 모든 버전의 목록인 **Versions**가 표시됩니다. 현재 버전에는 **Live** 표시가 붙습니다.
+그런 다음 **Console**을 열고 **Production**을 클릭합니다. 날짜와 함께 **Live since**, 각 앱의 주소, 각 앱의 주소(**Access**가 **Learners only**일 때는 참여 링크도)가 담긴 짧은 초대 메시지를 복사하는 **Copy invitation**, 게시한 모든 버전의 목록인 **Versions**가 표시됩니다. 현재 버전에는 **Live** 표시가 붙습니다.
 
 ![첫 Publish 이후의 Console → Production: Live since 날짜, The Cozy Coffee Table의 주소, Live로 표시된 버전 하나.](/images/build/go-live-1.webp)
 
@@ -22,7 +22,7 @@ sidebar:
 
 - 모든 앱이 함께 라이브로 올라갑니다. 앱 하나라도 실패하면 Publish 전체가 실패하고, 아무것도 바뀌지 않으며 라이브 사이트는 이전 그대로입니다. 상태에 무엇이 잘못되었는지가 표시되고 **The live version did not change.** 문구로 끝납니다.
 - 점검에서 앱의 문제가 발견되면 builder가 직접 고치고 다시 게시할 수 있습니다. 값처럼 나에게서 받아야 할 것이 있으면 상태에 **Publishing waits for you.** 문구가 나타납니다.
-- Publish는 데이터를 지우지 않습니다. 예약 등 라이브 기록은 그대로 남습니다. 단 하나의 예외는 라이브 사이트에 이미 있는 테이블이나 필드를 의도적으로 제거하는 업데이트입니다. 게시하기 전에 대화 상자가 어느 앱인지 알려 주며, 제거된 것은 그대로 제거된 채로 남습니다.
+- Publish는 데이터와 학습자 진행 상황을 유지하며 새 세션을 시작하지 않습니다. 예약 등 라이브 기록은 그대로 남습니다. 업데이트가 데이터를 제거하게 되는 경우, 예를 들어 새 버전에 더 이상 없는 테이블이나 필드가 있으면 게시하기 전에 Publish 대화 상자가 경고하며, 그렇게 제거된 데이터는 되돌릴 수 없습니다.
 - 게시한 뒤에도 Preview는 계속 초안으로 동작합니다. 이후의 변경은 다시 게시하기 전까지 라이브 사이트에 반영되지 않습니다.
 - 사이트를 열 수 있는 사람(**Anyone with the link** 또는 **Learners only**)은 Agent의 설정입니다. [게시와 공유](/ko/agent/publish-and-share/)를 참고하세요.
 

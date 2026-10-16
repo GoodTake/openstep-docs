@@ -11,7 +11,7 @@ Le SSU est le jeton qu'OpenStep utilise. Vous en gardez un solde sur la platefor
 2. Les fonctions de plateforme que vos apps utilisent, comme les appels d'IA, l'e-mail et les opérations sur les contrats.
 3. L'exécution d'une app en ligne. Une fois un agent publié, le maintien en ligne de ses Apps est lui aussi débité de votre solde.
 
-Si votre app publiée encaisse des paiements de ses propres visiteurs, le paiement in-app se fait uniquement en SSU. OpenStep n'a aucun autre moyen de paiement.
+Si votre app publiée encaisse des paiements de ses propres visiteurs, le paiement in-app se fait uniquement en SSU. Il n'existe aucun autre moyen de paiement pour les paiements à l'intérieur de vos apps.
 
 ## Où voir votre SSU
 

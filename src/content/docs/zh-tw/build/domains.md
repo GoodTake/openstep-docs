@@ -32,4 +32,4 @@ sidebar:
 - 每個 App 有自己的網域。一個主機名稱不能附加到兩個 App。
 - 如果 Agent 設為 **Learners only**，就不會提供自訂網域。要使用自訂網域，請在 **Settings** 把存取設為 **Anyone with the link**。見 [發布與分享](/zh-tw/agent/publish-and-share/)。
 
-下一步：[發布與分享](/zh-tw/agent/publish-and-share/)。
+下一步：[CLI 能做什麼](/zh-tw/cli/what-it-does/)。
