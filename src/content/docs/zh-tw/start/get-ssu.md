@@ -14,7 +14,7 @@ SSU 是 OpenStep 用來計費的餘額：建造、你的 App 所使用的平台�
 3. 在 **PAYMENT** 底下，選擇 **USDC**（**On Base**）或 **Card**（**Stripe**）。
 4. 確認摘要：**You pay** 與 **You receive**。付款前頁面會先顯示價格。**Destination** 是你的 **Builder Smart Account**，SSU 會送到這裡。
 5. 依你選的方式點選按鈕：
-   - **Recharge with USDC**：你的錢包會請你核准確切的 USDC 金額（**Approve exact USDC**），接著 **Confirm purchase**。頁面會依序顯示 **Switching to Base**、**Confirming on Base** 和 **Sending SSU**，最後顯示 **The destination balance is ready.**
+   - **Recharge with USDC**：你的錢包會請你核准確切的 USDC 金額（**Approve exact USDC**），接著按 **Confirm purchase** 確認。頁面會依序顯示 **Switching to Base**、**Confirming on Base** 和 **Sending SSU**，最後顯示 **The destination balance is ready.**，也就是目的地的餘額已經就緒。
    - **Continue to Stripe**：Stripe Checkout 會開啟，讓你用信用卡付款。付款完成前請保持頁面開啟。如果你取消，頁面會顯示 **Stripe Checkout was cancelled. No charge was made.**
 
 ![Purchase SSU 頁面，已輸入 500 SSU 並選了 USDC，尚未付款。](/images/start/get-ssu-1.webp)
@@ -39,7 +39,7 @@ SSU 是 OpenStep 用來計費的餘額：建造、你的 App 所使用的平台�
 
 - 用 USDC 購買需要你的錢包在 Base 上有 USDC，以及少量 Base 上的 ETH 作為 gas。如果任一項不足，頁面會顯示 **Your wallet does not have enough USDC.** 或 **Your wallet needs more ETH on Base for gas.**
 - **Card details stay with Stripe.** 信用卡資料由 Stripe 保管：你是在 Stripe Checkout 頁面輸入，不是在 OpenStep。
-- 在建造或 App 呼叫進行期間，你的一部分 SSU 會被 **Held for running work**。每一筆扣款都會出現在 [Balance](/zh-tw/account/balance/) 頁面的 **Activity** 底下。
+- 在建造或 App 呼叫進行期間，你的一部分 SSU 會被預留給進行中的工作，頁面上顯示為 **Held for running work**。每一筆扣款都會出現在 [Balance](/zh-tw/account/balance/) 頁面的 **Activity** 底下。
 - 你可以在 [Balance](/zh-tw/account/balance/) 頁面，把尚未花掉的 SSU 退回你的錢包。
 
 下一步：[建立你的第一個 Agent](/zh-tw/start/create-agent/)。

@@ -24,7 +24,7 @@ sidebar:
 開啟 Agent，點選標題列的 **Console**，再點選 **Settings**。
 
 - 重新命名。在 **Display** 底下，變更 **Agent name** 並點選 **Save changes**。你也可以在這裡挑選 **Avatar** 顏色和 **Card image**，用 **Upload image** 或 **Generate**。**Language** 和 **Tone** 會改變 Agent 寫作與說話的方式，並在它下次建造時生效。擁有者和編輯者都可以重新命名。
-- **Duplicate agent**。在 **Ownership and workspace** 底下，點選 **Duplicate agent**。你會得到一個新的 Agent，帶有每個 App 的程式碼副本，可以任意修改而不動到原本的 Agent。資料、值和機密會留在原本的 Agent。按鈕旁邊的框會建議`<agent name> (copy)`；如果想自己取名，請在那裡輸入其他名稱。
+- **Duplicate agent**。在 **Ownership and workspace** 底下，點選 **Duplicate agent**。你會得到一個新的 Agent，帶有每個 App 的程式碼副本，可以任意修改而不動到原本的 Agent。資料、值和機密值會留在原本的 Agent。按鈕旁邊的框會建議`<agent name> (copy)`；如果想自己取名，請在那裡輸入其他名稱。
 - **Move to another workspace**。開啟寫著 **Choose a workspace** 的選單，挑選一個，點選 **Move**，再用 **Move agent** 確認。它的 App 和資料會跟著過去，該工作區的成員可以查看它。它的協作者會失去在它上面的角色，尚未使用的邀請連結也會失效。
 - **Transfer ownership**。開啟寫著 **Choose a collaborator** 的選單，挑選那個人，點選 **Transfer ownership**，再用 **Transfer** 確認。你仍留在這個 Agent 上，成為編輯者，而且只有新的擁有者能發布它、變更誰可以開啟它或刪除它。Agent 要先有協作者，你才能轉移它。見 [與他人協作](/zh-tw/agent/work-with-others/)。
 - **Delete agent**。在底部的 **Danger zone** 底下，點選 **Delete agent**。**Delete agent permanently** 對話框會說明，這會移除 Agent、它的檔案、它的對話、每個 App 及其資料，而且無法復原。輸入 Agent 的名稱確認，再點選 **Delete agent**。

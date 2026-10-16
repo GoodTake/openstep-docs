@@ -7,7 +7,7 @@ sidebar:
 
 網站不只是頁面和一份表單。平台提供一組功能，builder 可以把它們接到你的網站上，而你不需要自己設定其中任何一項。本頁是現有功能的地圖，不是操作手冊：你在對話中說出想要什麼，builder 知道怎麼建。
 
-1. 用白話說出你想要的東西。以咖啡店為例：*When someone books a table, email them a confirmation.*
+1. 用白話說出你想要的東西。以咖啡店為例：*有人預約訂位時，寄一封確認信給他。*
 2. builder 會把它加進去。如果它需要只有你才有的值，例如外部服務的金鑰，它會用對話框詢問你。見 [環境值](/zh-tw/build/environment-values/)。
 3. 在 [Preview](/zh-tw/build/preview/) 試用，然後[發布](/zh-tw/build/go-live/)。
 

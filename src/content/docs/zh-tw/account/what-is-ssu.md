@@ -20,5 +20,5 @@ SSU 是 OpenStep 使用的代幣。你在平台上持有它的餘額，有三件
 ## 如何取得 SSU
 
 - 在帳號選單的 **Purchase SSU** 購買。見 [取得 SSU](/zh-tw/start/get-ssu/)。
-- 在 Balance 頁面用你錢包裡已有的 SSU **Top up**。見 [查看餘額](/zh-tw/account/balance/)。
+- 在 Balance 頁面按 **Top up**，用你錢包裡已有的 SSU 儲值。見 [查看餘額](/zh-tw/account/balance/)。
 - 兌換課程代碼，如果課程給了你一組：在帳號選單中選擇 **+ Redeem a code**。見 [兌換代碼](/zh-tw/account/redeem/)。

@@ -5,7 +5,7 @@ sidebar:
   order: 6
 ---
 
-發布會讓你 Agent 的每個 App 一起上線，網址可以寄給別人。只有 Agent 的擁有者能發布它。
+發布會讓你 Agent 的每個 App 一起上線，網址可以傳給別人。只有 Agent 的擁有者能發布它。
 
 ## 第一次發布
 
@@ -19,7 +19,7 @@ sidebar:
 
 ## 分享連結
 
-把卡片上的網址寄給任何你希望試用這個 App 的人。你之後可以在 Console 的 **Production** 再找到它。它會顯示帶有日期與時間的 **Live since**，旁邊是 **Unpublish**，接著是每個 App 的上線網址和 **Copy invitation**，它會複製一則附有 App 連結的簡短訊息，供你貼上。在 **Versions** 底下，目前上線的版本標示為 **Live**。
+把卡片上的網址傳給任何你希望試用這個 App 的人。你之後可以在 Console 的 **Production** 再找到它。它會顯示帶有日期與時間的 **Live since**，旁邊是 **Unpublish**，接著是每個 App 的上線網址和 **Copy invitation**，它會複製一則附有 App 連結的簡短訊息，供你貼上。在 **Versions** 底下，目前上線的版本標示為 **Live**。
 
 ![發布後 Console 的 Production：Live since 16 Oct 2026, 8:13 pm，旁邊是 Unpublish，Three Day Strength 的上線網址、Copy invitation，以及 Versions，其中上線的版本標示為 Live。](/images/agent/publish-and-share-2.webp)
 

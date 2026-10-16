@@ -10,7 +10,7 @@ sidebar:
 ![The Cozy Coffee Table 的工作頁：左邊是 builder 的回覆，右邊是網站的即時預覽。](/images/build/work-page-1.webp)
 
 1. 標題列。由左到右：**My agents / The Cozy Coffee Table**（點選 **My agents** 可回到清單）、App 切換器、**Publish** 和 **Console**。一個 Agent 可以有不只一個 App。App 切換器決定右側顯示哪個 App，也決定 Console 裡的 **Code**、**Domains** 和 **Environment** 作用在哪個 App 上。在這個頁面，左側欄會縮成圖示。
-2. 左邊的對話。裡面有你的訊息和 builder 的回覆，每一步一行，每則回覆下方有一行狀態。底部是你輸入的輸入框。**+** 可以附加檔案，晶片（例如 **Auto · Build**）用來選擇模型和模式。builder 工作時，送出箭頭會變成紅色的停止按鈕。
+2. 左邊的對話。裡面有你的訊息和 builder 的回覆，每一步一行，每則回覆下方有一行狀態。底部是你輸入的輸入框。**+** 可以附加檔案，標籤（例如 **Auto · Build**）用來選擇模型和模式。builder 工作時，送出箭頭會變成紅色的停止按鈕。
 3. 右邊的 App 檢視區。**Preview** 和 **Data** 分頁顯示你在標題列選的 App。只有帶有智慧合約的 App 才會出現 **Contract**。Preview 工具列有重新載入按鈕、頁面選擇器（**Home**、**Menu**、**Book a table**）、裝置選擇器、用於 **Edit mode** 的鉛筆，以及在獨立分頁檢視網站的 **Open**。
 4. Console。點選標題列的 **Console**，它會蓋在 App 檢視區上方開啟，點選 ✕ 即可關閉。它的各個區段列在下面。
 

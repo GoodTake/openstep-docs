@@ -51,13 +51,13 @@ openstep env targets VITE_SITE_NAME --targets frontend,backend --app admin
 openstep env delete BOOKING_EMAIL --app admin
 ```
 
-- `env list` 會顯示每個值的名稱、類型，以及是否已提供。它不會顯示 secret。
+- `env list` 會顯示每個值的名稱、類型，以及是否已提供。它不會顯示機密值。
 - `env define` 會建立一個值。名稱使用大寫字母、數字和底線。
 - `env set` 會為已定義的值設定新值。`env clear` 會移除它。
 - `env targets` 會變更值可以被讀取的位置。`env delete` 會移除沒有人再使用的定義。
-- 目標（targets）遵循兩條規則。`frontend` 目標需要 `variable` 類型，以及以 `VITE_` 開頭的名稱，而以 `VITE_` 開頭的名稱必須以 `frontend` 為目標。secret 絕不以 `builder` 為目標，而 variable 只有在它存放的是鏈上位址，或它是存放鏈的 RPC URL 的 `BASE_RPC_URL` 時，才可以以 `builder` 為目標。
+- 目標（targets）遵循兩條規則。`frontend` 目標需要 `variable` 類型，以及以 `VITE_` 開頭的名稱，而以 `VITE_` 開頭的名稱必須以 `frontend` 為目標。機密值絕不以 `builder` 為目標，而變數只有在它存放的是鏈上位址，或它是存放鏈的 RPC URL 的 `BASE_RPC_URL` 時，才可以以 `builder` 為目標。
 - `--environment` 是 `development` 或 `production`。沒有指定時，指令使用 `development`。
-- secret 絕不在指令列上提供。CLI 會以隱藏輸入的方式向你要求，或從標準輸入讀取。對 secret 使用 `--value` 會被拒絕。
+- 機密值絕不在指令列上提供。CLI 會以隱藏輸入的方式向你要求，或從標準輸入讀取。對機密值使用 `--value` 會被拒絕。
 
 擁有者定義值、變更它們的目標並刪除它們。編輯者可以設定和清除開發值。上線值屬於擁有者。
 
@@ -148,7 +148,7 @@ openstep capabilities enable contract --app admin
 ## 注意事項
 
 - CLI 絕不會替你編譯合約。它只讀取你給它的 JSON 檔。
-- Secret 和 token 不應該放在原始碼檔案中。請使用環境值。
+- 機密值和 token 不應該放在原始碼檔案中。請使用環境值。
 - 任何會花費 SSU 的操作都會顯示在你的餘額中。見 [查看餘額](/zh-tw/account/balance/)。
 
 回到 [CLI 能做什麼](/zh-tw/cli/what-it-does/)。

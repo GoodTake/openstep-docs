@@ -11,7 +11,7 @@ sidebar:
 
 | 角色 | 能做什麼 |
 | --- | --- |
-| 擁有者 | 編輯者能做的一切，再加上 **Publish**、**Roll back**、**Put the last version back** 和 **Unpublish**；變更誰可以開啟這個 Agent；**Start a new session**；上線的環境值與網域；加入協作者並寄出邀請；轉移所有權、移動、複製或刪除這個 Agent。 |
+| 擁有者 | 編輯者能做的一切，再加上 **Publish**、**Roll back**、**Put the last version back** 和 **Unpublish**；變更誰可以開啟這個 Agent；**Start a new session**；上線的環境值與網域；加入協作者並發出邀請；轉移所有權、移動、複製或刪除這個 Agent。 |
 | 編輯者 | **Build** 和 **Brainstorm**；**Approve plan** 和 **Request changes**；回答 Agent 的問題，並提供它索取的值；**Pause**、**Stop** 和 **Continue** 一次建造；重新命名 Agent；開發環境值。 |
 | 檢視者 | 唯讀。他們可以開啟 Agent 並查看所有內容，但不能變更任何東西。 |
 
@@ -29,7 +29,7 @@ sidebar:
 ## 邀請協作者加入 Agent
 
 1. 開啟 Agent，點選 **Console**，再點選 **Settings**。在 **Collaborators** 底下，點選 **Manage collaborators**。**Agent collaborators** 對話框會開啟。它在 **PEOPLE** 底下列出所有人與他們的角色。
-2. 要讓某人成為編輯者，請使用 **Add a workspace member**：在寫著「0x… wallet address」的框裡輸入他的錢包地址，在旁邊的下拉選單選 **Editor** 或 **Viewer**，然後點選 **Add**。他們必須已經是工作區的成員。
+2. 要讓某人成為編輯者，請使用 **Add a workspace member**：在寫著「0x… wallet address」的框裡輸入他的錢包位址，在旁邊的下拉選單選 **Editor** 或 **Viewer**，然後點選 **Add**。他們必須已經是工作區的成員。
 3. 要邀請還不在工作區的人，請改用 **Invite link**。在 **Create invite link** 旁邊的下拉選單選 **Editor** 或 **Viewer**，點選 **Create invite link**，再用 **Copy** 複製連結。任何開啟連結並登入的人，都會以你選的角色加入這個團隊工作區，並能看到其中的每個 Agent。連結只能使用一次，並會註明何時到期。
 4. 點選 **Done**。
 

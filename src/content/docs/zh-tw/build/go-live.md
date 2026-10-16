@@ -14,7 +14,7 @@ sidebar:
 
 ![The Cozy Coffee Table 的 Publish your agent 對話框，顯示三個步驟，App 列為 Not live yet。](/images/build/go-live-2.webp)
 
-接著開啟 **Console** 和 **Production**。它會顯示帶有日期的 **Live since**、每個 App 的網址、複製可直接寄出的網址的 **Copy invitation**，以及 **Versions**，也就是你發布過的每個版本的清單。目前的版本標示為 **Live**。
+接著開啟 **Console** 和 **Production**。它會顯示帶有日期的 **Live since**、每個 App 的網址、複製可直接傳出去的網址的 **Copy invitation**，以及 **Versions**，也就是你發布過的每個版本的清單。目前的版本標示為 **Live**。
 
 ![第一次 Publish 之後的 Console → Production：Live since 日期、The Cozy Coffee Table 的網址，以及一個標示為 Live 的版本。](/images/build/go-live-1.webp)
 

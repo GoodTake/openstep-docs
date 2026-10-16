@@ -55,6 +55,6 @@ openstep logout https://builder.openstep.academy
 - 核准會讓終端機取得你帳號的權限。如果 **Requesting device** 不是你的電腦，或你沒有執行 `openstep login`，請關閉該頁面。
 - 如果頁面說無法授權該工作階段，表示連結已過期或已被使用。請再次執行 `openstep login`，並使用新的連結。
 - CLI 把你的登入資訊存放在 `~/.openstep/credentials.json`。請保持該檔案私密。永遠不要把它複製到原始碼檔案中，也不要分享它。
-- 在 Agent 資料夾之外，如果你登入了不只一個 OpenStep 位址，請在指令後加上 `--origin https://builder.openstep.academy`。在 Agent 資料夾之內，則使用取出時存下的位址。
+- 在 Agent 資料夾之外，如果你登入了不只一個 OpenStep 網址，請在指令後加上 `--origin https://builder.openstep.academy`。在 Agent 資料夾之內，則使用取出時存下的網址。
 
 下一步：[取出 Agent](/zh-tw/cli/checkout/)。

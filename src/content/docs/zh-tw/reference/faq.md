@@ -21,7 +21,7 @@ Agent 保存你的對話、它的計畫與它的建造內容。它會建出一�
 **Preview** 是你的草稿，也就是 App 目前的樣子，在其他人能開啟它之前。**Publish** 會讓 Agent 的每個 App 一起上線，放在其他人可以開啟的網址。見 [預覽你的網站](/zh-tw/build/preview/) 和 [讓網站上線](/zh-tw/build/go-live/)。
 
 **如何讓其他人試用我的 App？**  
-發布 Agent，然後把網址寄給他們。你可以在 **Console**、**Settings**、**Access** 選擇誰可以開啟它：任何有連結的人，或僅限學習者。見 [發布與分享](/zh-tw/agent/publish-and-share/)。
+發布 Agent，然後把網址傳給他們。你可以在 **Console**、**Settings**、**Access** 選擇誰可以開啟它：任何有連結的人，或僅限學習者。見 [發布與分享](/zh-tw/agent/publish-and-share/)。
 
 **可以用其他貨幣收款嗎？**  
 不行。App 內付款只用 SSU。見 [SSU 是什麼](/zh-tw/account/what-is-ssu/)。

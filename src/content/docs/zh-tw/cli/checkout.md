@@ -63,7 +63,7 @@ my-agent/
 
 - `apps/<app-key>/` 存放一個 App 的原始碼。每個 App 一個資料夾，以它的 App key 命名。你的編輯就在這裡進行。
 - `AGENTS.md` 告訴你電腦上的 coding agent 去讀 `.openstep/instructions/README.md`，取得 OpenStep 的規則與 skills。CLI 會讓這個檔案中屬於它的區塊保持最新。你在該區塊之外自己寫的行會保留。
-- `.openstep/` 是 CLI 私有的記帳資料。裡面有它所綁定的 Agent、你上次同步的原始碼副本，以及進行中請求的收據。
+- `.openstep/` 是 CLI 私有的內部記錄檔。裡面有它所綁定的 Agent、你上次同步的原始碼副本，以及進行中請求的收據。
 
 ## 注意事項
 
