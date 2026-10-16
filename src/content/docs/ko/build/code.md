@@ -2,7 +2,7 @@
 title: 코드 보기
 description: Console의 Code에서 프로젝트 파일을 봅니다.
 sidebar:
-  order: 11
+  order: 8
 ---
 
 프로젝트 상단 바에서 **Console**을 엽니다. APP 그룹에서 **Code**를 누릅니다. 파일을 둘러보고 열어 읽을 수 있습니다.

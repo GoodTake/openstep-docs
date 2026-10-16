@@ -2,7 +2,7 @@
 title: Données de l'app
 description: Utilisez la vue Data pour parcourir les tables et les lignes.
 sidebar:
-  order: 12
+  order: 9
 ---
 
 Quand le projet inclut une app web, le sélecteur à droite comprend **Data**. Il liste les tables utilisées par l'app. Vous pouvez parcourir les lignes, en ajouter et les modifier.

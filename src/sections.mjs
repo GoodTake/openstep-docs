@@ -6,19 +6,19 @@ export const sections = [
     dirs: ['start'],
   },
   {
-    label: 'Build your app',
-    translations: { 'zh-TW': '打造你的應用', ja: 'アプリを作る', ko: '앱 만들기', fr: 'Créer votre app' },
-    dirs: ['chat', 'build'],
+    label: 'Agent',
+    translations: { 'zh-TW': 'Agent', ja: 'Agent', ko: 'Agent', fr: 'Agent' },
+    dirs: ['agent'],
   },
   {
-    label: 'Publish',
-    translations: { 'zh-TW': '發布與上線', ja: '公開する', ko: '게시하기', fr: 'Publier' },
-    dirs: ['ship'],
+    label: 'Build',
+    translations: { 'zh-TW': 'Build', ja: 'Build', ko: 'Build', fr: 'Build' },
+    dirs: ['build'],
   },
   {
-    label: 'Projects',
-    translations: { 'zh-TW': '專案與協作', ja: 'プロジェクト', ko: '프로젝트', fr: 'Projets' },
-    dirs: ['projects'],
+    label: 'OpenStep CLI',
+    translations: { 'zh-TW': 'OpenStep CLI', ja: 'OpenStep CLI', ko: 'OpenStep CLI', fr: 'OpenStep CLI' },
+    dirs: ['cli'],
   },
   {
     label: 'SSU and account',

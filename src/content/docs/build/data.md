@@ -2,7 +2,7 @@
 title: App data
 description: Use the Data view to browse tables and rows.
 sidebar:
-  order: 12
+  order: 9
 ---
 
 When the project includes a web app, the right-side switch includes **Data**. It lists the tables the app uses. You can browse rows, add rows, and edit them.

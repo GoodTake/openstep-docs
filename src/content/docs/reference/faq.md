@@ -18,4 +18,4 @@ Preview is the draft you are editing. Publish pushes a version to a URL other pe
 No. In-app payment is SSU only.
 
 **How do I use Agents?**  
-It is still in development. See [Agents](/projects/agents/).
+It is still in development. See [Agents](/agent/pick-agent/).

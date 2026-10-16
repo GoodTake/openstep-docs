@@ -2,7 +2,7 @@
 title: Parcourir le code
 description: Ouvrez Code dans Console pour inspecter les fichiers du projet.
 sidebar:
-  order: 11
+  order: 8
 ---
 
 Dans la barre du haut du projet, ouvrez **Console**. Sous le groupe APP, cliquez sur **Code**. Vous pouvez parcourir les fichiers et les ouvrir pour les lire.

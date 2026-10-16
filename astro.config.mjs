@@ -1,13 +1,23 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightThemeBlack from 'starlight-theme-black';
+import { movedPages } from './src/moved-pages.mjs';
 import { sections } from './src/sections.mjs';
+
+// Old page URLs keep working in every locale. The locale prefixes mirror `locales` below.
+const localePrefixes = ['', 'zh-tw/', 'ja/', 'ko/', 'fr/'];
+const movedRedirects = Object.fromEntries(
+  localePrefixes.flatMap((prefix) =>
+    Object.entries(movedPages).map(([from, to]) => [`/${prefix}${from}`, `/${prefix}${to}/`]),
+  ),
+);
 
 export default defineConfig({
   site: 'https://docs.openstep.academy',
   redirects: {
     '/zh-cn': '/zh-tw',
     '/en': '/',
+    ...movedRedirects,
   },
   integrations: [
     starlight({

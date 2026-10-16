@@ -18,4 +18,4 @@ Preview est le brouillon que vous éditez. Publish pousse une version vers une U
 Non. Le paiement in-app est en SSU uniquement.
 
 **Comment utiliser Agents ?**  
-C'est encore en développement. Voir [Agents](/fr/projects/agents/).
+C'est encore en développement. Voir [Agents](/fr/agent/pick-agent/).

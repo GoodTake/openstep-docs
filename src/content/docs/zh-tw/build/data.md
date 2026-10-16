@@ -2,7 +2,7 @@
 title: 應用資料
 description: 用 Data 檢視瀏覽資料表與列。
 sidebar:
-  order: 12
+  order: 9
 ---
 
 專案包含網頁時，右側切換會有 **Data**。這裡列出應用使用的資料表，可瀏覽列、新增或編輯。

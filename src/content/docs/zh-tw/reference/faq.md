@@ -18,4 +18,4 @@ Preview 是你正在改的草稿。Publish 才把某一版推到別人能打開�
 不能。應用內支付只有 SSU。
 
 **Agents 怎麼用？**  
-還在開發，見 [Agents](/zh-tw/projects/agents/)。
+還在開發，見 [Agents](/zh-tw/agent/pick-agent/)。

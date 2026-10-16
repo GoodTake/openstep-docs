@@ -18,4 +18,4 @@ Preview は編集中の下書きです。Publish がある版を、他の人が�
 できません。アプリ内決済は SSU のみです。
 
 **Agents はどう使いますか？**  
-まだ開発中です。[Agents](/ja/projects/agents/) を参照。
+まだ開発中です。[Agents](/ja/agent/pick-agent/) を参照。

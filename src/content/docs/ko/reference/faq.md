@@ -18,4 +18,4 @@ Preview는 편집 중인 초안입니다. Publish가 어떤 버전을 다른 사
 없습니다. 앱 내 결제는 SSU만 가능합니다.
 
 **Agents는 어떻게 쓰나요?**  
-아직 개발 중입니다. [Agents](/ko/projects/agents/)를 보세요.
+아직 개발 중입니다. [Agents](/ko/agent/pick-agent/)를 보세요.
