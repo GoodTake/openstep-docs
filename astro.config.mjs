@@ -27,7 +27,7 @@ export default defineConfig({
         {
           tag: 'script',
           content:
-            "try { if (localStorage.getItem('starlight-theme') === null) localStorage.setItem('starlight-theme', 'dark'); } catch {}",
+            "try { const t = localStorage.getItem('starlight-theme'); if (t !== 'light' && t !== 'dark') localStorage.setItem('starlight-theme', 'dark'); } catch {}",
         },
       ],
       defaultLocale: 'root',
