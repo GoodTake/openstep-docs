@@ -32,6 +32,13 @@ a.entry-link[aria-current='page'],
   background-color: var(--brand-soft);
 }
 
+/* Overrides the theme's fixed 224px sidebar width so the sidebar fills its pane. */
+.sidebar-content {
+  width: 100%;
+  padding-right: calc(var(--spacing) * 2.5);
+  box-sizing: border-box;
+}
+
 starlight-toc a[aria-current='true'] {
   color: var(--brand);
 }
