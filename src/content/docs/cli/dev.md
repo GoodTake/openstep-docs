@@ -66,7 +66,7 @@ sidebar:
 - **It costs SSU.** Platform abilities such as AI, email and chain calls are charged as usual, even when the App runs on your computer. See [Check your balance](/account/balance/).
 - **Do not put secrets in source.** The CLI gives each run its own credentials and the environment values for that App. To set a value, see [Apps, data and contracts](/cli/apps-data-contracts/) and [Environment values](/build/environment-values/).
 - Every App you start needs an entry in `openstep.config.json`. If you start all Apps and one has no entry, the command stops and names it.
-- If a process you configured exits on its own, `openstep dev` shuts that App down. Read that process's own output to see why.
+- If any process you configured exits, `openstep dev` stops every App it started and ends the command. A non-zero exit code ends it with the error `App runtime exited with code N`. Read the failing process's own output to see why.
 - Paths in the config must stay inside the agent folder.
 - `openstep.config.json` is local. `push` does not send it.
 

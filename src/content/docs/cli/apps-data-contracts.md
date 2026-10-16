@@ -38,15 +38,16 @@ Owners and editors can add and archive Apps. If the CLI cannot finish the local 
 
 ## Environment values
 
-An environment value is a setting an App reads, such as an address or a key. It has a name, a kind (`variable` or `secret`), and the places that can read it: `frontend`, `backend`, `builder`. A secret can never be read by the builder.
+An environment value is a setting an App reads, such as an address or a key. It has a name, a kind (`variable` or `secret`), and the places that can read it: `frontend`, `backend` and `builder`.
 
 ```sh
 openstep env list --app admin
 openstep env define BOOKING_EMAIL --kind variable --targets backend --app admin --value hello@example.com
+openstep env define VITE_SITE_NAME --kind variable --targets frontend --app admin --value "Corner Cafe"
 openstep env define SERVICE_KEY --kind secret --targets backend --app admin
 openstep env set SERVICE_KEY --app admin --environment production
 openstep env clear SERVICE_KEY --app admin
-openstep env targets BOOKING_EMAIL --targets frontend,backend --app admin
+openstep env targets VITE_SITE_NAME --targets frontend,backend --app admin
 openstep env delete BOOKING_EMAIL --app admin
 ```
 
@@ -54,6 +55,7 @@ openstep env delete BOOKING_EMAIL --app admin
 - `env define` creates a value. Names use capital letters, digits and underscores.
 - `env set` gives a value that is already defined a new value. `env clear` removes it.
 - `env targets` changes where a value can be read. `env delete` removes a definition nobody uses any more.
+- Targets follow two rules. A `frontend` target needs the `variable` kind and a name that starts with `VITE_`, and a name that starts with `VITE_` must target `frontend`. A secret never targets `builder`, and a variable may target `builder` only if it holds a chain address, or if it is `BASE_RPC_URL` holding the chain's RPC URL.
 - `--environment` is `development` or `production`. Without it, the command uses `development`.
 - A secret is never given on the command line. The CLI asks for it with hidden entry, or reads it from standard input. `--value` is refused for a secret.
 
@@ -95,7 +97,7 @@ openstep capabilities enable contract --app admin
 
 ## Contracts
 
-A contract here is a smart contract one of your Apps uses. You compile it, register it, check what deployment would cost, and then deploy it to Base. Preparing is free. **Quote and deploy cost SSU, and only an owner can run them.**
+A contract here is a smart contract one of your Apps uses. You compile it, register it, check what deployment would cost, and then deploy it to Base. Preparing and quoting are free. **Deploying spends SSU. Quote and deploy are owner-only.**
 
 1. Compile the contract in the App's Foundry setup.
 
