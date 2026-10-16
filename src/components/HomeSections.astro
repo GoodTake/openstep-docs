@@ -1,0 +1,40 @@
+---
+import { sections } from '../sections.mjs';
+import { href, inDir, localeDocs } from './docs';
+
+// Cards list at most this many pages, so every card has the same height.
+const SHOWN = 4;
+
+const { locale, lang } = Astro.locals.starlightRoute;
+const docs = await localeDocs(locale);
+const groups = sections.map((section) => {
+  const pages = section.dirs.flatMap((dir) => inDir(docs, dir)).map(([, doc]) => doc);
+  return {
+    label: section.translations[lang] ?? section.label,
+    shown: pages.slice(0, SHOWN),
+    rest: pages.slice(SHOWN),
+  };
+});
+---
+
+<div class="home-sections not-content">
+  {
+    groups.map((group) => (
+      <section>
+        <h3>{group.label}</h3>
+        <ul>
+          {group.shown.map((doc) => (
+            <li>
+              <a href={href(doc)}>{doc.data.title}</a>
+            </li>
+          ))}
+        </ul>
+        {group.rest.length > 0 && (
+          <a class="more" href={href(group.rest[0])}>
+            +{group.rest.length} →
+          </a>
+        )}
+      </section>
+    ))
+  }
+</div>

@@ -2,6 +2,9 @@
 title: OpenStep 文件
 template: splash
 hero:
+  layout: media-left
+  image:
+    html: '<img src="/images/builder-editor.webp" alt="builder 編輯器：左邊對話，右邊即時 Preview 你的應用。" width="1456" height="817" />'
   title: 描述你要的系統。AI 把它建出來。
   tagline: 如何使用 builder.openstep.academy 上的 OpenStep builder。
   actions:
@@ -9,22 +12,31 @@ hero:
       link: /zh-tw/start/what-is/
       icon: right-arrow
       variant: primary
-    - text: Sign in
-      link: /zh-tw/start/sign-in/
-      icon: right-arrow
+    - text: 打開 builder
+      link: https://builder.openstep.academy
+      icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import DocLinks from '../../../components/DocLinks.astro';
+import HomeSections from '../../../components/HomeSections.astro';
 
-<CardGrid stagger>
-  <Card title="打造你的應用" icon="open-book">
-    用對話規劃並寫程式。右側 Preview。確認時點 Start building。
-  </Card>
-  <Card title="發布" icon="rocket">
-    準備好後再 Publish。
-  </Card>
-  <Card title="SSU" icon="star">
-    建造與平台能力會消耗 SSU。應用內支付只有 SSU。
-  </Card>
-</CardGrid>
+## 第一次來？三步開始
+
+<DocLinks numbered slugs={['start/sign-in', 'start/create-project', 'start/first-generation']} />
+
+## 瀏覽文件
+
+<HomeSections />
+
+## 常用頁面
+
+<DocLinks slugs={['chat/modes', 'account/what-is-ssu', 'ship/publish', 'projects/members']} />
+
+<div class="home-cta not-content">
+  <div>
+    <b>準備好了嗎？</b>
+    <span>打開 builder，描述你的第一個應用。</span>
+  </div>
+  <a href="https://builder.openstep.academy">打開 builder ↗</a>
+</div>

@@ -1,0 +1,28 @@
+---
+import { href, localeDocs } from './docs';
+
+interface Props {
+  slugs: string[];
+  numbered?: boolean;
+}
+
+const { slugs, numbered = false } = Astro.props;
+const docs = await localeDocs(Astro.locals.starlightRoute.locale);
+const pages = slugs.map((slug) => {
+  const doc = docs.get(slug);
+  if (!doc) throw new Error(`DocLinks: no page "${slug}" in this locale`);
+  return doc;
+});
+---
+
+<div class:list={['home-links not-content', { numbered }]}>
+  {
+    pages.map((doc, i) => (
+      <a href={href(doc)}>
+        {numbered && <span class="num">{i + 1}</span>}
+        <b>{doc.data.title}</b>
+        <span class="desc">{doc.data.description}</span>
+      </a>
+    ))
+  }
+</div>

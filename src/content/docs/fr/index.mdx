@@ -2,6 +2,9 @@
 title: Documentation OpenStep
 template: splash
 hero:
+  layout: media-left
+  image:
+    html: '<img src="/images/builder-editor.webp" alt="L''éditeur du builder : le chat à gauche, le Preview en direct de votre app à droite." width="1456" height="817" />'
   title: Décrivez le système que vous voulez. L'IA le construit.
   tagline: Comment utiliser le builder OpenStep sur builder.openstep.academy.
   actions:
@@ -9,22 +12,31 @@ hero:
       link: /fr/start/what-is/
       icon: right-arrow
       variant: primary
-    - text: Sign in
-      link: /fr/start/sign-in/
-      icon: right-arrow
+    - text: Ouvrir le builder
+      link: https://builder.openstep.academy
+      icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import DocLinks from '../../../components/DocLinks.astro';
+import HomeSections from '../../../components/HomeSections.astro';
 
-<CardGrid stagger>
-  <Card title="Créer votre app" icon="open-book">
-    Discutez pour planifier et écrire le code. Preview à droite. Confirmez avec Start building.
-  </Card>
-  <Card title="Publier" icon="rocket">
-    Utilisez Publish quand vous êtes prêt à mettre en ligne.
-  </Card>
-  <Card title="SSU" icon="star">
-    La construction et les capacités de la plateforme consomment du SSU. Les paiements in-app sont en SSU uniquement.
-  </Card>
-</CardGrid>
+## Nouveau ? Commencez en trois étapes
+
+<DocLinks numbered slugs={['start/sign-in', 'start/create-project', 'start/first-generation']} />
+
+## Parcourir la documentation
+
+<HomeSections />
+
+## Pages populaires
+
+<DocLinks slugs={['chat/modes', 'account/what-is-ssu', 'ship/publish', 'projects/members']} />
+
+<div class="home-cta not-content">
+  <div>
+    <b>Prêt à construire ?</b>
+    <span>Ouvrez le builder et décrivez votre première app.</span>
+  </div>
+  <a href="https://builder.openstep.academy">Ouvrir le builder ↗</a>
+</div>

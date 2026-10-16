@@ -2,6 +2,9 @@
 title: OpenStep 문서
 template: splash
 hero:
+  layout: media-left
+  image:
+    html: '<img src="/images/builder-editor.webp" alt="builder 편집기: 왼쪽은 채팅, 오른쪽은 앱의 실시간 Preview." width="1456" height="817" />'
   title: 만들고 싶은 시스템을 설명하세요. AI가 구축합니다.
   tagline: builder.openstep.academy에서 OpenStep builder를 사용하는 방법.
   actions:
@@ -9,22 +12,31 @@ hero:
       link: /ko/start/what-is/
       icon: right-arrow
       variant: primary
-    - text: Sign in
-      link: /ko/start/sign-in/
-      icon: right-arrow
+    - text: builder 열기
+      link: https://builder.openstep.academy
+      icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import DocLinks from '../../../components/DocLinks.astro';
+import HomeSections from '../../../components/HomeSections.astro';
 
-<CardGrid stagger>
-  <Card title="앱 만들기" icon="open-book">
-    채팅으로 계획을 맞추고 코드를 씁니다. 오른쪽은 Preview. 확정할 때 Start building.
-  </Card>
-  <Card title="게시하기" icon="rocket">
-    준비되면 Publish하세요.
-  </Card>
-  <Card title="SSU" icon="star">
-    구축과 플랫폼 기능은 SSU를 사용합니다. 앱 내 결제는 SSU만 가능합니다.
-  </Card>
-</CardGrid>
+## 처음이신가요? 세 단계로 시작
+
+<DocLinks numbered slugs={['start/sign-in', 'start/create-project', 'start/first-generation']} />
+
+## 문서 둘러보기
+
+<HomeSections />
+
+## 자주 찾는 페이지
+
+<DocLinks slugs={['chat/modes', 'account/what-is-ssu', 'ship/publish', 'projects/members']} />
+
+<div class="home-cta not-content">
+  <div>
+    <b>만들 준비가 되셨나요?</b>
+    <span>builder를 열고 첫 앱을 설명해 보세요.</span>
+  </div>
+  <a href="https://builder.openstep.academy">builder 열기 ↗</a>
+</div>
