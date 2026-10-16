@@ -7,7 +7,7 @@ sidebar:
 
 どの agent にも作業ページがあり、時間の多くはここで過ごします。左で builder と話し、右でサイトを見ます。agent を始めるとすぐに開き、あとからは **My agents**、または左レールの **RECENT AGENTS** から戻れます。
 
-![The Cozy Coffee Table の作業ページ。左に builder の返信、右にサイトのライブプレビュー。](/images/build/work-page-1.webp)
+![The Cozy Coffee Table の作業ページ。左に builder の返信、右にサイトのリアルタイムのプレビュー。](/images/build/work-page-1.webp)
 
 1. ヘッダー。左から順に、**My agents / The Cozy Coffee Table**（**My agents** をクリックすると一覧に戻ります）、App 切り替え、**Publish**、**Console** です。agent は複数の App を持てます。App 切り替えで、右側に表示する App と、Console の **Code**、**Domains**、**Environment** が対象にする App を選びます。このページでは、左レールがアイコンだけに縮みます。
 2. 左側のチャット。あなたのメッセージと builder の返信が、1 ステップ 1 行で並び、各返信の下にステータス行があります。一番下が入力ボックスです。**+** はファイルを添付し、チップ（たとえば **Auto · Build**）はモデルとモードを選びます。builder が作業している間、送信の矢印は赤い停止ボタンに変わります。

@@ -151,4 +151,4 @@ openstep capabilities enable contract --app admin
 - シークレットやトークンは、ソースファイルに入れないでください。環境値を使います。
 - SSU を使うものは、すべて残高に反映されます。[残高を確認する](/ja/account/balance/) を参照してください。
 
-[CLI でできること](/ja/cli/what-it-does/) に戻る。
+[CLI でできること](/ja/cli/what-it-does/) に戻ります。

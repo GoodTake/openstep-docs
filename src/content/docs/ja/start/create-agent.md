@@ -8,9 +8,9 @@ sidebar:
 agent は **New agent** で始めます。ベースを選び、考えていることを伝えて、開始します。agent が作成され、メッセージが送信済みの状態で作業ページが開きます。
 
 1. **New agent** を開きます。入り口は 3 つあり、どれも同じボックスにつながっています。
-   - 左レールの **+ New agent** をクリックする。
-   - **Home** の **What would you like to build?** を使う。
-   - **Marketplace** のカードで **Use this agent →** をクリックする。その製品が選ばれた状態で **New agent** が開きます。
+   - 左レールの **+ New agent** をクリックします。
+   - **Home** の **What would you like to build?** を使います。
+   - **Marketplace** のカードで **Use this agent →** をクリックします。その製品が選ばれた状態で **New agent** が開きます。
 2. **Based on** で、agent のベースを確認します。既定は **Web builder** で、説明した内容からウェブサイトやアプリを作ります。用意された agent を使うには、**Based on** メニューを開くか、**A great place to start** の下のカード（たとえば **Health & fitness**）をクリックします。
 3. **Describe an app, a learning experience, or your next idea…** と書かれたボックスに、欲しいものを書きます。たとえば、*筋力をつけたい。週 3 日ジムでトレーニングでき、1 回あたり約 45 分。*
 4. **Build** か **Brainstorm** を選びます。選んだ agent に合わせて既定が入ります。**Web builder** は **Build**、**Health & fitness** は **Brainstorm** で始まります。ボックスの下の行に、そのモードで何が起きるかが書かれています。[Build と Brainstorm](/ja/build/modes/) を参照してください。

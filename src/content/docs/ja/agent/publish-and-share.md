@@ -1,11 +1,11 @@
 ---
 title: 公開と共有
-description: agent を公開してライブのリンクを得て、誰が開けるかを選び、まっさらな状態にしたいときは新しいセッションを始めます。
+description: agent を公開して公開リンクを得て、誰が開けるかを選び、まっさらな状態にしたいときは新しいセッションを始めます。
 sidebar:
   order: 6
 ---
 
-公開すると、agent のすべての App が、ほかの人に送れるアドレスでまとめてライブになります。agent を公開できるのは、オーナーだけです。
+公開すると、agent のすべての App が、ほかの人に送れるアドレスでまとめて公開されます。agent を公開できるのは、オーナーだけです。
 
 ## はじめて公開する
 
@@ -19,9 +19,9 @@ sidebar:
 
 ## リンクを共有する
 
-アプリを試してほしい人に、カードのアドレスを送ります。あとで Console の **Production** でも確認できます。日時付きの **Live since** と、その横の **Unpublish** が表示され、続いて各 App のライブのアドレスと **Copy invitation** があります。これは App のリンクが入った短いメッセージをコピーするので、貼り付けて送れます。**Versions** では、ライブのバージョンに **Live** の印が付きます。
+アプリを試してほしい人に、カードのアドレスを送ります。あとで Console の **Production** でも確認できます。日時付きの **Live since** と、その横の **Unpublish** が表示され、続いて各 App の公開アドレスと **Copy invitation** があります。これは App のリンクが入った短いメッセージをコピーするので、貼り付けて送れます。**Versions** では、公開中のバージョンに **Live** の印が付きます。
 
-![Publish 後の Console の Production。Unpublish の付いた Live since 16 Oct 2026, 8:13 pm、Three Day Strength のライブのアドレス、Copy invitation、Live の印が付いたバージョンのある Versions。](/images/agent/publish-and-share-2.webp)
+![Publish 後の Console の Production。Unpublish の付いた Live since 16 Oct 2026, 8:13 pm、Three Day Strength の公開アドレス、Copy invitation、Live の印が付いたバージョンのある Versions。](/images/agent/publish-and-share-2.webp)
 
 リンクを開いた人は誰でも App を見られます。ワークアウト、体重、体の寸法の記録を残すには、訪問者がそれぞれ自分のウォレットでサインインし、自分の記録だけを見ます。
 
@@ -40,13 +40,13 @@ sidebar:
 
 ## 新しいセッションを始める
 
-**Start a new session** は、新しいグループの人たちのためになど、まっさらな状態に戻すためのものです。実行できるのはオーナーだけです。**Console** を開き、**Sessions** を選んで、**Start a new session** をクリックします。ダイアログは「Start a new session?」と尋ね、すべての App のデータとすべての学習者の進捗が消去されることを説明します。メンバー、ロール、名前は残ります。進めるなら **Clear and start again**、やめるなら **Cancel** をクリックします。
+**Start a new session** は、たとえば新しいグループの人たちのために、まっさらな状態に戻すためのものです。実行できるのはオーナーだけです。**Console** を開き、**Sessions** を選んで、**Start a new session** をクリックします。ダイアログは「Start a new session?」と尋ね、すべての App のデータとすべての学習者の進捗が消去されることを説明します。メンバー、ロール、名前は残ります。進めるなら **Clear and start again**、やめるなら **Cancel** をクリックします。
 
 公開がこれを行うことはありません。ボタンがグレー表示のときは、ページに「There is no session to clear yet.」と表示されます。agent がまだ構築中なら、先に構築を停止するか、終わるのを待ってください。
 
 ## 知っておくこと
 
-- アプリをライブで動かす費用は、構築と同じく、SSU の残高から引かれます。それぞれの課金は、[Balance](/ja/account/balance/) ページの **Activity** に表示されます。
+- 公開したアプリを動かす費用は、構築と同じく、SSU の残高から引かれます。それぞれの課金は、[Balance](/ja/account/balance/) ページの **Activity** に表示されます。
 - ほかの人が agent を変更できるのは、あなたが追加したときだけです。[他の人と作業する](/ja/agent/work-with-others/) を参照してください。
 
 次へ：[他の人と作業する](/ja/agent/work-with-others/)。

@@ -9,7 +9,7 @@ sidebar:
 
 1. 作業ページの右側を見ます。構築中のカードは App に置き換わっています。Console がまだ開いているときは、**✕** で閉じてください。App の上には、**Preview** と **Data** のタブ、**Home** から始まるページメニュー、デスクトップサイズとスマートフォンサイズを切り替えるメニュー、そしてプレビューを新しいタブで開く **Open ↗** があります。
 2. App そのものを見ます。Three Day Strength には、上部に独自のメニュー **Plan**、**Workout**、**History**、**Progress** があります。ホームページには「Get stronger, one focused session at a time.」と書かれ、**Start logging →** と **Connect Wallet** のボタンがあります。さらに「Three days. Four movements. Steady progress.」というカードが、プランをまとめています。45 分、週 3 日、4 種目です。
-3. **Plan** を開きます。**THE PLAN**、「Repeat weekly · rest between sessions」で、日ごとに分かれています。**Day A** は「Session 1 · 4 movements」で、各種目にイラスト、セット数とレップ数、鍛える筋肉が付いています。最初の 2 つは、バックスクワット（3 セット × 5〜8 レップ）と、バーベルベンチプレス（3 セット × 5〜8 レップ）です。この下に、さらに別の日が続きます。計画は、サインインしなくても読めます。
+3. **Plan** を開きます。**THE PLAN**、「Repeat weekly · rest between sessions」で、日ごとに分かれています。**Day A** は「Session 1 · 4 movements」で、各種目にイラスト、セット数とレップ数、鍛える筋肉が付いています。最初の 2 つは、バックスクワット（3 セット × 5〜8 レップ）と、バーベルベンチプレス（3 セット × 5〜8 レップ）です。この下に、さらに別の日が続きます。プランは、サインインしなくても読めます。
 
    ![構築後の Three Day Strength の作業ページ。チャットに Ready to publish のバー、Preview に App の Plan ページが表示され、Day A のイラスト付きの種目、Back squat と Barbell bench press が見える。](/images/agent/use-your-app-1.webp)
 
@@ -22,10 +22,10 @@ App のどのページも、これは医学的なアドバイスではなく、�
 
 ## 知っておくこと
 
-- **Preview** での操作は開発用データです。公開後のライブの App のデータとは別に保たれるので、自由にテストできます。[サイトのデータ](/ja/build/data/) を参照してください。
+- **Preview** での操作は開発用データです。公開中の App のデータとは別に保たれるので、自由にテストできます。[サイトのデータ](/ja/build/data/) を参照してください。
 - **Open ↗** は、アプリを実際のサイズで確認するときや、スマートフォンで確認するときに便利です。
 - 文言、数字、色、画像などの小さな変更は、すぐに行われます。**Brainstorm** での大きな変更は、質問と計画をもう一度通り、計画を承認してから構築されます。[Build と Brainstorm](/ja/build/modes/) を参照してください。
 - App のコードは Console の **Code** で読めますが、アプリを変更するにはチャットで頼みます。[コードを見る](/ja/build/code/) を参照してください。
-- まだ何も公開されていません。アプリは、公開したときにライブになります。
+- まだ何も公開されていません。アプリが公開されるのは、あなたが公開したときです。
 
 次へ：[公開と共有](/ja/agent/publish-and-share/)。
