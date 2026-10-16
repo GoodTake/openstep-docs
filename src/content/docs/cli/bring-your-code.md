@@ -9,6 +9,27 @@ If you already have the code for a site, you can move it into an agent and run i
 
 This page goes from an empty folder to a live site. It assumes you have [installed the CLI and signed in](/cli/install/).
 
+## An agent holds one or more Apps
+
+An agent is not a single site. It holds one or more **Apps**, and each App is a separate site with its own code, preview, data, settings and live address. **Publish** puts every App of the agent live together. The picture is in [How the pieces fit](/start/what-is/#how-the-pieces-fit).
+
+In the agent folder, each App has its own folder under `apps/`, named by its App key:
+
+```txt
+my-site/
+  apps/
+    app/      your site
+    admin/    a second App, if you add one
+  openstep.config.json
+```
+
+So first decide how your code splits into Apps:
+
+- One site: one App. All of it goes into `apps/app/`.
+- Several sites, for example a public site and a separate admin site: one App each. You add the extra Apps in step 1, and each site goes into its own folder.
+
+Each App keeps its own data, settings and email templates, so commands such as `env`, `data`, `email` and `capabilities` take `--app <app-key>` to say which App you mean. Do steps 2 to 4 for each App. More on the folder: [What is in the folder](/cli/checkout/#what-is-in-the-folder).
+
 ## 1. Create an agent for your site
 
 ```sh
@@ -18,9 +39,18 @@ cd my-site
 openstep apps list
 ```
 
-`agent create` prints the new agent's ID. Without `--product`, the agent uses **Web builder**. `agent checkout` copies the agent's App into `apps/<app-key>/`, usually `apps/app/`. The examples below use `app` as the App key; use the one `apps list` shows.
+`agent create` prints the new agent's ID. Without `--product`, the agent uses **Web builder**. `agent checkout` copies the agent's Apps into `apps/<app-key>/`; a new agent has one, usually `apps/app/`. The examples below use `app` as the App key; use the one `apps list` shows.
 
 The App starts with a small working site and the platform files your code will use. You replace the site with yours in step 3 and keep the platform files.
+
+If your code is several sites, add one App for each extra site. Give it a key, a title, what it is for, who uses it, how it differs from the other Apps, and its capabilities:
+
+```sh
+openstep apps add admin --title "Admin" --purpose "Manage bookings" --audience "Shop staff" --boundary "Separate admin site" --capabilities web,server
+openstep apps list
+```
+
+The new App gets its own folder, here `apps/admin/`, with the same starter site and platform files. More on adding and archiving Apps: [Apps, data and contracts](/cli/apps-data-contracts/#add-or-archive-an-app).
 
 ## 2. Add a server, if your site has one
 
@@ -82,6 +112,8 @@ Create `openstep.config.json` in the agent folder, with your own commands and po
   }
 }
 ```
+
+With several Apps, add one entry under `"apps"` for each, each with its own ports. `openstep dev` starts all of them; `openstep dev --app admin` starts one.
 
 Install the App's dependencies, then start it:
 

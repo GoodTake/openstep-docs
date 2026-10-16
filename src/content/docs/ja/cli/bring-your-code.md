@@ -9,6 +9,27 @@ sidebar:
 
 このページでは、空のフォルダーから公開サイトまでを順に進めます。[CLI をインストールしてサインイン](/ja/cli/install/)済みであることが前提です。
 
+## agent は 1 つ以上の App を持つ
+
+agent は 1 つのサイトではありません。1 つ以上の **Apps** を持ち、各 App は、独自のコード、プレビュー、データ、設定、公開アドレスを持つ別々のサイトです。**Publish** は、agent のすべての App をまとめて公開します。図は [全体の仕組み](/ja/start/what-is/#全体の仕組み) にあります。
+
+agent フォルダーでは、各 App が `apps/` の下に、App キーを名前とした専用のフォルダーを持ちます。
+
+```txt
+my-site/
+  apps/
+    app/      あなたのサイト
+    admin/    2 つ目の App（追加した場合）
+  openstep.config.json
+```
+
+まず、コードを App にどう分けるかを決めます。
+
+- サイトが 1 つ：App も 1 つです。すべてを `apps/app/` に入れます。
+- 複数のサイト（たとえば公開サイトと、別の管理サイト）：サイトごとに 1 つの App にします。追加の App は手順 1 で追加し、各サイトはそれぞれのフォルダーに入れます。
+
+各 App は自分のデータ、設定、メールテンプレートを持つので、`env`、`data`、`email`、`capabilities` などのコマンドは、どの App かを示す `--app <app-key>` を取ります。手順 2〜4 は App ごとに行います。フォルダーについての詳細：[フォルダーの中身](/ja/cli/checkout/#フォルダーの中身)。
+
 ## 1. サイト用の agent を作成する
 
 ```sh
@@ -18,9 +39,18 @@ cd my-site
 openstep apps list
 ```
 
-`agent create` は新しい agent の ID を表示します。`--product` を付けないと、agent は **Web builder** を使います。`agent checkout` は、agent の App を `apps/<app-key>/`（通常は `apps/app/`）にコピーします。以下の例では App キーを `app` としています。`apps list` に表示されたキーを使ってください。
+`agent create` は新しい agent の ID を表示します。`--product` を付けないと、agent は **Web builder** を使います。`agent checkout` は、agent の App を `apps/<app-key>/` にコピーします。新しい agent の App は 1 つで、通常は `apps/app/` です。以下の例では App キーを `app` としています。`apps list` に表示されたキーを使ってください。
 
 App は、小さく動くサイトと、コードが使うプラットフォームのファイルを持った状態で始まります。手順 3 で、サイトを自分のものに置き換えます。プラットフォームのファイルは残します。
+
+コードが複数のサイトなら、追加のサイトごとに App を 1 つ追加します。キー、タイトル、用途、使う人、ほかの App との違い、そしてケイパビリティを渡します。
+
+```sh
+openstep apps add admin --title "Admin" --purpose "Manage bookings" --audience "Shop staff" --boundary "Separate admin site" --capabilities web,server
+openstep apps list
+```
+
+新しい App には専用のフォルダー（ここでは `apps/admin/`）ができ、同じひな形のサイトとプラットフォームのファイルが入ります。App の追加とアーカイブについての詳細：[App、データ、コントラクト](/ja/cli/apps-data-contracts/#app-を追加またはアーカイブする)。
 
 ## 2. サイトにサーバーがあるなら追加する
 
@@ -82,6 +112,8 @@ agent フォルダーに `openstep.config.json` を作成し、自分のコマ�
   }
 }
 ```
+
+App が複数ある場合は、`"apps"` の下に App ごとにエントリを 1 つ追加し、それぞれ別のポートを割り当てます。`openstep dev` はすべてを起動し、`openstep dev --app admin` は 1 つだけを起動します。
 
 App の依存関係をインストールしてから、起動します。
 

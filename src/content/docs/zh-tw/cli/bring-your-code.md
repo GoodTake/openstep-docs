@@ -9,6 +9,27 @@ sidebar:
 
 本頁從一個空資料夾帶你走到一個上線的網站。它假設你已經[安裝 CLI 並登入](/zh-tw/cli/install/)。
 
+## 一個 Agent 包含一個或多個 App
+
+Agent 不是單一網站。它包含一個或多個 **Apps**，每個 App 都是獨立的網站，有自己的程式碼、預覽、資料、設定和上線網址。**Publish** 會讓 Agent 的每個 App 一起上線。圖示見 [各部分如何組合](/zh-tw/start/what-is/#各部分如何組合)。
+
+在 Agent 資料夾中，每個 App 在 `apps/` 底下都有自己的資料夾，以 App key 命名：
+
+```txt
+my-site/
+  apps/
+    app/      你的網站
+    admin/    第二個 App，如果你有新增
+  openstep.config.json
+```
+
+所以請先決定你的程式碼要怎麼分成 App：
+
+- 一個網站：一個 App。全部放進 `apps/app/`。
+- 好幾個網站，例如一個公開網站和一個獨立的後台網站：每個一個 App。你在第 1 步新增多出來的 App，每個網站放進自己的資料夾。
+
+每個 App 都有自己的資料、設定和電子郵件範本，所以 `env`、`data`、`email` 和 `capabilities` 之類的指令要用 `--app <app-key>` 指明你指的是哪個 App。第 2 到 4 步要對每個 App 各做一次。資料夾的更多說明：[資料夾裡有什麼](/zh-tw/cli/checkout/#資料夾裡有什麼)。
+
 ## 1. 為你的網站建立一個 Agent
 
 ```sh
@@ -18,9 +39,18 @@ cd my-site
 openstep apps list
 ```
 
-`agent create` 會印出新 Agent 的 ID。沒有 `--product` 時，Agent 使用 **Web builder**。`agent checkout` 會把 Agent 的 App 複製到 `apps/<app-key>/`，通常是 `apps/app/`。下面的範例以 `app` 作為 App key；請改用 `apps list` 顯示的那一個。
+`agent create` 會印出新 Agent 的 ID。沒有 `--product` 時，Agent 使用 **Web builder**。`agent checkout` 會把 Agent 的各個 App 複製到 `apps/<app-key>/`；新的 Agent 有一個，通常是 `apps/app/`。下面的範例以 `app` 作為 App key；請改用 `apps list` 顯示的那一個。
 
 App 一開始是一個能運作的小網站，加上你的程式碼會用到的平台檔案。你會在第 3 步用自己的網站取代那個小網站，並保留平台檔案。
+
+如果你的程式碼是好幾個網站，請為每個多出來的網站新增一個 App。給它一個 key、一個標題、它的用途、誰使用它、它和其他 App 有何不同，以及它的功能（capabilities）：
+
+```sh
+openstep apps add admin --title "Admin" --purpose "Manage bookings" --audience "Shop staff" --boundary "Separate admin site" --capabilities web,server
+openstep apps list
+```
+
+新的 App 會有自己的資料夾，這裡是 `apps/admin/`，內含相同的起始網站和平台檔案。新增和封存 App 的更多說明：[App、資料與合約](/zh-tw/cli/apps-data-contracts/#新增或封存-app)。
 
 ## 2. 如果你的網站有伺服器，請加上伺服器
 
@@ -82,6 +112,8 @@ openstep env set BACKEND_EGRESS_HOSTS --app app --environment production --value
   }
 }
 ```
+
+有好幾個 App 時，在 `"apps"` 底下為每個 App 各加一段設定，各自使用自己的連接埠。`openstep dev` 會啟動全部；`openstep dev --app admin` 只啟動一個。
 
 安裝 App 的相依套件，然後啟動它：
 

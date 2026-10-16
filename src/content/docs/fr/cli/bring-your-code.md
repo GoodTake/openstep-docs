@@ -9,6 +9,27 @@ Si vous avez déjà le code d'un site, vous pouvez le déplacer dans un agent et
 
 Cette page va d'un dossier vide à un site en ligne. Elle suppose que vous avez [installé la CLI et que vous êtes connecté](/fr/cli/install/).
 
+## Un agent contient une ou plusieurs Apps
+
+Un agent n'est pas un seul site. Il contient une ou plusieurs **Apps**, et chaque App est un site distinct, avec son propre code, son propre aperçu, ses propres données, ses propres réglages et sa propre adresse en ligne. **Publish** met toutes les Apps de l'agent en ligne ensemble. Le schéma est dans [Comment les éléments s'articulent](/fr/start/what-is/#comment-les-éléments-sarticulent).
+
+Dans le dossier de l'agent, chaque App a son propre dossier sous `apps/`, nommé d'après sa clé d'App :
+
+```txt
+my-site/
+  apps/
+    app/      votre site
+    admin/    une deuxième App, si vous en ajoutez une
+  openstep.config.json
+```
+
+Commencez donc par décider comment votre code se répartit en Apps :
+
+- Un seul site : une seule App. Tout va dans `apps/app/`.
+- Plusieurs sites, par exemple un site public et un site d'administration distinct : une App chacun. Vous ajoutez les Apps supplémentaires à l'étape 1, et chaque site va dans son propre dossier.
+
+Chaque App garde ses propres données, réglages et modèles d'e-mail ; des commandes comme `env`, `data`, `email` et `capabilities` prennent donc `--app <app-key>` pour dire de quelle App vous parlez. Faites les étapes 2 à 4 pour chaque App. Plus de détails sur le dossier : [Ce que contient le dossier](/fr/cli/checkout/#ce-que-contient-le-dossier).
+
 ## 1. Créer un agent pour votre site
 
 ```sh
@@ -18,9 +39,18 @@ cd my-site
 openstep apps list
 ```
 
-`agent create` affiche l'ID du nouvel agent. Sans `--product`, l'agent utilise **Web builder**. `agent checkout` copie l'App de l'agent dans `apps/<app-key>/`, en général `apps/app/`. Les exemples ci-dessous utilisent `app` comme clé d'App ; utilisez celle que `apps list` affiche.
+`agent create` affiche l'ID du nouvel agent. Sans `--product`, l'agent utilise **Web builder**. `agent checkout` copie les Apps de l'agent dans `apps/<app-key>/` ; un nouvel agent en a une, en général `apps/app/`. Les exemples ci-dessous utilisent `app` comme clé d'App ; utilisez celle que `apps list` affiche.
 
 L'App démarre avec un petit site qui fonctionne et les fichiers de la plateforme que votre code utilisera. Vous remplacez le site par le vôtre à l'étape 3 et vous gardez les fichiers de la plateforme.
+
+Si votre code est composé de plusieurs sites, ajoutez une App pour chaque site supplémentaire. Donnez-lui une clé, un titre, son utilité, qui l'utilise, en quoi elle se distingue des autres Apps, et ses capacités :
+
+```sh
+openstep apps add admin --title "Admin" --purpose "Manage bookings" --audience "Shop staff" --boundary "Separate admin site" --capabilities web,server
+openstep apps list
+```
+
+La nouvelle App reçoit son propre dossier, ici `apps/admin/`, avec le même site de départ et les mêmes fichiers de la plateforme. Plus de détails sur l'ajout et l'archivage d'Apps : [Apps, données et contrats](/fr/cli/apps-data-contracts/#ajouter-ou-archiver-une-app).
 
 ## 2. Ajouter un serveur, si votre site en a un
 
@@ -82,6 +112,8 @@ Dans le dossier de l'agent, créez `openstep.config.json`, avec vos propres comm
   }
 }
 ```
+
+Avec plusieurs Apps, ajoutez une entrée sous `"apps"` pour chacune, avec ses propres ports. `openstep dev` les démarre toutes ; `openstep dev --app admin` n'en démarre qu'une.
 
 Installez les dépendances de l'App, puis démarrez-la :
 

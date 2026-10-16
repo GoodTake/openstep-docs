@@ -9,6 +9,27 @@ sidebar:
 
 이 페이지는 빈 폴더에서 라이브 사이트까지 이어서 안내합니다. [CLI를 설치하고 로그인](/ko/cli/install/)했다고 가정합니다.
 
+## Agent는 앱을 하나 이상 가집니다
+
+Agent는 사이트 하나가 아닙니다. **Apps**를 하나 이상 가지며, 각 앱은 자체 코드, Preview, 데이터, 설정, 라이브 주소를 가진 별도의 사이트입니다. **Publish**는 Agent의 모든 앱을 함께 라이브로 올립니다. 그림은 [구성 요소의 관계](/ko/start/what-is/#구성-요소의-관계)에 있습니다.
+
+Agent 폴더에서 각 앱은 `apps/` 아래에 앱 키 이름의 자체 폴더를 가집니다.
+
+```txt
+my-site/
+  apps/
+    app/      내 사이트
+    admin/    두 번째 앱, 추가한 경우
+  openstep.config.json
+```
+
+먼저 내 코드를 앱으로 어떻게 나눌지 정합니다.
+
+- 사이트 하나: 앱 하나. 모두 `apps/app/`에 들어갑니다.
+- 사이트 여러 개(예: 공개 사이트와 별도의 관리자 사이트): 각각 앱 하나. 추가 앱은 1단계에서 추가하고, 각 사이트는 자기 폴더에 넣습니다.
+
+앱마다 자체 데이터, 설정, 이메일 템플릿이 있으므로 `env`, `data`, `email`, `capabilities` 같은 명령은 어느 앱인지 알려 주는 `--app <app-key>`를 받습니다. 2~4단계는 앱마다 따로 합니다. 폴더에 대한 자세한 내용: [폴더의 구성](/ko/cli/checkout/#폴더의-구성).
+
 ## 1. 내 사이트를 위한 Agent 만들기
 
 ```sh
@@ -18,9 +39,18 @@ cd my-site
 openstep apps list
 ```
 
-`agent create`는 새 Agent의 ID를 출력합니다. `--product`를 쓰지 않으면 Agent는 **Web builder**를 사용합니다. `agent checkout`은 Agent의 앱을 `apps/<app-key>/`로 복사하며, 보통 `apps/app/`입니다. 아래 예시는 앱 키로 `app`을 씁니다. `apps list`에 나온 키를 사용하세요.
+`agent create`는 새 Agent의 ID를 출력합니다. `--product`를 쓰지 않으면 Agent는 **Web builder**를 사용합니다. `agent checkout`은 Agent의 앱들을 `apps/<app-key>/`로 복사하며, 새 Agent에는 앱이 하나 있고 보통 `apps/app/`입니다. 아래 예시는 앱 키로 `app`을 씁니다. `apps list`에 나온 키를 사용하세요.
 
 앱은 작게 동작하는 사이트와, 내 코드가 쓸 플랫폼 파일을 가진 채로 시작합니다. 3단계에서 사이트를 내 것으로 바꾸고, 플랫폼 파일은 그대로 둡니다.
+
+코드가 사이트 여러 개라면, 추가 사이트마다 앱을 하나씩 추가합니다. 키, 제목, 용도, 사용자, 다른 앱과 어떻게 다른지, 그리고 기능(capabilities)을 지정합니다.
+
+```sh
+openstep apps add admin --title "Admin" --purpose "Manage bookings" --audience "Shop staff" --boundary "Separate admin site" --capabilities web,server
+openstep apps list
+```
+
+새 앱은 자체 폴더(여기서는 `apps/admin/`)를 갖고, 같은 시작용 사이트와 플랫폼 파일이 들어갑니다. 앱 추가와 보관에 대한 자세한 내용: [앱, 데이터, 컨트랙트](/ko/cli/apps-data-contracts/#앱-추가-또는-보관).
 
 ## 2. 사이트에 서버가 있다면 추가하기
 
@@ -82,6 +112,8 @@ Agent 폴더에 `openstep.config.json`을 만들고, 내 명령과 포트를 적
   }
 }
 ```
+
+앱이 여럿이면 `"apps"` 아래에 앱마다 항목을 하나씩 추가하고, 각각 자기 포트를 지정합니다. `openstep dev`는 모두 시작하고, `openstep dev --app admin`은 하나만 시작합니다.
 
 앱의 의존성을 설치한 다음 시작합니다.
 
