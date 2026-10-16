@@ -28,18 +28,31 @@ The controls appear in the Console and next to the composer.
 
 While a build is running, the composer shows **Pause** and **Stop** in place of the message box: "Building — Pause or Stop to change direction." To say something new, pause or stop first, then send your message. Sending a message while the build is paused ends that build, as **Stop** does.
 
-## When a task needs you
+## When the build stops by itself
 
 Now and then a task cannot go on without you. The build stops and tells you what it is waiting for:
 
 - A question: answer it in the chat and the build goes on by itself.
 - A value only you can give: a dialog asks for it. See [Approve the plan](/agent/approve-plan/).
 
+A build can also pause on a problem on the platform's side. The bar then reads **Platform issue**, and **Build** in the Console says: "The build is paused on a platform problem. It is listed for the platform team and continues once they fix it. Nothing for you to do. To change direction, stop the build." You can wait, and the build carries on by itself once the problem is fixed.
+
 If the chat shows **Reconnecting…** for a long time, reload the page. The build keeps going on the server.
+
+## When the build finishes
+
+When the last task is done and the final review has run, the build is ready to publish:
+
+1. The bar above the composer changes to **Ready to publish**, with the line "0 findings · 0 parked" and **View build**. Both counts were 0 in this run.
+2. A green box appears below it: "The build finished. Publish from the top bar puts every app live together." Click **Show the review** in it to read the final review.
+3. The **Publish** button in the header turns bright.
+4. In the Console, **Build** now says **Ready to publish** and "Publish from the top bar puts every app live together. Data and learner progress stay as they are." Below it, **MECHANICAL CHECKS** lists each check, all marked **Passed**. **REVIEW FINDINGS** shows the final review ("The reviewer reported no findings."), and **PARKED TASK RULINGS** says None.
+
+Any findings from the final review are listed under **REVIEW FINDINGS**. You can try the app in **Preview** now, before you publish.
 
 ## Good to know
 
-- A build takes several minutes. The agent checks each task before it moves on, and repairs it if a check fails, so some tasks take more than one round.
+- A build takes a while. This one took about 75 minutes from approval to **Ready to publish**, including one pause on a platform problem. The agent checks each task before it moves on, and repairs it if a check fails, so some tasks take more than one round.
 - Only the owner and editors can **Pause**, **Stop** or **Continue** a build. Viewers can watch.
 - You cannot publish while a build is running or paused. **Publish** becomes available once the build has stopped or finished. See [Publish and share](/agent/publish-and-share/).
 
