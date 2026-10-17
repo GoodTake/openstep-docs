@@ -214,6 +214,38 @@ await sendTransaction({ to: contractAddress, data: callData, idempotencyKey: `or
 
 送信するのは agent のオーナーのアカウントで、ガスも SSU で支払われます。同じ `idempotencyKey` で再度送っても、新しい送信は行われません。1 つのトランザクションで複数の呼び出しを実行するには、代わりに `calls: [{ to, data }, …]` を渡します。チェーンの読み取りは、同じファイルの `publicClient` か `rpc()` で行います。読み取りは無料です。
 
+### 操作ごとにユーザーへ課金する（コースパートナー）
+
+OpenStep がコースパートナー向けに有効にした agent でだけ使えます。それ以外の agent で呼び出すと、`partner_charge_not_enabled` で拒否されます。
+
+サーバーから、`functions/platform.js` の `chargeUser` で、コースが定めた操作について、リクエストを送ったユーザーに SSU で課金します。
+
+```js
+const { chargeUser } = require('./platform');
+
+// /api/ のルートの中で
+try {
+  const { chargeId } = await chargeUser({
+    headers: req.headers,          // リクエストヘッダーにユーザーのウォレットが入っている
+    amount: '0.1',                 // SSU、10 進数の文字列
+    action: 'Run sandbox payment', // 64 文字まで。ユーザーの Balance ページに表示される
+    idempotencyKey: paymentId,     // 8〜128 文字。課金ごとに 1 つ
+  });
+  // 課金済み：ここで有料の操作を行う。
+} catch (err) {
+  if (err.code === 'insufficient_balance') {
+    // ユーザーに Top up を頼み、有料の操作は行わない。
+  }
+}
+```
+
+- App を使っている人に課金されます。agent のオーナーや共同作業者も例外ではありません。支払えるのはユーザーが自分で Top up した SSU だけで、OpenStep から贈られた SSU は使えません。
+- 課金のたびにユーザーへ確認は求めません。ユーザーがその操作を使う前に、ページに価格を表示してください。
+- 同じ `idempotencyKey` で再度送っても新たな課金はされず、同じ `chargeId` が返ります。同じキーを別の金額、操作、ユーザーに使うと `idempotency_key_reused` で失敗します。
+- `unknown_wallet` は、そのウォレットに OpenStep アカウントがないことを意味します。ユーザーに OpenStep へのサインインと Top up を頼んでください。`invalid_request` は値が欠けているか正しくないことを意味します。たとえば、サインインしたユーザーのウォレットがリクエストに含まれていない場合です。
+- ウォレットがサーバーに届くのは、ユーザーがサインインしているときだけです（上の「ウォレットでのサインイン」を参照）。Preview では、agent のアクセスが **Learners only** のとき、または agent にロールとミッションがあるときだけ送られます。`openstep dev` では、自分のウォレットから課金されます。
+- 課金はユーザーの Balance ページに、agent の名前と操作名で表示されます。OpenStep は収益をコースパートナーと分け合い、パートナーは **Partner earnings** ページで各課金を確認できます。
+
 ### データ
 
 ブラウザーでは、`src/lib/supabase` の `supabase` で App のテーブルを読み書きします。

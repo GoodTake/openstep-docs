@@ -214,6 +214,38 @@ await sendTransaction({ to: contractAddress, data: callData, idempotencyKey: `or
 
 Le compte du propriétaire de l'agent l'envoie et paie le gas en SSU. Un nouvel envoi avec le même `idempotencyKey` n'envoie rien de nouveau. Passez plutôt `calls: [{ to, data }, …]` pour exécuter plusieurs appels dans une seule transaction. Lisez la chaîne avec `publicClient` ou `rpc()` du même fichier ; les lectures sont gratuites.
 
+### Faire payer un utilisateur pour une action (partenaires de cours)
+
+Cela ne fonctionne que dans un agent qu'OpenStep a activé pour un partenaire de cours. Dans tout autre agent, l'appel est refusé avec `partner_charge_not_enabled`.
+
+Depuis votre serveur, `chargeUser` de `functions/platform.js` fait payer en SSU l'utilisateur qui a envoyé la requête, pour une action définie par votre cours :
+
+```js
+const { chargeUser } = require('./platform');
+
+// Dans votre route /api/
+try {
+  const { chargeId } = await chargeUser({
+    headers: req.headers,          // les en-têtes de la requête portent le wallet de l'utilisateur
+    amount: '0.1',                 // SSU, sous forme de chaîne décimale
+    action: 'Run sandbox payment', // 64 caractères au plus, affiché sur la page Balance de l'utilisateur
+    idempotencyKey: paymentId,     // 8 à 128 caractères, un par paiement
+  });
+  // Payé : effectuez maintenant l'action payante.
+} catch (err) {
+  if (err.code === 'insufficient_balance') {
+    // Demandez à l'utilisateur de faire un Top up, et n'effectuez pas l'action payante.
+  }
+}
+```
+
+- Le paiement est demandé à la personne qui utilise l'App, y compris le propriétaire de l'agent et ses collaborateurs. Seul le SSU que l'utilisateur a rechargé peut payer ; le SSU offert par OpenStep ne le peut pas.
+- L'utilisateur ne confirme pas chaque paiement : affichez le prix sur la page avant qu'il utilise l'action.
+- Un nouvel envoi avec le même `idempotencyKey` ne fait rien payer de nouveau et renvoie le même `chargeId`. Réutiliser une clé pour un autre montant, une autre action ou un autre utilisateur échoue avec `idempotency_key_reused`.
+- `unknown_wallet` signifie que le wallet n'a pas de compte OpenStep : demandez à l'utilisateur de se connecter à OpenStep et de faire un Top up. `invalid_request` signifie qu'une valeur manque ou est incorrecte, par exemple quand aucun wallet d'utilisateur connecté n'accompagne la requête.
+- Le wallet n'arrive à votre serveur que si l'utilisateur est connecté (voir Connexion par wallet plus haut). Dans Preview, il n'est envoyé que si l'accès de l'agent est **Learners only** ou si l'agent a des rôles et des missions. Sous `openstep dev`, le paiement est pris sur votre propre wallet.
+- Le paiement apparaît sur la page Balance de l'utilisateur avec le nom de l'agent et l'action. OpenStep partage le revenu avec le partenaire de cours, qui voit chaque paiement sur la page **Partner earnings**.
+
 ### Données
 
 Dans le navigateur, `supabase` de `src/lib/supabase` lit et écrit les tables de l'App :

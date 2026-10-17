@@ -214,6 +214,38 @@ await sendTransaction({ to: contractAddress, data: callData, idempotencyKey: `or
 
 The agent owner's account sends it and pays the gas in SSU. Sending again with the same `idempotencyKey` sends nothing new. Pass `calls: [{ to, data }, …]` instead to run several calls in one transaction. Read the chain with `publicClient` or `rpc()` from the same file; reads are free.
 
+### Charge a user for an action (course partners)
+
+This works only in an agent that OpenStep has enabled for a course partner. In any other agent the call is refused with `partner_charge_not_enabled`.
+
+From your server, `chargeUser` from `functions/platform.js` charges the user who made the request, in SSU, for an action your course defines:
+
+```js
+const { chargeUser } = require('./platform');
+
+// Inside your /api/ route
+try {
+  const { chargeId } = await chargeUser({
+    headers: req.headers,          // the request headers carry the user's wallet
+    amount: '0.1',                 // SSU, as a decimal string
+    action: 'Run sandbox payment', // up to 64 characters, shown on the user's Balance page
+    idempotencyKey: paymentId,     // 8 to 128 characters, one per charge
+  });
+  // Charged: now do the paid action.
+} catch (err) {
+  if (err.code === 'insufficient_balance') {
+    // Ask the user to top up, and don't do the paid action.
+  }
+}
+```
+
+- It charges whoever uses the App, including the agent's owner and collaborators. Only SSU the user topped up can pay; SSU that OpenStep gave them as a gift can't.
+- The user isn't asked to confirm each charge, so show the price on the page before they use the action.
+- Sending again with the same `idempotencyKey` charges nothing new and returns the same `chargeId`. Using a key again for a different amount, action or user fails with `idempotency_key_reused`.
+- `unknown_wallet` means the wallet has no OpenStep account: ask the user to sign in to OpenStep and top up. `invalid_request` means a value is missing or wrong, for example when no signed-in user's wallet came with the request.
+- The wallet reaches your server only when the user is signed in (see Wallet sign-in above). In Preview, it is sent only when the agent's access is **Learners only** or the agent has roles and missions. Under `openstep dev`, the charge comes from your own wallet.
+- The charge shows on the user's Balance page with the agent's name and the action. OpenStep shares the revenue with the course partner, who sees each charge on the **Partner earnings** page.
+
 ### Data
 
 In the browser, `supabase` from `src/lib/supabase` reads and writes the App's tables:

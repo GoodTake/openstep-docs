@@ -214,6 +214,38 @@ await sendTransaction({ to: contractAddress, data: callData, idempotencyKey: `or
 
 它由 Agent 擁有者的帳戶送出，gas 以 SSU 支付。用相同的 `idempotencyKey` 再送一次，不會送出任何新的東西。改為傳入 `calls: [{ to, data }, …]`，可以在一筆交易裡執行多個呼叫。用同一個檔案裡的 `publicClient` 或 `rpc()` 讀取鏈上資料；讀取是免費的。
 
+### 為某個動作向使用者收費（課程合作方）
+
+只有 OpenStep 為課程合作方開通的 Agent 才能使用。其他 Agent 呼叫時會被拒絕，錯誤碼是 `partner_charge_not_enabled`。
+
+從你的伺服器，用 `functions/platform.js` 的 `chargeUser`，為你的課程定義的某個動作，向發出這個請求的使用者收取 SSU：
+
+```js
+const { chargeUser } = require('./platform');
+
+// 在你的 /api/ 路由裡
+try {
+  const { chargeId } = await chargeUser({
+    headers: req.headers,          // 請求標頭帶著使用者的錢包
+    amount: '0.1',                 // SSU，十進位字串
+    action: 'Run sandbox payment', // 最多 64 個字元，會顯示在使用者的 Balance 頁面
+    idempotencyKey: paymentId,     // 8 到 128 個字元，每筆收費一個
+  });
+  // 已收費：現在執行付費動作。
+} catch (err) {
+  if (err.code === 'insufficient_balance') {
+    // 請使用者儲值，不要執行付費動作。
+  }
+}
+```
+
+- 誰在用這個 App 就向誰收費，包括 Agent 的擁有者和協作者。只有使用者自己儲值的 SSU 能支付；OpenStep 贈送的 SSU 不能。
+- 每筆收費都不會請使用者確認，所以請在使用者使用這個動作之前，在頁面上標明價格。
+- 用相同的 `idempotencyKey` 再送一次，不會再收費，並回傳同一個 `chargeId`。同一個 key 用在不同的金額、動作或使用者上，會以 `idempotency_key_reused` 失敗。
+- `unknown_wallet` 表示這個錢包沒有 OpenStep 帳戶：請使用者登入 OpenStep 並儲值。`invalid_request` 表示有值缺少或不正確，例如請求裡沒有已登入使用者的錢包。
+- 只有使用者已登入時，錢包才會送到你的伺服器（見上方的「錢包登入」）。在 Preview 裡，只有 Agent 的存取設定是 **Learners only**，或 Agent 有角色與任務時才會送出。在 `openstep dev` 下，收費會從你自己的錢包扣除。
+- 這筆收費會以 Agent 名稱和動作名稱，顯示在使用者的 Balance 頁面。OpenStep 會與課程合作方分享這筆收入，合作方可以在 **Partner earnings** 頁面看到每一筆收費。
+
 ### 資料
 
 在瀏覽器裡，`src/lib/supabase` 的 `supabase` 可以讀寫 App 的資料表：

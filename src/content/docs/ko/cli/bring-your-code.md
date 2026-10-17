@@ -214,6 +214,38 @@ await sendTransaction({ to: contractAddress, data: callData, idempotencyKey: `or
 
 트랜잭션은 Agent 소유자의 계정이 보내고, 가스도 SSU로 지불됩니다. 같은 `idempotencyKey`로 다시 보내면 새로 전송되는 것이 없습니다. 한 트랜잭션에서 여러 호출을 실행하려면 대신 `calls: [{ to, data }, …]`를 넘기세요. 체인은 같은 파일의 `publicClient`나 `rpc()`로 읽습니다. 읽기는 무료입니다.
 
+### 동작마다 사용자에게 요금 받기(코스 파트너)
+
+OpenStep이 코스 파트너용으로 활성화한 Agent에서만 쓸 수 있습니다. 다른 Agent에서 호출하면 `partner_charge_not_enabled`로 거절됩니다.
+
+서버에서 `functions/platform.js`의 `chargeUser`로, 코스가 정한 동작에 대해 요청을 보낸 사용자에게 SSU로 요금을 받습니다.
+
+```js
+const { chargeUser } = require('./platform');
+
+// /api/ 라우트 안에서
+try {
+  const { chargeId } = await chargeUser({
+    headers: req.headers,          // 요청 헤더에 사용자의 지갑이 들어 있음
+    amount: '0.1',                 // SSU, 십진수 문자열
+    action: 'Run sandbox payment', // 최대 64자, 사용자의 Balance 페이지에 표시됨
+    idempotencyKey: paymentId,     // 8~128자, 요금마다 하나
+  });
+  // 요금 청구됨: 이제 유료 동작을 실행합니다.
+} catch (err) {
+  if (err.code === 'insufficient_balance') {
+    // 사용자에게 Top up을 요청하고, 유료 동작은 실행하지 않습니다.
+  }
+}
+```
+
+- 앱을 쓰는 사람에게 청구됩니다. Agent 소유자와 공동 작업자도 마찬가지입니다. 사용자가 직접 Top up한 SSU만 쓸 수 있고, OpenStep이 선물한 SSU로는 낼 수 없습니다.
+- 요금마다 사용자에게 확인을 받지 않으니, 사용자가 그 동작을 쓰기 전에 페이지에 가격을 보여 주세요.
+- 같은 `idempotencyKey`로 다시 보내면 새로 청구되지 않고 같은 `chargeId`가 돌아옵니다. 같은 키를 다른 금액, 동작, 사용자에 다시 쓰면 `idempotency_key_reused`로 실패합니다.
+- `unknown_wallet`은 그 지갑에 OpenStep 계정이 없다는 뜻입니다. 사용자에게 OpenStep에 로그인하고 Top up하라고 안내하세요. `invalid_request`는 값이 빠졌거나 잘못됐다는 뜻으로, 예를 들어 로그인한 사용자의 지갑이 요청에 없을 때입니다.
+- 지갑은 사용자가 로그인했을 때만 서버에 전달됩니다(위의 '지갑 로그인' 참고). Preview에서는 Agent의 접근 설정이 **Learners only**이거나 Agent에 역할과 미션이 있을 때만 전달됩니다. `openstep dev`에서는 내 지갑에서 청구됩니다.
+- 요금은 사용자의 Balance 페이지에 Agent 이름과 동작 이름으로 표시됩니다. OpenStep은 수익을 코스 파트너와 나누고, 파트너는 **Partner earnings** 페이지에서 각 요금을 볼 수 있습니다.
+
 ### 데이터
 
 브라우저에서는 `src/lib/supabase`의 `supabase`로 앱의 테이블을 읽고 씁니다.
