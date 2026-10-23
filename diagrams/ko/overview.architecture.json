@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "OpenStep 시스템 개요",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "turn-path",
+        "label": "한 문장이 코드가 되기까지",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "agentfw",
+          "sandbox",
+          "modelgw"
+        ],
+        "note": "누군가 Agent에 한 문장을 말하면, 플랫폼이 받아들여 지시문을 조립하고, 격리된 샌드박스에서 모델이 코드를 고칩니다."
+      },
+      {
+        "id": "learner",
+        "label": "학습자: 코스 수강하기",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "runtime",
+          "appdb",
+          "capgw",
+          "outside"
+        ],
+        "note": "학습자는 아무것도 구축하지 않습니다. 강사의 링크로 참여해 코스 페이지 안의 라이브 App을 쓰고, 수업 데이터를 함께 씁니다."
+      },
+      {
+        "id": "instructor",
+        "label": "강사: 수업 운영하기",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "platformdb",
+          "agentfw",
+          "orchestrator",
+          "runtime"
+        ],
+        "note": "강사는 코스 제품으로 수업을 열고, 변경 사항을 라이브 전에 실제 데이터로 검토하고, 참여 링크를 공유합니다."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "사용자·방문자",
+      "sublabel": "구축 · 강의 · 학습",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "edge",
+      "type": "cloud",
+      "label": "엣지",
+      "sublabel": "도메인별 라우팅",
+      "pos": [
+        250,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platform",
+      "type": "backend",
+      "label": "플랫폼 서비스",
+      "sublabel": "웹 UI + API",
+      "pos": [
+        460,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platformdb",
+      "type": "database",
+      "label": "플랫폼 데이터베이스",
+      "sublabel": "PostgreSQL",
+      "pos": [
+        250,
+        250
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "agentfw",
+      "type": "backend",
+      "label": "Agent 프레임워크",
+      "sublabel": "Product → Agent → App",
+      "tag": "핵심",
+      "pos": [
+        670,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "구축 오케스트레이션",
+      "sublabel": "계획 · 승인 · 작업",
+      "pos": [
+        670,
+        250
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "sandbox",
+      "type": "cloud",
+      "label": "builder 샌드박스",
+      "sublabel": "Agent마다 컨테이너 하나",
+      "pos": [
+        890,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "modelgw",
+      "type": "backend",
+      "label": "모델 게이트웨이",
+      "sublabel": "GPT-6 · Opus · DeepSeek",
+      "pos": [
+        1110,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "runtime",
+      "type": "cloud",
+      "label": "App 런타임",
+      "sublabel": "미리보기 · 라이브",
+      "pos": [
+        455,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "capgw",
+      "type": "backend",
+      "label": "기능 게이트웨이",
+      "sublabel": "AI · 메일 · 체인 · 예약",
+      "pos": [
+        890,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "appdb",
+      "type": "database",
+      "label": "App 데이터베이스",
+      "sublabel": "App별 · 환경별",
+      "pos": [
+        250,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "outside",
+      "type": "external",
+      "label": "외부 서비스",
+      "sublabel": "Base 체인 · SaaS · MCP",
+      "pos": [
+        1110,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "키 없음 · git 없음",
+      "wraps": [
+        "sandbox"
+      ],
+      "pad": 12
+    }
+  ],
+  "connections": [
+    {
+      "id": "people-edge",
+      "from": "people",
+      "to": "edge",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "id": "edge-platform",
+      "from": "edge",
+      "to": "platform"
+    },
+    {
+      "id": "platform-agentfw",
+      "from": "platform",
+      "to": "agentfw",
+      "label": "턴 하나"
+    },
+    {
+      "id": "agentfw-sandbox",
+      "from": "agentfw",
+      "to": "sandbox",
+      "label": "코드 대여"
+    },
+    {
+      "id": "sandbox-modelgw",
+      "from": "sandbox",
+      "to": "modelgw",
+      "label": "모델 호출"
+    },
+    {
+      "id": "platform-db",
+      "from": "platform",
+      "to": "platformdb",
+      "label": "SQL"
+    },
+    {
+      "id": "platform-runtime",
+      "from": "platform",
+      "to": "runtime",
+      "label": "라이브 App 열기",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 150
+    },
+    {
+      "id": "agentfw-orch",
+      "from": "agentfw",
+      "to": "orchestrator",
+      "label": "큰 요청",
+      "labelDy": 60
+    },
+    {
+      "id": "orch-runtime",
+      "from": "orchestrator",
+      "to": "runtime",
+      "label": "라이브 전환"
+    },
+    {
+      "id": "orch-sandbox",
+      "from": "orchestrator",
+      "to": "sandbox",
+      "label": "작업 배분"
+    },
+    {
+      "id": "runtime-capgw",
+      "from": "runtime",
+      "to": "capgw",
+      "label": "기능 호출"
+    },
+    {
+      "id": "runtime-appdb",
+      "from": "runtime",
+      "to": "appdb",
+      "label": "데이터"
+    },
+    {
+      "id": "capgw-outside",
+      "from": "capgw",
+      "to": "outside",
+      "label": "프록시"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "Agent 프레임워크",
+      "items": [
+        "작성자가 규칙, 방법론, Skills를 Product 버전으로 고정합니다",
+        "사용자는 그 버전으로 Agent를 만듭니다: 제어 평면 하나 + App 1..N개",
+        "턴마다 플랫폼이 지시문, Skills, MCP를 조립합니다"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "두 단계의 제어",
+      "items": [
+        "한 문장 = 모델 도구 루프 한 번",
+        "큰 요청은 플랫폼이 스케줄하는 계획으로 실행됩니다: 계획 → 승인 → 구축 · 검사 · 검토 · 수정 → 최종 검토",
+        "모든 App이 함께 라이브로 나가며, 데이터는 항상 유지됩니다"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "보안 경계",
+      "items": [
+        "샌드박스는 코드를 빌려 받을 뿐입니다",
+        "키, git 커밋, 업스트림 모델 키는 플랫폼에 남습니다",
+        "외부 계정 토큰은 플랫폼을 통해서만 쓰입니다"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+---
+title: À l'intérieur d'un Agent
+description: De quoi est fait un Agent — contexte, modèles, Skills, MCP et outils — et les Apps qu'il construit.
+sidebar:
+  order: 2
+---
+
+import ArchDiagram from '../../../../components/ArchDiagram.astro';
+
+Un Agent est configuré par une version figée d'Agent Product. En son centre se trouve le **builder** : une boucle IA qui réfléchit, agit avec des outils et vérifie le résultat. Autour de lui se trouvent ce qu'il lit, les modèles avec lesquels il raisonne et ce qu'il peut appeler. Ce qu'il produit, ce sont des Apps.
+
+<ArchDiagram
+  src="/architecture/fr/agent.html"
+  title="De quoi est fait un Agent"
+  openLabel="Ouvrir le diagramme interactif"
+  hint="Plein écran, avec parcours guidés, recherche et zoom."
+  ratio="16 / 10"
+/>
+
+## Le builder
+
+Le builder travaille dans le bac à sable isolé de l'Agent. À chaque tour, il réfléchit avec un modèle, agit avec des outils et observe le résultat, encore et encore jusqu'à ce que le travail soit fait. Il rend ensuite le code à la plateforme.
+
+## Contexte et mémoire
+
+| Partie | Ce que c'est |
+|---|---|
+| Instructions | `AGENTS.md`, réécrit à chaque tour à partir des règles de base, des règles du produit, des capacités de la plateforme et de la liste des Apps. |
+| Session | Un tour de conversation reprend la session précédente. Quand la session devient trop volumineuse, une nouvelle commence. |
+| Fichiers de plan | `PLAN.md` et les fichiers `.steps` transmettent le plan et ses cases à cocher d'un tour à l'autre. |
+
+Il n'y a pas de carnet caché : la mémoire à long terme, c'est le code lui-même plus ces fichiers.
+
+## Modèles
+
+Chaque appel de modèle passe par le routeur de modèles de la plateforme, qui choisit un niveau pour chaque tâche. Le builder travaille avec des modèles de pointe comme **GPT-6**, **Opus** et **DeepSeek**. Les clés des modèles amont n'entrent jamais dans le bac à sable.
+
+## Skills
+
+Les Skills sont du savoir-faire écrit. Le builder n'en lit une que lorsque la tâche l'exige. L'ensemble de base et les Skills propres au produit sont recopiés à chaque tour.
+
+| Skill | Aide pour |
+|---|---|
+| IA & images | Appeler l'IA depuis l'App, générer des images |
+| Vidéo IA | Générer de la vidéo et de la musique |
+| HyperFrames | Créer des vidéos à partir de HTML |
+| Données | La base de données de l'App et la façon dont le frontend et le backend y accèdent |
+| Contrats | Écrire des contrats et les préparer au déploiement |
+| Wallet & SSU | Connexion par wallet et paiements en SSU |
+| E-mail & cron | Envoyer des e-mails et exécuter des tâches planifiées |
+| Docs Lark | Lire et écrire des documents Lark |
+| Navigateur | Parcourir des pages en cliquant et prendre des captures d'écran |
+| Design UI | Mise en page et goût visuel |
+| React | Bonnes pratiques React |
+| Design | Systèmes de design et montées de version |
+
+## MCP
+
+Les serveurs MCP donnent au builder des outils en lecture seule sur des systèmes externes. La plateforme les appelle pour le compte du builder, si bien que les jetons de compte n'entrent jamais dans le bac à sable.
+
+| MCP | Sert à |
+|---|---|
+| Pencil | Lire des fichiers de design |
+| Figma | Transformer des maquettes en UI |
+| Playwright | Tester l'aperçu dans un vrai navigateur |
+| Context7 | Documentation à jour des bibliothèques |
+| GitHub | Dépôts et issues |
+| Linear | Tickets et exigences |
+| Notion | Documents et bases de données |
+| Connectors | Comptes Google Drive, Lark et Slack connectés |
+| Autres MCP | Serveurs ajoutés par le propriétaire de l'Agent |
+
+## Outils intégrés
+
+| Outil | Rôle |
+|---|---|
+| Lire le code | Lire des fichiers et chercher dans le code |
+| Lecture web | Lire de la documentation et des sites de référence |
+| Liste de tâches | Découper un tour en étapes et les cocher |
+| Demander | S'arrêter et demander à quelqu'un quand une décision produit est nécessaire |
+| Modifier | Écrire et modifier le code |
+| Commandes | Installer des dépendances, lancer des tests, compiler |
+
+## Ce qu'il construit : des Apps
+
+Un Agent a une ou plusieurs Apps. Chaque App a, pour elle seule :
+
+- **Frontend** — React, servi en fichiers statiques.
+- **Backend** — un conteneur à la demande qui démarre à la première requête.
+- **Base de données** — les données de développement restent séparées de celles en ligne. Publish conserve toujours les données.
+- **Contrats** — sur Base, déployés par le propriétaire de l'Agent.
+- **Code et aperçu** — le builder modifie le code dans le bac à sable et l'exécute dans l'aperçu.
+
+## Qui le garde sous contrôle
+
+- **Orchestration.** Une grosse demande devient un plan. Une personne l'approuve, puis la plateforme le distribue tâche par tâche.
+- **Réviseurs.** Ils vérifient le plan, chaque tâche et le build complet. Le travail qui échoue repart en correction : les trois premiers tours de correction reprennent la session, les suivants repartent de zéro sur un modèle plus puissant.
+- **Garde-fous.** Brainstorm est en lecture seule. Le bac à sable ne peut ni lire les fichiers `.env` ni sortir de son espace de travail. Les clés et les commits restent sur la plateforme.
+
+## Trois parcours
+
+Le diagramme interactif les déroule sous **Guided views** :
+
+- **Fleuriste : d'une phrase à une app payante.** « Crée une boutique de fleurs où les clients paient en SSU et reçoivent des coupons. » Le builder lit ses instructions et son plan, raisonne avec un modèle, lit les Skills Wallet & SSU, Données et Contrats, modifie des fichiers et lance des commandes, puis livre un frontend, un backend, une base de données et un contrat de coupons.
+- **Créer une page depuis une maquette.** « Crée la page d'accueil à partir du fichier Figma et du ticket Linear. » Via MCP, le builder lit la maquette et le ticket, suit les Skills Design UI et Design, modifie des fichiers et vérifie l'aperçu avec Playwright.
+- **Ajouter une vidéo produit.** « Ajoute une vidéo d'introduction de 30 secondes à la page d'accueil. » Le builder lit les Skills HyperFrames, Vidéo IA et IA & images, génère la vidéo et l'ajoute au frontend.

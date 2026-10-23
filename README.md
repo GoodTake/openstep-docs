@@ -26,3 +26,18 @@ Push to `main`. Cloudflare Pages builds and deploys it automatically
 Cloudflare `_redirects` sends `/zh-cn/*` to `/zh-tw/*` and `/en/*` to the
 English root. Do not add matching Astro splat redirects — they do not map
 onto Starlight routes.
+
+## Architecture diagrams
+
+The "How it works" pages embed interactive diagrams from
+`public/architecture/<locale>/{overview,agent}.html` through
+`src/components/ArchDiagram.astro`. Each HTML file is generated with archify
+from the matching spec in `diagrams/<locale>/`. From the archify skill
+directory (`~/.claude/skills/archify`), with the spec path made absolute:
+
+    node bin/archify.mjs deliver architecture diagrams/en/agent.architecture.json /tmp/arch/agent.html --quality showcase
+    node bin/archify.mjs visual-check /tmp/arch/agent.html
+
+Deliver outside `public/` (archify writes sidecar files next to the output),
+then copy only the `.html` into `public/architecture/<locale>/`. English is the
+source; keep the other four locales in step when a diagram changes.

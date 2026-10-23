@@ -1,0 +1,987 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Agent 하나를 이루는 것",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "hidden"
+    },
+    "views": [
+      {
+        "id": "florist",
+        "label": "꽃집: 한 문장에서 결제되는 App까지",
+        "focus": [
+          "people",
+          "builder",
+          "c-agents",
+          "c-plan",
+          "modelhub",
+          "skillhub",
+          "s-wallet",
+          "s-data",
+          "s-chain",
+          "t-edit",
+          "t-bash",
+          "appcode",
+          "frontend",
+          "backend",
+          "appdb",
+          "contracts"
+        ],
+        "note": "SSU로 결제받고 쿠폰을 주는 꽃집을 요청하면, builder가 계획을 읽고 추론한 뒤 Skill 세 개를 써서 코드를 편집하고 실행합니다."
+      },
+      {
+        "id": "design",
+        "label": "디자인으로 페이지 만들기",
+        "focus": [
+          "people",
+          "builder",
+          "mcphub",
+          "m-figma",
+          "m-pencil",
+          "m-linear",
+          "skillhub",
+          "s-taste",
+          "s-design",
+          "t-edit",
+          "m-playwright",
+          "appcode",
+          "frontend"
+        ],
+        "note": "Figma 파일과 Linear 티켓으로 홈페이지를 요청하면, MCP가 둘을 읽고 디자인 Skills가 이끌며 Playwright가 확인합니다."
+      },
+      {
+        "id": "video",
+        "label": "제품 소개 영상 추가",
+        "focus": [
+          "people",
+          "builder",
+          "skillhub",
+          "s-video",
+          "s-media",
+          "s-ai",
+          "t-bash",
+          "t-edit",
+          "appcode",
+          "frontend"
+        ],
+        "note": "30초 소개 영상을 요청하면, 영상·이미지 Skills가 builder를 이끌고 builder가 영상을 렌더링해 프런트엔드에 넣습니다."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "사람",
+      "sublabel": "소유자 · 팀",
+      "pos": [
+        10,
+        200
+      ],
+      "size": [
+        90,
+        64
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "오케스트레이션",
+      "sublabel": "계획 · 배분",
+      "pos": [
+        142,
+        10
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "reviewers",
+      "type": "security",
+      "label": "검토자",
+      "sublabel": "계획 · 작업 · 최종",
+      "pos": [
+        1070,
+        10
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "builder",
+      "type": "backend",
+      "label": "builder",
+      "sublabel": "생각 → 행동 → 확인",
+      "pos": [
+        142,
+        200
+      ],
+      "size": [
+        120,
+        64
+      ],
+      "tag": "핵심"
+    },
+    {
+      "id": "ctxhub",
+      "type": "database",
+      "label": "컨텍스트",
+      "sublabel": "턴마다 조립",
+      "pos": [
+        142,
+        304
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-agents",
+      "type": "database",
+      "label": "지시문",
+      "sublabel": "AGENTS.md · 규칙",
+      "pos": [
+        142,
+        364
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-session",
+      "type": "database",
+      "label": "세션",
+      "sublabel": "재개 · 갱신",
+      "pos": [
+        142,
+        420
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-plan",
+      "type": "database",
+      "label": "계획 파일",
+      "sublabel": "PLAN.md · .steps",
+      "pos": [
+        142,
+        476
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "modelhub",
+      "type": "backend",
+      "label": "모델 라우터",
+      "sublabel": "프록시 · 등급별",
+      "pos": [
+        330,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "gpt",
+      "type": "external",
+      "label": "GPT-6",
+      "sublabel": "OpenAI",
+      "pos": [
+        438,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "openai"
+    },
+    {
+      "id": "opus",
+      "type": "external",
+      "label": "Opus",
+      "sublabel": "Anthropic",
+      "pos": [
+        546,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "claude"
+    },
+    {
+      "id": "deepseek",
+      "type": "external",
+      "label": "DeepSeek",
+      "sublabel": "오픈 웨이트",
+      "pos": [
+        654,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "deepseek"
+    },
+    {
+      "id": "skillhub",
+      "type": "database",
+      "label": "Skills",
+      "sublabel": "기본 + 제품",
+      "pos": [
+        330,
+        246
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-ai",
+      "type": "database",
+      "label": "AI·이미지",
+      "sublabel": "모델 · 이미지",
+      "pos": [
+        438,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-media",
+      "type": "database",
+      "label": "AI 영상",
+      "sublabel": "영상 · 음악",
+      "pos": [
+        546,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-video",
+      "type": "database",
+      "label": "HyperFrames",
+      "sublabel": "HTML로 영상",
+      "pos": [
+        654,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-data",
+      "type": "database",
+      "label": "데이터",
+      "sublabel": "DB · 연결",
+      "pos": [
+        762,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-chain",
+      "type": "database",
+      "label": "컨트랙트",
+      "sublabel": "작성 · 배포",
+      "pos": [
+        870,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-wallet",
+      "type": "database",
+      "label": "지갑·결제",
+      "sublabel": "신원 · SSU",
+      "pos": [
+        978,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-mail",
+      "type": "database",
+      "label": "이메일·예약",
+      "sublabel": "메일 · 일정",
+      "pos": [
+        438,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-lark",
+      "type": "database",
+      "label": "Lark 문서",
+      "sublabel": "lark-doc",
+      "pos": [
+        546,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-browser",
+      "type": "database",
+      "label": "브라우저 사용",
+      "sublabel": "클릭 · 캡처",
+      "pos": [
+        654,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-taste",
+      "type": "database",
+      "label": "UI 디자인",
+      "sublabel": "레이아웃 · 감각",
+      "pos": [
+        762,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-react",
+      "type": "database",
+      "label": "React",
+      "sublabel": "모범 사례",
+      "pos": [
+        870,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-design",
+      "type": "database",
+      "label": "디자인",
+      "sublabel": "시스템 · 업그레이드",
+      "pos": [
+        978,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "mcphub",
+      "type": "security",
+      "label": "MCP 게이트웨이",
+      "sublabel": "읽기 전용 프록시",
+      "pos": [
+        330,
+        396
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-pencil",
+      "type": "external",
+      "label": "Pencil",
+      "sublabel": "디자인 파일",
+      "pos": [
+        438,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-figma",
+      "type": "external",
+      "label": "Figma",
+      "sublabel": "디자인 → UI",
+      "pos": [
+        546,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "figma"
+    },
+    {
+      "id": "m-playwright",
+      "type": "external",
+      "label": "Playwright",
+      "sublabel": "브라우저 테스트",
+      "pos": [
+        654,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-context7",
+      "type": "external",
+      "label": "Context7",
+      "sublabel": "최신 문서",
+      "pos": [
+        762,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-github",
+      "type": "external",
+      "label": "GitHub",
+      "sublabel": "저장소 · 이슈",
+      "pos": [
+        870,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "github"
+    },
+    {
+      "id": "m-linear",
+      "type": "external",
+      "label": "Linear",
+      "sublabel": "티켓",
+      "pos": [
+        978,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "linear"
+    },
+    {
+      "id": "m-notion",
+      "type": "external",
+      "label": "Notion",
+      "sublabel": "문서 · 데이터베이스",
+      "pos": [
+        438,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "notion"
+    },
+    {
+      "id": "m-conn",
+      "type": "external",
+      "label": "Connectors",
+      "sublabel": "Drive · Lark",
+      "pos": [
+        546,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-ext",
+      "type": "external",
+      "label": "추가 MCP",
+      "sublabel": "소유자가 추가",
+      "pos": [
+        654,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "toolhub",
+      "type": "backend",
+      "label": "기본 도구",
+      "sublabel": "샌드박스에서 실행",
+      "pos": [
+        330,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-read",
+      "type": "backend",
+      "label": "읽기 · 찾기",
+      "sublabel": "read · grep",
+      "pos": [
+        438,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-web",
+      "type": "backend",
+      "label": "웹 가져오기",
+      "sublabel": "문서 읽기",
+      "pos": [
+        546,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-todo",
+      "type": "backend",
+      "label": "할 일 목록",
+      "sublabel": "단계 체크",
+      "pos": [
+        654,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-ask",
+      "type": "backend",
+      "label": "사람에게 묻기",
+      "sublabel": "제품 결정",
+      "pos": [
+        762,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-edit",
+      "type": "backend",
+      "label": "파일 편집",
+      "sublabel": "write · edit",
+      "pos": [
+        870,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-bash",
+      "type": "backend",
+      "label": "명령 실행",
+      "sublabel": "테스트 · 컴파일",
+      "pos": [
+        978,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "contracts",
+      "type": "security",
+      "label": "컨트랙트",
+      "sublabel": "Base · 소유자 배포",
+      "pos": [
+        150,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "frontend",
+      "type": "frontend",
+      "label": "프런트엔드",
+      "sublabel": "React · R2 호스팅",
+      "pos": [
+        320,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "backend",
+      "type": "backend",
+      "label": "백엔드",
+      "sublabel": "온디맨드 컨테이너",
+      "pos": [
+        490,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "appdb",
+      "type": "database",
+      "label": "데이터베이스",
+      "sublabel": "환경별 스키마 하나",
+      "pos": [
+        660,
+        636
+      ],
+      "size": [
+        140,
+        52
+      ]
+    },
+    {
+      "id": "appcode",
+      "type": "cloud",
+      "label": "코드 · 미리보기",
+      "sublabel": "샌드박스에서 편집 · 미리보기에서 실행",
+      "pos": [
+        870,
+        636
+      ],
+      "size": [
+        208,
+        52
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Agent",
+      "wraps": [
+        "builder",
+        "ctxhub",
+        "modelhub",
+        "skillhub",
+        "mcphub",
+        "toolhub",
+        "gpt",
+        "opus",
+        "deepseek",
+        "c-agents",
+        "c-session",
+        "c-plan",
+        "s-ai",
+        "s-media",
+        "s-video",
+        "s-data",
+        "s-chain",
+        "s-wallet",
+        "s-mail",
+        "s-lark",
+        "s-browser",
+        "s-taste",
+        "s-react",
+        "s-design",
+        "m-pencil",
+        "m-figma",
+        "m-playwright",
+        "m-context7",
+        "m-github",
+        "m-linear",
+        "m-notion",
+        "m-conn",
+        "m-ext",
+        "t-read",
+        "t-web",
+        "t-todo",
+        "t-ask",
+        "t-edit",
+        "t-bash"
+      ],
+      "pad": 16
+    },
+    {
+      "kind": "region",
+      "label": "컨텍스트 · 메모리",
+      "wraps": [
+        "ctxhub",
+        "c-agents",
+        "c-session",
+        "c-plan"
+      ],
+      "pad": 10
+    },
+    {
+      "kind": "region",
+      "label": "모델",
+      "wraps": [
+        "modelhub",
+        "gpt",
+        "opus",
+        "deepseek"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "Skills",
+      "wraps": [
+        "skillhub",
+        "s-ai",
+        "s-media",
+        "s-video",
+        "s-data",
+        "s-chain",
+        "s-wallet",
+        "s-mail",
+        "s-lark",
+        "s-browser",
+        "s-taste",
+        "s-react",
+        "s-design"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "MCP",
+      "wraps": [
+        "mcphub",
+        "m-pencil",
+        "m-figma",
+        "m-playwright",
+        "m-context7",
+        "m-github",
+        "m-linear",
+        "m-notion",
+        "m-conn",
+        "m-ext"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "도구",
+      "wraps": [
+        "toolhub",
+        "t-read",
+        "t-web",
+        "t-todo",
+        "t-ask",
+        "t-edit",
+        "t-bash"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "App × N · App마다 한 세트",
+      "wraps": [
+        "contracts",
+        "frontend",
+        "backend",
+        "appdb",
+        "appcode"
+      ],
+      "pad": 20
+    }
+  ],
+  "connections": [
+    {
+      "id": "people-builder",
+      "from": "people",
+      "to": "builder",
+      "label": "대화",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ctx-builder",
+      "from": "ctxhub",
+      "to": "builder"
+    },
+    {
+      "id": "builder-model",
+      "from": "builder",
+      "to": "modelhub",
+      "label": "추론",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "skill-builder",
+      "from": "skillhub",
+      "to": "builder",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "builder-mcp",
+      "from": "builder",
+      "to": "mcphub",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "builder-tool",
+      "from": "builder",
+      "to": "toolhub",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "edit-appcode",
+      "from": "t-edit",
+      "to": "appcode",
+      "label": "코드 편집",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "bash-appcode",
+      "from": "t-bash",
+      "to": "appcode",
+      "label": "실행 · 미리보기",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "frontend-contracts",
+      "from": "frontend",
+      "to": "contracts",
+      "label": "지갑"
+    },
+    {
+      "id": "frontend-backend",
+      "from": "frontend",
+      "to": "backend",
+      "label": "API"
+    },
+    {
+      "id": "backend-appdb",
+      "from": "backend",
+      "to": "appdb",
+      "label": "데이터"
+    },
+    {
+      "id": "builder-orch",
+      "from": "builder",
+      "to": "orchestrator",
+      "label": "완료 · 반환",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "people-orch",
+      "from": "people",
+      "to": "orchestrator",
+      "label": "계획 승인",
+      "fromSide": "top",
+      "toSide": "left",
+      "via": [
+        [
+          55,
+          36
+        ]
+      ]
+    },
+    {
+      "id": "orch-reviewers",
+      "from": "orchestrator",
+      "to": "reviewers",
+      "label": "검토 요청"
+    },
+    {
+      "id": "reviewers-appcode",
+      "from": "reviewers",
+      "to": "appcode",
+      "label": "검토 후 라이브",
+      "fromSide": "bottom",
+      "toSide": "right"
+    }
+  ]
+}

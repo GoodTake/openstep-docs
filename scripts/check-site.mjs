@@ -50,6 +50,8 @@ const ROOT_PAGES = [
   'account/redeem.md',
   'reference/faq.md',
   'reference/limits.md',
+  'how-it-works/system-overview.mdx',
+  'how-it-works/inside-an-agent.mdx',
 ];
 
 const LOCALES = ['zh-tw', 'ja', 'ko', 'fr'];
@@ -175,6 +177,10 @@ if (checkBuilt) {
     'fr/cli/push-publish/index.html',
     'account/what-is-ssu/index.html',
     'reference/faq/index.html',
+    'how-it-works/system-overview/index.html',
+    'zh-tw/how-it-works/inside-an-agent/index.html',
+    'architecture/en/overview.html',
+    'architecture/fr/agent.html',
   ];
   for (const rel of requiredHtml) {
     if (!existsSync(join(distRoot, rel))) {

@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "OpenStep システム概要",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "turn-path",
+        "label": "一文がコードになるまで",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "agentfw",
+          "sandbox",
+          "modelgw"
+        ],
+        "note": "Agent に一文を伝えると、プラットフォームが受け付けて指示を組み立て、隔離されたサンドボックスでモデルがコードを編集します。"
+      },
+      {
+        "id": "learner",
+        "label": "受講者: コースを受ける",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "runtime",
+          "appdb",
+          "capgw",
+          "outside"
+        ],
+        "note": "受講者は何も構築しません。講師のリンクから参加し、コースページ内の本番 App を使い、クラスのデータを共有します。"
+      },
+      {
+        "id": "instructor",
+        "label": "講師: クラスを運営する",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "platformdb",
+          "agentfw",
+          "orchestrator",
+          "runtime"
+        ],
+        "note": "講師はコース用の Product からクラスを開き、変更を本番前に実データでレビューし、参加リンクを共有します。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "ユーザーと訪問者",
+      "sublabel": "作る・教える・学ぶ",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "edge",
+      "type": "cloud",
+      "label": "エッジ",
+      "sublabel": "ドメインで振り分け",
+      "pos": [
+        250,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platform",
+      "type": "backend",
+      "label": "プラットフォーム",
+      "sublabel": "ウェブ UI + API",
+      "pos": [
+        460,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platformdb",
+      "type": "database",
+      "label": "プラットフォーム DB",
+      "sublabel": "PostgreSQL",
+      "pos": [
+        250,
+        250
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "agentfw",
+      "type": "backend",
+      "label": "Agent フレームワーク",
+      "sublabel": "Product → Agent → App",
+      "tag": "コア",
+      "pos": [
+        670,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "構築オーケストレーション",
+      "sublabel": "計画・承認・タスク",
+      "pos": [
+        670,
+        250
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "sandbox",
+      "type": "cloud",
+      "label": "builder サンドボックス",
+      "sublabel": "Agent ごとに 1 コンテナ",
+      "pos": [
+        890,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "modelgw",
+      "type": "backend",
+      "label": "モデルゲートウェイ",
+      "sublabel": "GPT-6 · Opus · DeepSeek",
+      "pos": [
+        1110,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "runtime",
+      "type": "cloud",
+      "label": "App ランタイム",
+      "sublabel": "プレビュー・本番",
+      "pos": [
+        455,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "capgw",
+      "type": "backend",
+      "label": "機能ゲートウェイ",
+      "sublabel": "AI・メール・チェーン・定期",
+      "pos": [
+        890,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "appdb",
+      "type": "database",
+      "label": "App データベース",
+      "sublabel": "App ごと・環境ごと",
+      "pos": [
+        250,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "outside",
+      "type": "external",
+      "label": "外部サービス",
+      "sublabel": "Base チェーン・SaaS・MCP",
+      "pos": [
+        1110,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "キーなし・git なし",
+      "wraps": [
+        "sandbox"
+      ],
+      "pad": 12
+    }
+  ],
+  "connections": [
+    {
+      "id": "people-edge",
+      "from": "people",
+      "to": "edge",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "id": "edge-platform",
+      "from": "edge",
+      "to": "platform"
+    },
+    {
+      "id": "platform-agentfw",
+      "from": "platform",
+      "to": "agentfw",
+      "label": "1 ターン"
+    },
+    {
+      "id": "agentfw-sandbox",
+      "from": "agentfw",
+      "to": "sandbox",
+      "label": "コード貸出"
+    },
+    {
+      "id": "sandbox-modelgw",
+      "from": "sandbox",
+      "to": "modelgw",
+      "label": "呼び出し"
+    },
+    {
+      "id": "platform-db",
+      "from": "platform",
+      "to": "platformdb",
+      "label": "SQL"
+    },
+    {
+      "id": "platform-runtime",
+      "from": "platform",
+      "to": "runtime",
+      "label": "本番 App を開く",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 150
+    },
+    {
+      "id": "agentfw-orch",
+      "from": "agentfw",
+      "to": "orchestrator",
+      "label": "大きな依頼",
+      "labelDy": 60
+    },
+    {
+      "id": "orch-runtime",
+      "from": "orchestrator",
+      "to": "runtime",
+      "label": "本番へ"
+    },
+    {
+      "id": "orch-sandbox",
+      "from": "orchestrator",
+      "to": "sandbox",
+      "label": "タスクを配る"
+    },
+    {
+      "id": "runtime-capgw",
+      "from": "runtime",
+      "to": "capgw",
+      "label": "機能呼び出し"
+    },
+    {
+      "id": "runtime-appdb",
+      "from": "runtime",
+      "to": "appdb",
+      "label": "データ"
+    },
+    {
+      "id": "capgw-outside",
+      "from": "capgw",
+      "to": "outside",
+      "label": "プロキシ"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "Agent フレームワーク",
+      "items": [
+        "作者はルール、手法、Skills を Product の版として凍結する",
+        "ユーザーはそこから Agent を作る: 制御面 1 つ + App 1..N 個",
+        "プラットフォームが毎ターン指示、Skills、MCP を組み立てる"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "二段階の制御",
+      "items": [
+        "一文 = 一回のモデルのツールループ",
+        "大きな依頼はプラットフォームが進める計画になる: 計画 → 承認 → 構築・チェック・レビュー・修正 → 最終レビュー",
+        "すべての App が一緒に本番へ。データは常に残る"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "セキュリティ境界",
+      "items": [
+        "サンドボックスはコードを借りるだけ",
+        "キー、git コミット、上流のモデルキーはプラットフォームに残る",
+        "外部アカウントのトークンはプラットフォーム経由でのみ使う"
+      ]
+    }
+  ]
+}

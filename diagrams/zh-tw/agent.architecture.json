@@ -1,0 +1,987 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "一個 Agent 由什麼組成",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "hidden"
+    },
+    "views": [
+      {
+        "id": "florist",
+        "label": "花店：一句話做出能收款的 App",
+        "focus": [
+          "people",
+          "builder",
+          "c-agents",
+          "c-plan",
+          "modelhub",
+          "skillhub",
+          "s-wallet",
+          "s-data",
+          "s-chain",
+          "t-edit",
+          "t-bash",
+          "appcode",
+          "frontend",
+          "backend",
+          "appdb",
+          "contracts"
+        ],
+        "note": "要一間收 SSU、會發優惠券的花店：builder 讀取計畫、推理，用上三項 Skills，再修改並執行程式碼。"
+      },
+      {
+        "id": "design",
+        "label": "照設計稿做頁面",
+        "focus": [
+          "people",
+          "builder",
+          "mcphub",
+          "m-figma",
+          "m-pencil",
+          "m-linear",
+          "skillhub",
+          "s-taste",
+          "s-design",
+          "t-edit",
+          "m-playwright",
+          "appcode",
+          "frontend"
+        ],
+        "note": "要照 Figma 檔與 Linear 工單做首頁：MCP 讀取兩者，設計類 Skills 從旁引導，再由 Playwright 檢查。"
+      },
+      {
+        "id": "video",
+        "label": "加上產品影片",
+        "focus": [
+          "people",
+          "builder",
+          "skillhub",
+          "s-video",
+          "s-media",
+          "s-ai",
+          "t-bash",
+          "t-edit",
+          "appcode",
+          "frontend"
+        ],
+        "note": "要一支 30 秒的介紹影片：影片與圖片 Skills 引導 builder；它產生影片並放進前端。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "人",
+      "sublabel": "擁有者 · 團隊",
+      "pos": [
+        10,
+        200
+      ],
+      "size": [
+        90,
+        64
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "編排",
+      "sublabel": "規劃與派發",
+      "pos": [
+        142,
+        10
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "reviewers",
+      "type": "security",
+      "label": "審查者",
+      "sublabel": "計畫 · 任務 · 終審",
+      "pos": [
+        1070,
+        10
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "builder",
+      "type": "backend",
+      "label": "builder",
+      "sublabel": "思考 → 行動 → 檢查",
+      "pos": [
+        142,
+        200
+      ],
+      "size": [
+        120,
+        64
+      ],
+      "tag": "核心"
+    },
+    {
+      "id": "ctxhub",
+      "type": "database",
+      "label": "上下文",
+      "sublabel": "每輪重新組裝",
+      "pos": [
+        142,
+        304
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-agents",
+      "type": "database",
+      "label": "指令",
+      "sublabel": "AGENTS.md · 規則",
+      "pos": [
+        142,
+        364
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-session",
+      "type": "database",
+      "label": "工作階段",
+      "sublabel": "延續 · 換新",
+      "pos": [
+        142,
+        420
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-plan",
+      "type": "database",
+      "label": "計畫檔",
+      "sublabel": "PLAN.md · .steps",
+      "pos": [
+        142,
+        476
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "modelhub",
+      "type": "backend",
+      "label": "模型路由",
+      "sublabel": "代理 · 分級",
+      "pos": [
+        330,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "gpt",
+      "type": "external",
+      "label": "GPT-6",
+      "sublabel": "OpenAI",
+      "pos": [
+        438,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "openai"
+    },
+    {
+      "id": "opus",
+      "type": "external",
+      "label": "Opus",
+      "sublabel": "Anthropic",
+      "pos": [
+        546,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "claude"
+    },
+    {
+      "id": "deepseek",
+      "type": "external",
+      "label": "DeepSeek",
+      "sublabel": "開放權重",
+      "pos": [
+        654,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "deepseek"
+    },
+    {
+      "id": "skillhub",
+      "type": "database",
+      "label": "Skills",
+      "sublabel": "基礎 + 產品",
+      "pos": [
+        330,
+        246
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-ai",
+      "type": "database",
+      "label": "AI 與圖片",
+      "sublabel": "模型 · 圖片",
+      "pos": [
+        438,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-media",
+      "type": "database",
+      "label": "AI 影片",
+      "sublabel": "影片 · 音樂",
+      "pos": [
+        546,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-video",
+      "type": "database",
+      "label": "HyperFrames",
+      "sublabel": "用 HTML 做影片",
+      "pos": [
+        654,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-data",
+      "type": "database",
+      "label": "資料",
+      "sublabel": "資料庫 · 串接",
+      "pos": [
+        762,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-chain",
+      "type": "database",
+      "label": "合約",
+      "sublabel": "撰寫 · 部署",
+      "pos": [
+        870,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-wallet",
+      "type": "database",
+      "label": "錢包與付款",
+      "sublabel": "身分 · SSU",
+      "pos": [
+        978,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-mail",
+      "type": "database",
+      "label": "郵件與排程",
+      "sublabel": "郵件 · 排程",
+      "pos": [
+        438,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-lark",
+      "type": "database",
+      "label": "Lark 文件",
+      "sublabel": "lark-doc",
+      "pos": [
+        546,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-browser",
+      "type": "database",
+      "label": "瀏覽器操作",
+      "sublabel": "點擊 · 截圖",
+      "pos": [
+        654,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-taste",
+      "type": "database",
+      "label": "UI 設計",
+      "sublabel": "版面 · 品味",
+      "pos": [
+        762,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-react",
+      "type": "database",
+      "label": "React",
+      "sublabel": "最佳實務",
+      "pos": [
+        870,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-design",
+      "type": "database",
+      "label": "設計",
+      "sublabel": "設計系統 · 升級",
+      "pos": [
+        978,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "mcphub",
+      "type": "security",
+      "label": "MCP 閘道",
+      "sublabel": "唯讀代理",
+      "pos": [
+        330,
+        396
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-pencil",
+      "type": "external",
+      "label": "Pencil",
+      "sublabel": "設計稿",
+      "pos": [
+        438,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-figma",
+      "type": "external",
+      "label": "Figma",
+      "sublabel": "設計 → UI",
+      "pos": [
+        546,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "figma"
+    },
+    {
+      "id": "m-playwright",
+      "type": "external",
+      "label": "Playwright",
+      "sublabel": "瀏覽器測試",
+      "pos": [
+        654,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-context7",
+      "type": "external",
+      "label": "Context7",
+      "sublabel": "最新函式庫文件",
+      "pos": [
+        762,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-github",
+      "type": "external",
+      "label": "GitHub",
+      "sublabel": "儲存庫 · issue",
+      "pos": [
+        870,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "github"
+    },
+    {
+      "id": "m-linear",
+      "type": "external",
+      "label": "Linear",
+      "sublabel": "工單",
+      "pos": [
+        978,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "linear"
+    },
+    {
+      "id": "m-notion",
+      "type": "external",
+      "label": "Notion",
+      "sublabel": "文件 · 資料庫",
+      "pos": [
+        438,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "notion"
+    },
+    {
+      "id": "m-conn",
+      "type": "external",
+      "label": "Connectors",
+      "sublabel": "Drive · Lark",
+      "pos": [
+        546,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-ext",
+      "type": "external",
+      "label": "更多 MCP",
+      "sublabel": "由擁有者加入",
+      "pos": [
+        654,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "toolhub",
+      "type": "backend",
+      "label": "內建工具",
+      "sublabel": "在沙箱中執行",
+      "pos": [
+        330,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-read",
+      "type": "backend",
+      "label": "讀取 · 搜尋",
+      "sublabel": "read · grep",
+      "pos": [
+        438,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-web",
+      "type": "backend",
+      "label": "抓取網頁",
+      "sublabel": "閱讀文件",
+      "pos": [
+        546,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-todo",
+      "type": "backend",
+      "label": "待辦清單",
+      "sublabel": "逐項勾選",
+      "pos": [
+        654,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-ask",
+      "type": "backend",
+      "label": "向人提問",
+      "sublabel": "產品決定",
+      "pos": [
+        762,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-edit",
+      "type": "backend",
+      "label": "編輯檔案",
+      "sublabel": "write · edit",
+      "pos": [
+        870,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-bash",
+      "type": "backend",
+      "label": "執行指令",
+      "sublabel": "測試 · 編譯",
+      "pos": [
+        978,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "contracts",
+      "type": "security",
+      "label": "合約",
+      "sublabel": "Base · 擁有者部署",
+      "pos": [
+        150,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "frontend",
+      "type": "frontend",
+      "label": "前端",
+      "sublabel": "React · 放在 R2",
+      "pos": [
+        320,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "backend",
+      "type": "backend",
+      "label": "後端",
+      "sublabel": "隨需容器",
+      "pos": [
+        490,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "appdb",
+      "type": "database",
+      "label": "資料庫",
+      "sublabel": "每個環境一個 schema",
+      "pos": [
+        660,
+        636
+      ],
+      "size": [
+        140,
+        52
+      ]
+    },
+    {
+      "id": "appcode",
+      "type": "cloud",
+      "label": "程式碼 · 預覽",
+      "sublabel": "在沙箱編輯 · 在預覽執行",
+      "pos": [
+        870,
+        636
+      ],
+      "size": [
+        208,
+        52
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Agent",
+      "wraps": [
+        "builder",
+        "ctxhub",
+        "modelhub",
+        "skillhub",
+        "mcphub",
+        "toolhub",
+        "gpt",
+        "opus",
+        "deepseek",
+        "c-agents",
+        "c-session",
+        "c-plan",
+        "s-ai",
+        "s-media",
+        "s-video",
+        "s-data",
+        "s-chain",
+        "s-wallet",
+        "s-mail",
+        "s-lark",
+        "s-browser",
+        "s-taste",
+        "s-react",
+        "s-design",
+        "m-pencil",
+        "m-figma",
+        "m-playwright",
+        "m-context7",
+        "m-github",
+        "m-linear",
+        "m-notion",
+        "m-conn",
+        "m-ext",
+        "t-read",
+        "t-web",
+        "t-todo",
+        "t-ask",
+        "t-edit",
+        "t-bash"
+      ],
+      "pad": 16
+    },
+    {
+      "kind": "region",
+      "label": "上下文 · 記憶",
+      "wraps": [
+        "ctxhub",
+        "c-agents",
+        "c-session",
+        "c-plan"
+      ],
+      "pad": 10
+    },
+    {
+      "kind": "region",
+      "label": "模型",
+      "wraps": [
+        "modelhub",
+        "gpt",
+        "opus",
+        "deepseek"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "Skills",
+      "wraps": [
+        "skillhub",
+        "s-ai",
+        "s-media",
+        "s-video",
+        "s-data",
+        "s-chain",
+        "s-wallet",
+        "s-mail",
+        "s-lark",
+        "s-browser",
+        "s-taste",
+        "s-react",
+        "s-design"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "MCP",
+      "wraps": [
+        "mcphub",
+        "m-pencil",
+        "m-figma",
+        "m-playwright",
+        "m-context7",
+        "m-github",
+        "m-linear",
+        "m-notion",
+        "m-conn",
+        "m-ext"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "工具",
+      "wraps": [
+        "toolhub",
+        "t-read",
+        "t-web",
+        "t-todo",
+        "t-ask",
+        "t-edit",
+        "t-bash"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "App × N · 每個 App 一套",
+      "wraps": [
+        "contracts",
+        "frontend",
+        "backend",
+        "appdb",
+        "appcode"
+      ],
+      "pad": 20
+    }
+  ],
+  "connections": [
+    {
+      "id": "people-builder",
+      "from": "people",
+      "to": "builder",
+      "label": "對話",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ctx-builder",
+      "from": "ctxhub",
+      "to": "builder"
+    },
+    {
+      "id": "builder-model",
+      "from": "builder",
+      "to": "modelhub",
+      "label": "推理",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "skill-builder",
+      "from": "skillhub",
+      "to": "builder",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "builder-mcp",
+      "from": "builder",
+      "to": "mcphub",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "builder-tool",
+      "from": "builder",
+      "to": "toolhub",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "edit-appcode",
+      "from": "t-edit",
+      "to": "appcode",
+      "label": "改程式碼",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "bash-appcode",
+      "from": "t-bash",
+      "to": "appcode",
+      "label": "執行 · 預覽",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "frontend-contracts",
+      "from": "frontend",
+      "to": "contracts",
+      "label": "錢包"
+    },
+    {
+      "id": "frontend-backend",
+      "from": "frontend",
+      "to": "backend",
+      "label": "API"
+    },
+    {
+      "id": "backend-appdb",
+      "from": "backend",
+      "to": "appdb",
+      "label": "資料"
+    },
+    {
+      "id": "builder-orch",
+      "from": "builder",
+      "to": "orchestrator",
+      "label": "完成 · 交回",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "people-orch",
+      "from": "people",
+      "to": "orchestrator",
+      "label": "核准計畫",
+      "fromSide": "top",
+      "toSide": "left",
+      "via": [
+        [
+          55,
+          36
+        ]
+      ]
+    },
+    {
+      "id": "orch-reviewers",
+      "from": "orchestrator",
+      "to": "reviewers",
+      "label": "送審"
+    },
+    {
+      "id": "reviewers-appcode",
+      "from": "reviewers",
+      "to": "appcode",
+      "label": "審查後上線",
+      "fromSide": "bottom",
+      "toSide": "right"
+    }
+  ]
+}

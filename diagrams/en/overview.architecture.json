@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "OpenStep system overview",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "turn-path",
+        "label": "How one sentence becomes code",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "agentfw",
+          "sandbox",
+          "modelgw"
+        ],
+        "note": "Someone says one sentence on an Agent: the platform admits it, assembles instructions, and a model edits code in an isolated sandbox."
+      },
+      {
+        "id": "learner",
+        "label": "Learner: taking a course",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "runtime",
+          "appdb",
+          "capgw",
+          "outside"
+        ],
+        "note": "Learners build nothing. They join from the instructor's link, use the live App inside the course page, and share class data."
+      },
+      {
+        "id": "instructor",
+        "label": "Instructor: running a class",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "platformdb",
+          "agentfw",
+          "orchestrator",
+          "runtime"
+        ],
+        "note": "An instructor opens a class from a course product, reviews changes on real data before they go live, shares the join link."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "Users & visitors",
+      "sublabel": "Build · teach · learn",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "edge",
+      "type": "cloud",
+      "label": "Edge",
+      "sublabel": "Routes by domain",
+      "pos": [
+        250,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platform",
+      "type": "backend",
+      "label": "Platform services",
+      "sublabel": "Web UI + API",
+      "pos": [
+        460,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platformdb",
+      "type": "database",
+      "label": "Platform database",
+      "sublabel": "PostgreSQL",
+      "pos": [
+        250,
+        250
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "agentfw",
+      "type": "backend",
+      "label": "Agent framework",
+      "sublabel": "Product → Agent → App",
+      "tag": "Core",
+      "pos": [
+        670,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "Build orchestration",
+      "sublabel": "Plan · approve · tasks",
+      "pos": [
+        670,
+        250
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "sandbox",
+      "type": "cloud",
+      "label": "Builder sandbox",
+      "sublabel": "One container per Agent",
+      "pos": [
+        890,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "modelgw",
+      "type": "backend",
+      "label": "Model gateway",
+      "sublabel": "GPT-6 · Opus · DeepSeek",
+      "pos": [
+        1110,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "runtime",
+      "type": "cloud",
+      "label": "App runtime",
+      "sublabel": "Preview · live",
+      "pos": [
+        455,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "capgw",
+      "type": "backend",
+      "label": "Capability gateway",
+      "sublabel": "AI · mail · chain · cron",
+      "pos": [
+        890,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "appdb",
+      "type": "database",
+      "label": "App database",
+      "sublabel": "Per App, per env",
+      "pos": [
+        250,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "outside",
+      "type": "external",
+      "label": "Outside services",
+      "sublabel": "Base chain · SaaS · MCP",
+      "pos": [
+        1110,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "No keys · no git",
+      "wraps": [
+        "sandbox"
+      ],
+      "pad": 12
+    }
+  ],
+  "connections": [
+    {
+      "id": "people-edge",
+      "from": "people",
+      "to": "edge",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "id": "edge-platform",
+      "from": "edge",
+      "to": "platform"
+    },
+    {
+      "id": "platform-agentfw",
+      "from": "platform",
+      "to": "agentfw",
+      "label": "One turn"
+    },
+    {
+      "id": "agentfw-sandbox",
+      "from": "agentfw",
+      "to": "sandbox",
+      "label": "Lend code"
+    },
+    {
+      "id": "sandbox-modelgw",
+      "from": "sandbox",
+      "to": "modelgw",
+      "label": "Model calls"
+    },
+    {
+      "id": "platform-db",
+      "from": "platform",
+      "to": "platformdb",
+      "label": "SQL"
+    },
+    {
+      "id": "platform-runtime",
+      "from": "platform",
+      "to": "runtime",
+      "label": "Open live App",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 150
+    },
+    {
+      "id": "agentfw-orch",
+      "from": "agentfw",
+      "to": "orchestrator",
+      "label": "Big request",
+      "labelDy": 60
+    },
+    {
+      "id": "orch-runtime",
+      "from": "orchestrator",
+      "to": "runtime",
+      "label": "Go live"
+    },
+    {
+      "id": "orch-sandbox",
+      "from": "orchestrator",
+      "to": "sandbox",
+      "label": "Dispatch tasks"
+    },
+    {
+      "id": "runtime-capgw",
+      "from": "runtime",
+      "to": "capgw",
+      "label": "Capability calls"
+    },
+    {
+      "id": "runtime-appdb",
+      "from": "runtime",
+      "to": "appdb",
+      "label": "Data"
+    },
+    {
+      "id": "capgw-outside",
+      "from": "capgw",
+      "to": "outside",
+      "label": "Proxy"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "Agent framework",
+      "items": [
+        "Authors freeze rules, method and skills into a Product version",
+        "Users create an Agent from it: one control plane + 1..N Apps",
+        "Each turn the platform assembles instructions, skills and MCP"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Two levels of control",
+      "items": [
+        "One sentence = one model tool loop",
+        "Big requests run as a platform-scheduled plan: plan → approve → build · check · review · fix → final review",
+        "All Apps go live together; data is always kept"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Security boundary",
+      "items": [
+        "The sandbox only gets code on loan",
+        "Keys, git commits and upstream model keys stay on the platform",
+        "Outside account tokens are used only through the platform"
+      ]
+    }
+  ]
+}

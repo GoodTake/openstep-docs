@@ -1,0 +1,988 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "What one Agent is made of",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "hidden"
+    },
+    "views": [
+      {
+        "id": "florist",
+        "label": "Florist: one sentence to a paying app",
+        "focus": [
+          "people",
+          "builder",
+          "c-agents",
+          "c-plan",
+          "modelhub",
+          "skillhub",
+          "s-wallet",
+          "s-data",
+          "s-chain",
+          "t-edit",
+          "t-bash",
+          "appcode",
+          "frontend",
+          "backend",
+          "appdb",
+          "contracts"
+        ],
+        "note": "Ask for a flower shop that takes SSU and gives coupons: the builder reads its plan, reasons, uses three skills, then edits and runs code."
+      },
+      {
+        "id": "design",
+        "label": "Build a page from a design",
+        "focus": [
+          "people",
+          "builder",
+          "mcphub",
+          "m-figma",
+          "m-pencil",
+          "m-linear",
+          "skillhub",
+          "s-taste",
+          "s-design",
+          "t-edit",
+          "m-playwright",
+          "appcode",
+          "frontend"
+        ],
+        "note": "Ask to build the home page from a Figma file and a Linear ticket: MCP reads both, design skills guide it, Playwright checks it."
+      },
+      {
+        "id": "video",
+        "label": "Add a product video",
+        "focus": [
+          "people",
+          "builder",
+          "skillhub",
+          "s-video",
+          "s-media",
+          "s-ai",
+          "t-bash",
+          "t-edit",
+          "appcode",
+          "frontend"
+        ],
+        "note": "Ask for a 30-second intro video: video and image skills guide the builder; it renders the video and adds it to the frontend."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "People",
+      "sublabel": "Owner · team",
+      "pos": [
+        10,
+        200
+      ],
+      "size": [
+        90,
+        64
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "Orchestration",
+      "sublabel": "Plan & dispatch",
+      "pos": [
+        142,
+        10
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "reviewers",
+      "type": "security",
+      "label": "Reviewers",
+      "sublabel": "Plan · task · final",
+      "pos": [
+        1070,
+        10
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "builder",
+      "type": "backend",
+      "label": "builder",
+      "sublabel": "think → act → check",
+      "pos": [
+        142,
+        200
+      ],
+      "size": [
+        120,
+        64
+      ],
+      "tag": "Core"
+    },
+    {
+      "id": "ctxhub",
+      "type": "database",
+      "label": "Context",
+      "sublabel": "Assembled each turn",
+      "pos": [
+        142,
+        304
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-agents",
+      "type": "database",
+      "label": "Instructions",
+      "sublabel": "AGENTS.md · rules",
+      "pos": [
+        142,
+        364
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-session",
+      "type": "database",
+      "label": "Session",
+      "sublabel": "Resumed · renewed",
+      "pos": [
+        142,
+        420
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-plan",
+      "type": "database",
+      "label": "Plan files",
+      "sublabel": "PLAN.md · .steps",
+      "pos": [
+        142,
+        476
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "modelhub",
+      "type": "backend",
+      "label": "Model router",
+      "sublabel": "Proxied · tiered",
+      "pos": [
+        330,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "gpt",
+      "type": "external",
+      "label": "GPT-6",
+      "sublabel": "OpenAI",
+      "pos": [
+        438,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "openai"
+    },
+    {
+      "id": "opus",
+      "type": "external",
+      "label": "Opus",
+      "sublabel": "Anthropic",
+      "pos": [
+        546,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "claude"
+    },
+    {
+      "id": "deepseek",
+      "type": "external",
+      "label": "DeepSeek",
+      "sublabel": "Open weights",
+      "pos": [
+        654,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "deepseek"
+    },
+    {
+      "id": "skillhub",
+      "type": "database",
+      "label": "Skills",
+      "sublabel": "Base + product",
+      "pos": [
+        330,
+        246
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-ai",
+      "type": "database",
+      "label": "AI & images",
+      "sublabel": "Models · images",
+      "pos": [
+        438,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-media",
+      "type": "database",
+      "label": "AI video",
+      "sublabel": "Video · music",
+      "pos": [
+        546,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-video",
+      "type": "database",
+      "label": "HyperFrames",
+      "sublabel": "Video from HTML",
+      "pos": [
+        654,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-data",
+      "type": "database",
+      "label": "Data",
+      "sublabel": "DB · wiring",
+      "pos": [
+        762,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-chain",
+      "type": "database",
+      "label": "Contracts",
+      "sublabel": "Write · deploy",
+      "pos": [
+        870,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-wallet",
+      "type": "database",
+      "label": "Wallet & pay",
+      "sublabel": "Identity · SSU",
+      "pos": [
+        978,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-mail",
+      "type": "database",
+      "label": "Email & cron",
+      "sublabel": "Mail · schedules",
+      "pos": [
+        438,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-lark",
+      "type": "database",
+      "label": "Lark docs",
+      "sublabel": "lark-doc",
+      "pos": [
+        546,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-browser",
+      "type": "database",
+      "label": "Browser use",
+      "sublabel": "Click · capture",
+      "pos": [
+        654,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-taste",
+      "type": "database",
+      "label": "UI design",
+      "sublabel": "Layout · taste",
+      "pos": [
+        762,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-react",
+      "type": "database",
+      "label": "React",
+      "sublabel": "Best practices",
+      "pos": [
+        870,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-design",
+      "type": "database",
+      "label": "Design",
+      "sublabel": "System · upgrade",
+      "pos": [
+        978,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "mcphub",
+      "type": "security",
+      "label": "MCP gateway",
+      "sublabel": "Read-only proxy",
+      "pos": [
+        330,
+        396
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-pencil",
+      "type": "external",
+      "label": "Pencil",
+      "sublabel": "Design files",
+      "pos": [
+        438,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-figma",
+      "type": "external",
+      "label": "Figma",
+      "sublabel": "Design → UI",
+      "pos": [
+        546,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "figma"
+    },
+    {
+      "id": "m-playwright",
+      "type": "external",
+      "label": "Playwright",
+      "sublabel": "Browser tests",
+      "pos": [
+        654,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-context7",
+      "type": "external",
+      "label": "Context7",
+      "sublabel": "Fresh lib docs",
+      "pos": [
+        762,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-github",
+      "type": "external",
+      "label": "GitHub",
+      "sublabel": "Repos · issues",
+      "pos": [
+        870,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "github"
+    },
+    {
+      "id": "m-linear",
+      "type": "external",
+      "label": "Linear",
+      "sublabel": "Tickets",
+      "pos": [
+        978,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "linear"
+    },
+    {
+      "id": "m-notion",
+      "type": "external",
+      "label": "Notion",
+      "sublabel": "Docs · databases",
+      "pos": [
+        438,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "notion"
+    },
+    {
+      "id": "m-conn",
+      "type": "external",
+      "label": "Connectors",
+      "sublabel": "Drive · Lark",
+      "pos": [
+        546,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-ext",
+      "type": "external",
+      "label": "More MCP",
+      "sublabel": "Owner adds",
+      "pos": [
+        654,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "toolhub",
+      "type": "backend",
+      "label": "Built-ins",
+      "sublabel": "Run in sandbox",
+      "pos": [
+        330,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-read",
+      "type": "backend",
+      "label": "Read · find",
+      "sublabel": "read · grep",
+      "pos": [
+        438,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-web",
+      "type": "backend",
+      "label": "Web fetch",
+      "sublabel": "Read docs",
+      "pos": [
+        546,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-todo",
+      "type": "backend",
+      "label": "To-do list",
+      "sublabel": "Tick steps",
+      "pos": [
+        654,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-ask",
+      "type": "backend",
+      "label": "Ask a person",
+      "sublabel": "Product calls",
+      "pos": [
+        762,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-edit",
+      "type": "backend",
+      "label": "Edit files",
+      "sublabel": "write · edit",
+      "pos": [
+        870,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-bash",
+      "type": "backend",
+      "label": "Run commands",
+      "sublabel": "Test · compile",
+      "pos": [
+        978,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "contracts",
+      "type": "security",
+      "label": "Contracts",
+      "sublabel": "Base · owner deploys",
+      "pos": [
+        150,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "frontend",
+      "type": "frontend",
+      "label": "Frontend",
+      "sublabel": "React · on R2",
+      "pos": [
+        320,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "backend",
+      "type": "backend",
+      "label": "Backend",
+      "sublabel": "On-demand container",
+      "pos": [
+        490,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "appdb",
+      "type": "database",
+      "label": "Database",
+      "sublabel": "One schema per env",
+      "pos": [
+        660,
+        636
+      ],
+      "size": [
+        140,
+        52
+      ]
+    },
+    {
+      "id": "appcode",
+      "type": "cloud",
+      "label": "Code · preview",
+      "sublabel": "Edit in sandbox · run in preview",
+      "pos": [
+        870,
+        636
+      ],
+      "size": [
+        208,
+        52
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Agent",
+      "wraps": [
+        "builder",
+        "ctxhub",
+        "modelhub",
+        "skillhub",
+        "mcphub",
+        "toolhub",
+        "gpt",
+        "opus",
+        "deepseek",
+        "c-agents",
+        "c-session",
+        "c-plan",
+        "s-ai",
+        "s-media",
+        "s-video",
+        "s-data",
+        "s-chain",
+        "s-wallet",
+        "s-mail",
+        "s-lark",
+        "s-browser",
+        "s-taste",
+        "s-react",
+        "s-design",
+        "m-pencil",
+        "m-figma",
+        "m-playwright",
+        "m-context7",
+        "m-github",
+        "m-linear",
+        "m-notion",
+        "m-conn",
+        "m-ext",
+        "t-read",
+        "t-web",
+        "t-todo",
+        "t-ask",
+        "t-edit",
+        "t-bash"
+      ],
+      "pad": 16
+    },
+    {
+      "kind": "region",
+      "label": "Context · Memory",
+      "wraps": [
+        "ctxhub",
+        "c-agents",
+        "c-session",
+        "c-plan"
+      ],
+      "pad": 10
+    },
+    {
+      "kind": "region",
+      "label": "Models",
+      "wraps": [
+        "modelhub",
+        "gpt",
+        "opus",
+        "deepseek"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "Skills",
+      "wraps": [
+        "skillhub",
+        "s-ai",
+        "s-media",
+        "s-video",
+        "s-data",
+        "s-chain",
+        "s-wallet",
+        "s-mail",
+        "s-lark",
+        "s-browser",
+        "s-taste",
+        "s-react",
+        "s-design"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "MCP",
+      "wraps": [
+        "mcphub",
+        "m-pencil",
+        "m-figma",
+        "m-playwright",
+        "m-context7",
+        "m-github",
+        "m-linear",
+        "m-notion",
+        "m-conn",
+        "m-ext"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "Tools",
+      "wraps": [
+        "toolhub",
+        "t-read",
+        "t-web",
+        "t-todo",
+        "t-ask",
+        "t-edit",
+        "t-bash"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "App × N · one set per App",
+      "wraps": [
+        "contracts",
+        "frontend",
+        "backend",
+        "appdb",
+        "appcode"
+      ],
+      "pad": 20
+    }
+  ],
+  "connections": [
+    {
+      "id": "people-builder",
+      "from": "people",
+      "to": "builder",
+      "label": "Talk",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ctx-builder",
+      "from": "ctxhub",
+      "to": "builder"
+    },
+    {
+      "id": "builder-model",
+      "from": "builder",
+      "to": "modelhub",
+      "label": "Reason",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "skill-builder",
+      "from": "skillhub",
+      "to": "builder",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "builder-mcp",
+      "from": "builder",
+      "to": "mcphub",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "builder-tool",
+      "from": "builder",
+      "to": "toolhub",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "edit-appcode",
+      "from": "t-edit",
+      "to": "appcode",
+      "label": "Edit code",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "bash-appcode",
+      "from": "t-bash",
+      "to": "appcode",
+      "label": "Run · preview",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "frontend-contracts",
+      "from": "frontend",
+      "to": "contracts",
+      "label": "Wallet"
+    },
+    {
+      "id": "frontend-backend",
+      "from": "frontend",
+      "to": "backend",
+      "label": "API"
+    },
+    {
+      "id": "backend-appdb",
+      "from": "backend",
+      "to": "appdb",
+      "label": "Data"
+    },
+    {
+      "id": "builder-orch",
+      "from": "builder",
+      "to": "orchestrator",
+      "label": "Done · hand back",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "people-orch",
+      "from": "people",
+      "to": "orchestrator",
+      "label": "Approve plan",
+      "fromSide": "top",
+      "toSide": "left",
+      "via": [
+        [
+          55,
+          36
+        ]
+      ]
+    },
+    {
+      "id": "orch-reviewers",
+      "from": "orchestrator",
+      "to": "reviewers",
+      "label": "Send for review"
+    },
+    {
+      "id": "reviewers-appcode",
+      "from": "reviewers",
+      "to": "appcode",
+      "label": "Go live after review",
+      "fromSide": "bottom",
+      "toSide": "right"
+    }
+  ]
+}

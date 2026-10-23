@@ -1,0 +1,988 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "一つの Agent の構成",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "hidden"
+    },
+    "views": [
+      {
+        "id": "florist",
+        "label": "花屋: 一文から決済できる App へ",
+        "focus": [
+          "people",
+          "builder",
+          "c-agents",
+          "c-plan",
+          "modelhub",
+          "skillhub",
+          "s-wallet",
+          "s-data",
+          "s-chain",
+          "t-edit",
+          "t-bash",
+          "appcode",
+          "frontend",
+          "backend",
+          "appdb",
+          "contracts"
+        ],
+        "note": "SSU で支払えてクーポンを配る花屋を頼むと、builder は計画を読んで推論し、3 つの Skill を使ってからコードを編集・実行します。"
+      },
+      {
+        "id": "design",
+        "label": "デザインからページを作る",
+        "focus": [
+          "people",
+          "builder",
+          "mcphub",
+          "m-figma",
+          "m-pencil",
+          "m-linear",
+          "skillhub",
+          "s-taste",
+          "s-design",
+          "t-edit",
+          "m-playwright",
+          "appcode",
+          "frontend"
+        ],
+        "note": "Figma のファイルと Linear のチケットからホームページを頼むと、MCP が両方を読み、デザイン系 Skill が導き、Playwright が確認します。"
+      },
+      {
+        "id": "video",
+        "label": "製品紹介動画を追加する",
+        "focus": [
+          "people",
+          "builder",
+          "skillhub",
+          "s-video",
+          "s-media",
+          "s-ai",
+          "t-bash",
+          "t-edit",
+          "appcode",
+          "frontend"
+        ],
+        "note": "30 秒の紹介動画を頼むと、動画と画像の Skill が builder を導きます。builder は動画をレンダリングしてフロントエンドに追加します。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "ユーザー",
+      "sublabel": "オーナー・チーム",
+      "pos": [
+        10,
+        200
+      ],
+      "size": [
+        90,
+        64
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "オーケストレーター",
+      "sublabel": "計画と振り分け",
+      "pos": [
+        142,
+        10
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "reviewers",
+      "type": "security",
+      "label": "レビュアー",
+      "sublabel": "計画・タスク・最終",
+      "pos": [
+        1070,
+        10
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "builder",
+      "type": "backend",
+      "label": "builder",
+      "sublabel": "思考 → 行動 → 確認",
+      "pos": [
+        142,
+        200
+      ],
+      "size": [
+        120,
+        64
+      ],
+      "tag": "コア"
+    },
+    {
+      "id": "ctxhub",
+      "type": "database",
+      "label": "コンテキスト",
+      "sublabel": "毎ターン組み立て",
+      "pos": [
+        142,
+        304
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-agents",
+      "type": "database",
+      "label": "指示",
+      "sublabel": "AGENTS.md・ルール",
+      "pos": [
+        142,
+        364
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-session",
+      "type": "database",
+      "label": "セッション",
+      "sublabel": "再開・更新",
+      "pos": [
+        142,
+        420
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "c-plan",
+      "type": "database",
+      "label": "計画ファイル",
+      "sublabel": "PLAN.md · .steps",
+      "pos": [
+        142,
+        476
+      ],
+      "size": [
+        120,
+        48
+      ]
+    },
+    {
+      "id": "modelhub",
+      "type": "backend",
+      "label": "モデルルーター",
+      "sublabel": "プロキシ・階層別",
+      "pos": [
+        330,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "gpt",
+      "type": "external",
+      "label": "GPT-6",
+      "sublabel": "OpenAI",
+      "pos": [
+        438,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "openai"
+    },
+    {
+      "id": "opus",
+      "type": "external",
+      "label": "Opus",
+      "sublabel": "Anthropic",
+      "pos": [
+        546,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "claude"
+    },
+    {
+      "id": "deepseek",
+      "type": "external",
+      "label": "DeepSeek",
+      "sublabel": "オープンウェイト",
+      "pos": [
+        654,
+        124
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "deepseek"
+    },
+    {
+      "id": "skillhub",
+      "type": "database",
+      "label": "Skills",
+      "sublabel": "基本 + Product",
+      "pos": [
+        330,
+        246
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-ai",
+      "type": "database",
+      "label": "AI と画像",
+      "sublabel": "モデル・画像",
+      "pos": [
+        438,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-media",
+      "type": "database",
+      "label": "AI 動画",
+      "sublabel": "動画・音楽",
+      "pos": [
+        546,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-video",
+      "type": "database",
+      "label": "HyperFrames",
+      "sublabel": "HTML から動画",
+      "pos": [
+        654,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-data",
+      "type": "database",
+      "label": "データ",
+      "sublabel": "DB・接続",
+      "pos": [
+        762,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-chain",
+      "type": "database",
+      "label": "コントラクト",
+      "sublabel": "作成・デプロイ",
+      "pos": [
+        870,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-wallet",
+      "type": "database",
+      "label": "ウォレットと決済",
+      "sublabel": "サインイン・SSU",
+      "pos": [
+        978,
+        218
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-mail",
+      "type": "database",
+      "label": "メールと定期実行",
+      "sublabel": "送信・スケジュール",
+      "pos": [
+        438,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-lark",
+      "type": "database",
+      "label": "Lark 文書",
+      "sublabel": "lark-doc",
+      "pos": [
+        546,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-browser",
+      "type": "database",
+      "label": "ブラウザ操作",
+      "sublabel": "クリック・撮影",
+      "pos": [
+        654,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-taste",
+      "type": "database",
+      "label": "UI デザイン",
+      "sublabel": "レイアウト・センス",
+      "pos": [
+        762,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-react",
+      "type": "database",
+      "label": "React",
+      "sublabel": "ベストプラクティス",
+      "pos": [
+        870,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "s-design",
+      "type": "database",
+      "label": "デザイン",
+      "sublabel": "システム・更新",
+      "pos": [
+        978,
+        274
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "mcphub",
+      "type": "security",
+      "label": "MCP ゲートウェイ",
+      "sublabel": "読取専用プロキシ",
+      "pos": [
+        330,
+        396
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-pencil",
+      "type": "external",
+      "label": "Pencil",
+      "sublabel": "デザインファイル",
+      "pos": [
+        438,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-figma",
+      "type": "external",
+      "label": "Figma",
+      "sublabel": "デザイン → UI",
+      "pos": [
+        546,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "figma"
+    },
+    {
+      "id": "m-playwright",
+      "type": "external",
+      "label": "Playwright",
+      "sublabel": "ブラウザテスト",
+      "pos": [
+        654,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-context7",
+      "type": "external",
+      "label": "Context7",
+      "sublabel": "最新ライブラリ文書",
+      "pos": [
+        762,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-github",
+      "type": "external",
+      "label": "GitHub",
+      "sublabel": "リポジトリ・issue",
+      "pos": [
+        870,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "github"
+    },
+    {
+      "id": "m-linear",
+      "type": "external",
+      "label": "Linear",
+      "sublabel": "チケット",
+      "pos": [
+        978,
+        368
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "linear"
+    },
+    {
+      "id": "m-notion",
+      "type": "external",
+      "label": "Notion",
+      "sublabel": "文書・データベース",
+      "pos": [
+        438,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ],
+      "brand": "notion"
+    },
+    {
+      "id": "m-conn",
+      "type": "external",
+      "label": "Connectors",
+      "sublabel": "Drive · Lark",
+      "pos": [
+        546,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "m-ext",
+      "type": "external",
+      "label": "その他の MCP",
+      "sublabel": "オーナーが追加",
+      "pos": [
+        654,
+        424
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "toolhub",
+      "type": "backend",
+      "label": "組み込みツール",
+      "sublabel": "サンドボックス実行",
+      "pos": [
+        330,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-read",
+      "type": "backend",
+      "label": "読む・探す",
+      "sublabel": "read · grep",
+      "pos": [
+        438,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-web",
+      "type": "backend",
+      "label": "Web 取得",
+      "sublabel": "文書を読む",
+      "pos": [
+        546,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-todo",
+      "type": "backend",
+      "label": "ToDo リスト",
+      "sublabel": "ステップにチェック",
+      "pos": [
+        654,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-ask",
+      "type": "backend",
+      "label": "人に聞く",
+      "sublabel": "プロダクト判断",
+      "pos": [
+        762,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-edit",
+      "type": "backend",
+      "label": "ファイル編集",
+      "sublabel": "write · edit",
+      "pos": [
+        870,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "t-bash",
+      "type": "backend",
+      "label": "コマンド実行",
+      "sublabel": "テスト・コンパイル",
+      "pos": [
+        978,
+        518
+      ],
+      "size": [
+        100,
+        48
+      ]
+    },
+    {
+      "id": "contracts",
+      "type": "security",
+      "label": "コントラクト",
+      "sublabel": "Base・所有者がデプロイ",
+      "pos": [
+        150,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "frontend",
+      "type": "frontend",
+      "label": "フロントエンド",
+      "sublabel": "React・R2 で配信",
+      "pos": [
+        320,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "backend",
+      "type": "backend",
+      "label": "バックエンド",
+      "sublabel": "オンデマンドコンテナ",
+      "pos": [
+        490,
+        636
+      ],
+      "size": [
+        120,
+        52
+      ]
+    },
+    {
+      "id": "appdb",
+      "type": "database",
+      "label": "データベース",
+      "sublabel": "環境ごとに 1 スキーマ",
+      "pos": [
+        660,
+        636
+      ],
+      "size": [
+        140,
+        52
+      ]
+    },
+    {
+      "id": "appcode",
+      "type": "cloud",
+      "label": "コード・プレビュー",
+      "sublabel": "サンドボックスで編集・プレビューで実行",
+      "pos": [
+        870,
+        636
+      ],
+      "size": [
+        208,
+        52
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Agent",
+      "wraps": [
+        "builder",
+        "ctxhub",
+        "modelhub",
+        "skillhub",
+        "mcphub",
+        "toolhub",
+        "gpt",
+        "opus",
+        "deepseek",
+        "c-agents",
+        "c-session",
+        "c-plan",
+        "s-ai",
+        "s-media",
+        "s-video",
+        "s-data",
+        "s-chain",
+        "s-wallet",
+        "s-mail",
+        "s-lark",
+        "s-browser",
+        "s-taste",
+        "s-react",
+        "s-design",
+        "m-pencil",
+        "m-figma",
+        "m-playwright",
+        "m-context7",
+        "m-github",
+        "m-linear",
+        "m-notion",
+        "m-conn",
+        "m-ext",
+        "t-read",
+        "t-web",
+        "t-todo",
+        "t-ask",
+        "t-edit",
+        "t-bash"
+      ],
+      "pad": 16
+    },
+    {
+      "kind": "region",
+      "label": "コンテキスト・メモリ",
+      "wraps": [
+        "ctxhub",
+        "c-agents",
+        "c-session",
+        "c-plan"
+      ],
+      "pad": 10
+    },
+    {
+      "kind": "region",
+      "label": "モデル",
+      "wraps": [
+        "modelhub",
+        "gpt",
+        "opus",
+        "deepseek"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "Skills",
+      "wraps": [
+        "skillhub",
+        "s-ai",
+        "s-media",
+        "s-video",
+        "s-data",
+        "s-chain",
+        "s-wallet",
+        "s-mail",
+        "s-lark",
+        "s-browser",
+        "s-taste",
+        "s-react",
+        "s-design"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "MCP",
+      "wraps": [
+        "mcphub",
+        "m-pencil",
+        "m-figma",
+        "m-playwright",
+        "m-context7",
+        "m-github",
+        "m-linear",
+        "m-notion",
+        "m-conn",
+        "m-ext"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "ツール",
+      "wraps": [
+        "toolhub",
+        "t-read",
+        "t-web",
+        "t-todo",
+        "t-ask",
+        "t-edit",
+        "t-bash"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "App × N・App ごとに 1 セット",
+      "wraps": [
+        "contracts",
+        "frontend",
+        "backend",
+        "appdb",
+        "appcode"
+      ],
+      "pad": 20
+    }
+  ],
+  "connections": [
+    {
+      "id": "people-builder",
+      "from": "people",
+      "to": "builder",
+      "label": "話す",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ctx-builder",
+      "from": "ctxhub",
+      "to": "builder"
+    },
+    {
+      "id": "builder-model",
+      "from": "builder",
+      "to": "modelhub",
+      "label": "推論",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "skill-builder",
+      "from": "skillhub",
+      "to": "builder",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "builder-mcp",
+      "from": "builder",
+      "to": "mcphub",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "builder-tool",
+      "from": "builder",
+      "to": "toolhub",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "edit-appcode",
+      "from": "t-edit",
+      "to": "appcode",
+      "label": "コード編集",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "bash-appcode",
+      "from": "t-bash",
+      "to": "appcode",
+      "label": "実行・プレビュー",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "frontend-contracts",
+      "from": "frontend",
+      "to": "contracts",
+      "label": "ウォレット",
+      "labelDy": 50
+    },
+    {
+      "id": "frontend-backend",
+      "from": "frontend",
+      "to": "backend",
+      "label": "API"
+    },
+    {
+      "id": "backend-appdb",
+      "from": "backend",
+      "to": "appdb",
+      "label": "データ"
+    },
+    {
+      "id": "builder-orch",
+      "from": "builder",
+      "to": "orchestrator",
+      "label": "完了・返却",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "people-orch",
+      "from": "people",
+      "to": "orchestrator",
+      "label": "計画を承認",
+      "fromSide": "top",
+      "toSide": "left",
+      "via": [
+        [
+          55,
+          36
+        ]
+      ]
+    },
+    {
+      "id": "orch-reviewers",
+      "from": "orchestrator",
+      "to": "reviewers",
+      "label": "レビューに出す"
+    },
+    {
+      "id": "reviewers-appcode",
+      "from": "reviewers",
+      "to": "appcode",
+      "label": "レビュー後に本番へ",
+      "fromSide": "bottom",
+      "toSide": "right"
+    }
+  ]
+}

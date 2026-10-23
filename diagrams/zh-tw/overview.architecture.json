@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "OpenStep 系統總覽",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "turn-path",
+        "label": "一句話如何變成程式碼",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "agentfw",
+          "sandbox",
+          "modelgw"
+        ],
+        "note": "有人在 Agent 上說一句話：平台受理後組裝指令，由模型在隔離的沙箱裡修改程式碼。"
+      },
+      {
+        "id": "learner",
+        "label": "學員：來上一門課",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "runtime",
+          "appdb",
+          "capgw",
+          "outside"
+        ],
+        "note": "學員不必建造任何東西。他們從講師的連結加入，在課程頁裡使用已上線的 App，並共用全班的資料。"
+      },
+      {
+        "id": "instructor",
+        "label": "講師：開一個班",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "platformdb",
+          "agentfw",
+          "orchestrator",
+          "runtime"
+        ],
+        "note": "講師用課程產品開班，變更先在真實資料上審查再上線，並分享加入連結。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "使用者與訪客",
+      "sublabel": "建造 · 授課 · 學習",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "edge",
+      "type": "cloud",
+      "label": "邊緣入口",
+      "sublabel": "依網域分流",
+      "pos": [
+        250,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platform",
+      "type": "backend",
+      "label": "平台服務",
+      "sublabel": "網頁介面 + API",
+      "pos": [
+        460,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platformdb",
+      "type": "database",
+      "label": "平台資料庫",
+      "sublabel": "PostgreSQL",
+      "pos": [
+        250,
+        250
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "agentfw",
+      "type": "backend",
+      "label": "Agent 框架",
+      "sublabel": "Product → Agent → App",
+      "tag": "核心",
+      "pos": [
+        670,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "建造編排",
+      "sublabel": "規劃 · 核准 · 任務",
+      "pos": [
+        670,
+        250
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "sandbox",
+      "type": "cloud",
+      "label": "builder 沙箱",
+      "sublabel": "每個 Agent 一個容器",
+      "pos": [
+        890,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "modelgw",
+      "type": "backend",
+      "label": "模型閘道",
+      "sublabel": "GPT-6 · Opus · DeepSeek",
+      "pos": [
+        1110,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "runtime",
+      "type": "cloud",
+      "label": "App 執行環境",
+      "sublabel": "預覽 · 線上",
+      "pos": [
+        455,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "capgw",
+      "type": "backend",
+      "label": "平台能力閘道",
+      "sublabel": "AI · 郵件 · 鏈上 · 排程",
+      "pos": [
+        890,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "appdb",
+      "type": "database",
+      "label": "App 資料庫",
+      "sublabel": "依 App 與環境分開",
+      "pos": [
+        250,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "outside",
+      "type": "external",
+      "label": "外部服務",
+      "sublabel": "Base 鏈 · SaaS · MCP",
+      "pos": [
+        1110,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "無金鑰 · 無 git",
+      "wraps": [
+        "sandbox"
+      ],
+      "pad": 12
+    }
+  ],
+  "connections": [
+    {
+      "id": "people-edge",
+      "from": "people",
+      "to": "edge",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "id": "edge-platform",
+      "from": "edge",
+      "to": "platform"
+    },
+    {
+      "id": "platform-agentfw",
+      "from": "platform",
+      "to": "agentfw",
+      "label": "一輪對話"
+    },
+    {
+      "id": "agentfw-sandbox",
+      "from": "agentfw",
+      "to": "sandbox",
+      "label": "借出程式碼"
+    },
+    {
+      "id": "sandbox-modelgw",
+      "from": "sandbox",
+      "to": "modelgw",
+      "label": "呼叫模型"
+    },
+    {
+      "id": "platform-db",
+      "from": "platform",
+      "to": "platformdb",
+      "label": "SQL"
+    },
+    {
+      "id": "platform-runtime",
+      "from": "platform",
+      "to": "runtime",
+      "label": "開啟線上 App",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 150
+    },
+    {
+      "id": "agentfw-orch",
+      "from": "agentfw",
+      "to": "orchestrator",
+      "label": "大型需求",
+      "labelDy": 60
+    },
+    {
+      "id": "orch-runtime",
+      "from": "orchestrator",
+      "to": "runtime",
+      "label": "上線"
+    },
+    {
+      "id": "orch-sandbox",
+      "from": "orchestrator",
+      "to": "sandbox",
+      "label": "派發任務"
+    },
+    {
+      "id": "runtime-capgw",
+      "from": "runtime",
+      "to": "capgw",
+      "label": "能力呼叫"
+    },
+    {
+      "id": "runtime-appdb",
+      "from": "runtime",
+      "to": "appdb",
+      "label": "資料"
+    },
+    {
+      "id": "capgw-outside",
+      "from": "capgw",
+      "to": "outside",
+      "label": "代理呼叫"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "Agent 框架",
+      "items": [
+        "作者把規則、方法和 Skills 凍結成一個 Product 版本",
+        "使用者據此建立 Agent：一個控制平面 + 1..N 個 App",
+        "每一輪由平台組裝指令、Skills 與 MCP"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "兩層控制",
+      "items": [
+        "一句話 = 一次模型工具迴圈",
+        "大型需求由平台排程成計畫執行：規劃 → 核准 → 建造 · 檢查 · 審查 · 修正 → 最終審查",
+        "所有 App 一起上線；資料一律保留"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "安全邊界",
+      "items": [
+        "沙箱只拿到借出的程式碼",
+        "金鑰、git 提交與上游模型金鑰都留在平台",
+        "外部帳號的權杖只透過平台使用"
+      ]
+    }
+  ]
+}

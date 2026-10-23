@@ -1,0 +1,106 @@
+---
+title: Inside an Agent
+description: What one Agent is made of — context, models, Skills, MCP and tools — and the Apps it builds.
+sidebar:
+  order: 2
+---
+
+import ArchDiagram from '../../../components/ArchDiagram.astro';
+
+An Agent is set up by a frozen Agent Product version. At its center is the **builder**: an AI loop that thinks, acts with tools and checks the result. Around it sit what it reads, the models it reasons with, and what it can call. What it produces are Apps.
+
+<ArchDiagram
+  src="/architecture/en/agent.html"
+  title="What one Agent is made of"
+  openLabel="Open the interactive diagram"
+  hint="Full screen, with guided stories, search and zoom."
+  ratio="16 / 10"
+/>
+
+## The builder
+
+The builder works inside the Agent's isolated sandbox. In each turn it thinks with a model, acts with tools and looks at what happened, again and again until the job is done. Then it hands the code back to the platform.
+
+## Context and memory
+
+| Part | What it is |
+|---|---|
+| Instructions | `AGENTS.md`, rewritten every turn from the base rules, the product's rules, the platform's capabilities and the list of Apps. |
+| Session | A conversation turn resumes the previous session. When the session grows too large, a fresh one starts. |
+| Plan files | `PLAN.md` and the `.steps` files carry the plan and its checkboxes from turn to turn. |
+
+There is no hidden notebook: long-term memory is the code itself plus these files.
+
+## Models
+
+Every model call goes through the platform's model router, which picks a tier for each task. The builder works with frontier models such as **GPT-6**, **Opus** and **DeepSeek**. Upstream model keys never enter the sandbox.
+
+## Skills
+
+Skills are written know-how. The builder reads one only when the task needs it. The base set and the product's own Skills are mirrored in on every turn.
+
+| Skill | Helps with |
+|---|---|
+| AI & images | Calling AI from the App, generating images |
+| AI video | Generating video and music |
+| HyperFrames | Making videos from HTML |
+| Data | The App's database and how the frontend and backend reach it |
+| Contracts | Writing contracts and preparing them for deployment |
+| Wallet & pay | Wallet sign-in and SSU payments |
+| Email & cron | Sending email and running scheduled tasks |
+| Lark docs | Reading and writing Lark documents |
+| Browser use | Clicking through pages and taking screenshots |
+| UI design | Layout and visual taste |
+| React | React best practices |
+| Design | Design systems and version upgrades |
+
+## MCP
+
+MCP servers give the builder read-only tools on outside systems. The platform calls them on the builder's behalf, so account tokens never enter the sandbox.
+
+| MCP | Used for |
+|---|---|
+| Pencil | Reading design files |
+| Figma | Turning designs into UI |
+| Playwright | Testing the preview in a real browser |
+| Context7 | Up-to-date library documentation |
+| GitHub | Repositories and issues |
+| Linear | Tickets and requirements |
+| Notion | Documents and databases |
+| Connectors | Connected Google Drive, Lark and Slack accounts |
+| More MCP | Servers the Agent's owner adds |
+
+## Built-in tools
+
+| Tool | What it does |
+|---|---|
+| Read · find | Read files and search the code |
+| Web fetch | Read documentation and reference sites |
+| To-do list | Break a turn into steps and tick them off |
+| Ask a person | Stop and ask when a product decision is needed |
+| Edit files | Write and change code |
+| Run commands | Install dependencies, run tests, compile |
+
+## What it builds: Apps
+
+An Agent has one or more Apps. Each App has its own:
+
+- **Frontend** — React, served as static files.
+- **Backend** — an on-demand container that starts on the first request.
+- **Database** — development and live kept apart. Publish always keeps data.
+- **Contracts** — on Base, deployed by the Agent's owner.
+- **Code and preview** — the builder edits the code in the sandbox and runs it in the preview.
+
+## Who keeps it in check
+
+- **Orchestration.** A big request becomes a plan. A person approves it, then the platform dispatches it task by task.
+- **Reviewers.** They check the plan, every task and the whole build. Work that fails goes back for fixing: the first three fix rounds resume the session, later ones start fresh on a stronger model.
+- **Guardrails.** Brainstorm is read-only. The sandbox cannot read `.env` files or leave its workspace. Keys and commits stay on the platform.
+
+## Three stories
+
+The interactive diagram plays these under **Guided views**:
+
+- **Florist: one sentence to a paying app.** "Build a flower shop where customers pay in SSU and get coupons." The builder reads its instructions and plan, reasons with a model, reads the Wallet & pay, Data and Contracts Skills, edits files and runs commands, and ships a frontend, backend, database and coupon contract.
+- **Build a page from a design.** "Build the home page from the Figma file and the Linear ticket." Through MCP the builder reads the design and the ticket, follows the UI design and Design Skills, edits files and checks the preview with Playwright.
+- **Add a product video.** "Add a 30-second intro video to the home page." The builder reads the HyperFrames, AI video and AI & images Skills, renders the video and adds it to the frontend.

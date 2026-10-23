@@ -26,6 +26,11 @@ export const sections = [
     dirs: ['account'],
   },
   {
+    label: 'How it works',
+    translations: { 'zh-TW': '運作原理', ja: 'しくみ', ko: '작동 방식', fr: 'Fonctionnement' },
+    dirs: ['how-it-works'],
+  },
+  {
     label: 'Reference',
     translations: { 'zh-TW': '參考', ja: '参考', ko: '참고', fr: 'Référence' },
     dirs: ['reference'],

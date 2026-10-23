@@ -1,0 +1,67 @@
+---
+title: Vue d'ensemble du système
+description: De quoi OpenStep est fait, du navigateur au modèle et à l'App en ligne.
+sidebar:
+  order: 1
+---
+
+import ArchDiagram from '../../../../components/ArchDiagram.astro';
+
+OpenStep transforme une phrase en App full-stack qui fonctionne. Cette page montre les principales parties et le chemin d'une requête à travers elles. La page suivante, [À l'intérieur d'un Agent](/fr/how-it-works/inside-an-agent/), ouvre l'Agent lui-même.
+
+<ArchDiagram
+  src="/architecture/fr/overview.html"
+  title="Vue d'ensemble du système OpenStep"
+  openLabel="Ouvrir le diagramme interactif"
+  hint="Plein écran, avec parcours guidés, recherche et zoom."
+  ratio="2.25 / 1"
+/>
+
+## Les parties
+
+| Partie | Rôle |
+|---|---|
+| Utilisateurs et visiteurs | Les personnes qui construisent en discutant avec un Agent, les enseignants qui animent une classe, les apprenants qui utilisent une App publiée. |
+| Edge | Reçoit chaque requête en HTTPS et l'oriente selon le domaine : le site du builder ou une App publiée. |
+| Services de la plateforme | L'interface web et l'API : connexion, Agents, conversations, Publish et pages de cours. |
+| Base de données de la plateforme | PostgreSQL. Contient les Agents, les conversations, chaque tour et chaque exécution de build. |
+| Framework Agent | Product → Agent → App. Une version figée du Product fixe les règles, la méthode et les Skills ; un Agent créé à partir d'elle a un espace de contrôle, qui porte la conversation et le plan, et une ou plusieurs Apps. |
+| Orchestration des builds | Exécute une grosse demande sous forme de plan : plan, validation humaine, puis build · vérification · revue · correction pour chaque tâche, puis une revue finale. |
+| Bac à sable du builder | Un conteneur isolé par Agent. Il reçoit le code en prêt à chaque tour et le rend ensuite. Il ne détient ni clés ni historique git. |
+| Passerelle des modèles | Chaque appel de modèle passe par la plateforme, qui choisit un niveau de modèle selon la tâche — des modèles de pointe comme GPT-6, Opus et DeepSeek. |
+| Exécution de l'App | L'aperçu pendant la construction, la version en ligne une fois publiée. Le frontend est servi en fichiers statiques ; le backend tourne dans un conteneur à la demande. |
+| Base de données de l'App | Chaque App a ses propres données, et celles de développement restent séparées de celles en ligne. Publish conserve toujours les données. |
+| Passerelle de capacités | Ce qu'une App en fonctionnement peut demander à la plateforme : IA, e-mail, transactions on-chain et tâches planifiées. L'usage est facturé en SSU. |
+| Services externes | La chaîne Base, les comptes SaaS connectés et les serveurs MCP — toujours atteints via la plateforme. |
+
+## Trois parcours
+
+Le diagramme interactif déroule chacun d'eux étape par étape sous **Guided views**.
+
+### Comment une phrase devient du code
+
+1. Quelqu'un tape une phrase sur un Agent.
+2. La plateforme vérifie le tour (permissions, solde, aucun build déjà en cours) et l'enregistre.
+3. Le framework Agent assemble les instructions, les Skills et les MCP de ce tour, et prête le code au bac à sable du builder.
+4. Le builder appelle un modèle via la passerelle des modèles, modifie le code et vérifie l'aperçu.
+5. À la fin du tour, le code revient à la plateforme, qui en fait un commit.
+
+### Apprenant : suivre un cours
+
+1. L'enseignant partage un lien d'inscription. L'apprenant se connecte avec un wallet et rejoint la classe.
+2. La page du cours intègre l'App en ligne. L'apprenant ne construit jamais rien.
+3. Tout ce que fait l'apprenant est enregistré dans les données partagées de l'App de la classe.
+4. Les actions on-chain sont envoyées par le backend de l'App via la passerelle de capacités ; les frais sont facturés à l'enseignant.
+
+### Enseignant : animer une classe
+
+1. L'enseignant ouvre une classe en créant un Agent à partir d'un produit de cours.
+2. Les modifications du cours sont construites comme une version candidate qui tourne sur les vraies données ; les collaborateurs la revoient avant sa mise en ligne.
+3. L'enseignant partage le lien d'inscription et voit qui a rejoint la classe.
+4. Un nouveau semestre commence avec **Start a new session** : les données métier et la progression repartent de zéro, les membres restent.
+
+## Principes de conception
+
+- **Une seule structure pour chaque Agent.** Chaque expérience qu'un utilisateur peut lancer est un Agent Product. Les auteurs figent les règles, la méthode et les Skills dans une version ; à chaque tour, la plateforme les assemble pour le builder.
+- **Deux niveaux de contrôle.** Une phrase correspond à une boucle d'outils d'un modèle. Une grosse demande est un plan que la plateforme ordonnance étape par étape. Toutes les Apps d'un Agent passent en ligne ensemble, et Publish ne supprime jamais de données.
+- **Une frontière de sécurité stricte.** Le bac à sable ne reçoit le code qu'en prêt. Les clés, les commits git et les clés des modèles amont restent sur la plateforme, et les jetons des comptes externes ne sont utilisés que via la plateforme.

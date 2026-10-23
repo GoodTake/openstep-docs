@@ -1,0 +1,55 @@
+---
+interface Props {
+  /** Path of the standalone diagram under public/, e.g. /architecture/en/overview.html */
+  src: string;
+  title: string;
+  openLabel: string;
+  hint?: string;
+  /** CSS aspect-ratio of the embedded preview */
+  ratio?: string;
+}
+
+const { src, title, openLabel, hint, ratio = '16 / 10' } = Astro.props;
+---
+
+<figure class="arch-diagram not-content">
+  <iframe data-arch-src={src} src={`${src}?embed=1`} title={title} loading="lazy" style={`aspect-ratio: ${ratio}`}></iframe>
+  <figcaption>
+    <a href={src} target="_blank" rel="noopener">{openLabel} ↗</a>
+    {hint && <span>{hint}</span>}
+  </figcaption>
+</figure>
+
+<style>
+  .arch-diagram {
+    margin: 1.5rem 0;
+  }
+  .arch-diagram iframe {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    background: var(--sl-color-bg);
+  }
+  .arch-diagram figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+    margin-top: 0.5rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+</style>
+
+<script>
+  // Keep the embedded diagram on the same light/dark theme as the page.
+  function syncTheme() {
+    const theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    for (const frame of document.querySelectorAll<HTMLIFrameElement>('iframe[data-arch-src]')) {
+      const next = `${frame.dataset.archSrc}?embed=1&theme=${theme}`;
+      if (frame.getAttribute('src') !== next) frame.setAttribute('src', next);
+    }
+  }
+  syncTheme();
+  new MutationObserver(syncTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+</script>

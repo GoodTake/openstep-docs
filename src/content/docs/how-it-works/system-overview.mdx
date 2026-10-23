@@ -1,0 +1,67 @@
+---
+title: System overview
+description: What OpenStep is made of, from the browser to the model and the live App.
+sidebar:
+  order: 1
+---
+
+import ArchDiagram from '../../../components/ArchDiagram.astro';
+
+OpenStep turns a sentence into a running full-stack App. This page shows the main parts and how a request moves through them. The next page, [Inside an Agent](/how-it-works/inside-an-agent/), opens up the Agent itself.
+
+<ArchDiagram
+  src="/architecture/en/overview.html"
+  title="OpenStep system overview"
+  openLabel="Open the interactive diagram"
+  hint="Full screen, with guided stories, search and zoom."
+  ratio="2.25 / 1"
+/>
+
+## The parts
+
+| Part | What it does |
+|---|---|
+| Users and visitors | Builders who chat with an Agent, instructors who run a class, learners who use a published App. |
+| Edge | Receives every request over HTTPS and routes it by domain: the builder site or a published App. |
+| Platform services | The web UI and the API: sign-in, Agents, conversations, Publish and the course pages. |
+| Platform database | PostgreSQL. Holds Agents, conversations, every turn and every build run. |
+| Agent framework | Product → Agent → App. A frozen Product version fixes the rules, method and Skills; an Agent created from it has a control plane, which holds its conversation and plan, and one or more Apps. |
+| Build orchestration | Runs a big request as a plan: plan, human approval, then build · check · review · fix for each task, then a final review. |
+| Builder sandbox | One isolated container per Agent. It gets the code on loan for each turn and hands it back. It holds no keys and no git history. |
+| Model gateway | Every model call goes through the platform, which picks a model tier per task — frontier models such as GPT-6, Opus and DeepSeek. |
+| App runtime | Preview while you build, live once you publish. The frontend is served as static files; the backend runs in an on-demand container. |
+| App database | Each App has its own data, with development and live kept apart. Publish always keeps data. |
+| Capability gateway | What a running App can ask the platform for: AI, email, on-chain transactions and scheduled tasks. Usage is charged in SSU. |
+| Outside services | Base chain, connected SaaS accounts and MCP servers — always reached through the platform. |
+
+## Three stories
+
+The interactive diagram plays each of these step by step under **Guided views**.
+
+### How one sentence becomes code
+
+1. Someone types one sentence on an Agent.
+2. The platform checks the turn (permissions, balance, no build already running) and records it.
+3. The Agent framework assembles the instructions, Skills and MCP for this turn and lends the code to the builder sandbox.
+4. The builder calls a model through the model gateway, edits the code and checks the preview.
+5. When the turn ends, the code goes back to the platform, which commits it.
+
+### Learner: taking a course
+
+1. The instructor shares a join link. The learner signs in with a wallet and joins.
+2. The course page embeds the live App. The learner never builds anything.
+3. Everything the learner does is written to the class's shared App data.
+4. On-chain actions are sent by the App's backend through the capability gateway; the fees are charged to the instructor.
+
+### Instructor: running a class
+
+1. The instructor opens a class by creating an Agent from a course product.
+2. Changes to the course are built as a candidate that runs on the real data; collaborators review it before it goes live.
+3. The instructor shares the join link and sees who has joined.
+4. A new term starts with **Start a new session**: business data and progress start over, members stay.
+
+## Design principles
+
+- **One structure for every Agent.** Every experience a user can start is an Agent Product. Authors freeze rules, method and Skills into a version; each turn the platform assembles them for the builder.
+- **Two levels of control.** One sentence is one model tool loop. A big request is a plan the platform schedules step by step. All of an Agent's Apps go live together, and Publish never deletes data.
+- **A hard security boundary.** The sandbox only gets code on loan. Keys, git commits and upstream model keys stay on the platform, and outside account tokens are only used through the platform.

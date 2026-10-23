@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Vue d'ensemble du système OpenStep",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "turn-path",
+        "label": "Comment une phrase devient du code",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "agentfw",
+          "sandbox",
+          "modelgw"
+        ],
+        "note": "Une phrase sur un Agent : la plateforme l'admet et assemble les instructions, puis un modèle modifie le code dans un bac à sable isolé."
+      },
+      {
+        "id": "learner",
+        "label": "Apprenant : suivre un cours",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "runtime",
+          "appdb",
+          "capgw",
+          "outside"
+        ],
+        "note": "Les apprenants ne construisent rien : ils rejoignent via le lien de l'enseignant, utilisent l'App en ligne et partagent les données."
+      },
+      {
+        "id": "instructor",
+        "label": "Enseignant : animer une classe",
+        "focus": [
+          "people",
+          "edge",
+          "platform",
+          "platformdb",
+          "agentfw",
+          "orchestrator",
+          "runtime"
+        ],
+        "note": "L'enseignant ouvre une classe depuis un produit de cours, revoit les changements sur données réelles, puis partage le lien."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "Usagers & visiteurs",
+      "sublabel": "Créer · former · apprendre",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "edge",
+      "type": "cloud",
+      "label": "Edge",
+      "sublabel": "Routage par domaine",
+      "pos": [
+        250,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platform",
+      "type": "backend",
+      "label": "Services plateforme",
+      "sublabel": "UI web + API",
+      "pos": [
+        460,
+        70
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "platformdb",
+      "type": "database",
+      "label": "Base plateforme",
+      "sublabel": "PostgreSQL",
+      "pos": [
+        250,
+        250
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "agentfw",
+      "type": "backend",
+      "label": "Framework Agent",
+      "sublabel": "Product → Agent → App",
+      "tag": "Cœur",
+      "pos": [
+        670,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "Orchestration",
+      "sublabel": "Plan · validation · tâches",
+      "pos": [
+        670,
+        250
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "sandbox",
+      "type": "cloud",
+      "label": "Bac à sable builder",
+      "sublabel": "Un conteneur par Agent",
+      "pos": [
+        890,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "modelgw",
+      "type": "backend",
+      "label": "Passerelle modèles",
+      "sublabel": "GPT-6 · Opus · DeepSeek",
+      "pos": [
+        1110,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "runtime",
+      "type": "cloud",
+      "label": "Exécution de l'App",
+      "sublabel": "Aperçu · en ligne",
+      "pos": [
+        455,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "capgw",
+      "type": "backend",
+      "label": "Passerelle capacités",
+      "sublabel": "IA · e-mail · chaîne · cron",
+      "pos": [
+        890,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "appdb",
+      "type": "database",
+      "label": "Base de l'App",
+      "sublabel": "Par App et environnement",
+      "pos": [
+        250,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "outside",
+      "type": "external",
+      "label": "Services externes",
+      "sublabel": "Chaîne Base · SaaS · MCP",
+      "pos": [
+        1110,
+        420
+      ],
+      "size": [
+        160,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "Sans clés · sans git",
+      "wraps": [
+        "sandbox"
+      ],
+      "pad": 12
+    }
+  ],
+  "connections": [
+    {
+      "id": "people-edge",
+      "from": "people",
+      "to": "edge",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "id": "edge-platform",
+      "from": "edge",
+      "to": "platform"
+    },
+    {
+      "id": "platform-agentfw",
+      "from": "platform",
+      "to": "agentfw",
+      "label": "Un tour"
+    },
+    {
+      "id": "agentfw-sandbox",
+      "from": "agentfw",
+      "to": "sandbox",
+      "label": "Code prêté"
+    },
+    {
+      "id": "sandbox-modelgw",
+      "from": "sandbox",
+      "to": "modelgw",
+      "label": "Appels IA"
+    },
+    {
+      "id": "platform-db",
+      "from": "platform",
+      "to": "platformdb",
+      "label": "SQL"
+    },
+    {
+      "id": "platform-runtime",
+      "from": "platform",
+      "to": "runtime",
+      "label": "Ouvrir l'App en ligne",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 150
+    },
+    {
+      "id": "agentfw-orch",
+      "from": "agentfw",
+      "to": "orchestrator",
+      "label": "Grosse demande",
+      "labelDy": 60
+    },
+    {
+      "id": "orch-runtime",
+      "from": "orchestrator",
+      "to": "runtime",
+      "label": "Mise en ligne"
+    },
+    {
+      "id": "orch-sandbox",
+      "from": "orchestrator",
+      "to": "sandbox",
+      "label": "Envoi des tâches"
+    },
+    {
+      "id": "runtime-capgw",
+      "from": "runtime",
+      "to": "capgw",
+      "label": "Appels de capacités"
+    },
+    {
+      "id": "runtime-appdb",
+      "from": "runtime",
+      "to": "appdb",
+      "label": "Données"
+    },
+    {
+      "id": "capgw-outside",
+      "from": "capgw",
+      "to": "outside",
+      "label": "Proxy"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "Framework Agent",
+      "items": [
+        "Les auteurs figent règles, méthode et Skills dans une version de Product",
+        "Les utilisateurs en créent un Agent : un plan de contrôle + 1..N Apps",
+        "À chaque tour, la plateforme assemble instructions, Skills et MCP"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Deux niveaux de contrôle",
+      "items": [
+        "Une phrase = une boucle d'outils du modèle",
+        "Les grosses demandes suivent un plan ordonnancé par la plateforme : plan → validation → build · vérification · revue · correction → revue finale",
+        "Toutes les Apps passent en ligne ensemble ; les données sont toujours conservées"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Frontière de sécurité",
+      "items": [
+        "Le bac à sable ne reçoit le code qu'en prêt",
+        "Clés, commits git et clés des modèles amont restent sur la plateforme",
+        "Les jetons des comptes externes ne servent que via la plateforme"
+      ]
+    }
+  ]
+}
