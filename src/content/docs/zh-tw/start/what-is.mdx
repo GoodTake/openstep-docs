@@ -6,25 +6,23 @@ sidebar:
 ---
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import ArchDiagram from '../../../../components/ArchDiagram.astro';
 
 OpenStep 把一段對話變成一個能運作的 App。你建立一個 Agent，告訴它你需要什麼，它就會建出一個或多個 App，讓你在 [builder.openstep.academy](https://builder.openstep.academy) 預覽與發布。
 
-## 各部分如何組合
+## 運作原理
 
-<div class="how-fits not-content">
-  <div class="node"><b>你</b><small>描述、回答、核准</small></div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="node accent"><b>Agent</b><small>對話 · 計畫 · 建造</small></div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="stack">
-    <div class="node"><b>App</b><small>預覽 · 程式碼 · 資料</small></div>
-    <div class="node"><b>App</b><small>需要幾個就有幾個</small></div>
-  </div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="node"><b>上線連結</b><small>Publish 之後</small></div>
-</div>
+<ArchDiagram
+  src="/architecture/zh-tw/overview.html"
+  title="OpenStep 系統總覽"
+  openLabel="開啟互動式架構圖"
+  hint="全螢幕開啟，含導覽故事、搜尋與縮放。"
+  ratio="2.25 / 1"
+/>
 
 一個 Agent 會把你的對話與它的建造內容放在同一個地方，而且可以替你建出好幾個 App。**Publish** 會把它們一起上線。
+
+各部分的說明與三個導覽故事見[系統總覽](/zh-tw/how-it-works/system-overview/)。[Agent 的內部構造](/zh-tw/how-it-works/inside-an-agent/)說明一個 Agent 由什麼組成。
 
 ## 使用 OpenStep 的三種方式
 

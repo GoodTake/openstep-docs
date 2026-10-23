@@ -29,7 +29,7 @@ onto Starlight routes.
 
 ## Architecture diagrams
 
-The "How it works" pages embed interactive diagrams from
+What is OpenStep, System overview and Inside an Agent embed interactive diagrams from
 `public/architecture/<locale>/{overview,agent}.html` through
 `src/components/ArchDiagram.astro`. Each HTML file is generated with archify
 from the matching spec in `diagrams/<locale>/`. From the archify skill

@@ -6,25 +6,23 @@ sidebar:
 ---
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import ArchDiagram from '../../../../components/ArchDiagram.astro';
 
 OpenStep は会話を動くアプリに変えます。agent を作成して必要なものを伝えると、agent が 1 つ以上の App を構築します。できあがった App は [builder.openstep.academy](https://builder.openstep.academy) でプレビューと公開ができます。
 
-## 全体の仕組み
+## しくみ
 
-<div class="how-fits not-content">
-  <div class="node"><b>あなた</b><small>説明・回答・承認</small></div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="node accent"><b>Agent</b><small>会話 · 計画 · 構築</small></div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="stack">
-    <div class="node"><b>App</b><small>プレビュー · コード · データ</small></div>
-    <div class="node"><b>App</b><small>必要な数だけ</small></div>
-  </div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="node"><b>公開リンク</b><small>Publish のあと</small></div>
-</div>
+<ArchDiagram
+  src="/architecture/ja/overview.html"
+  title="OpenStep システム概要"
+  openLabel="インタラクティブな図を開く"
+  hint="全画面表示。ガイド付きストーリー、検索、ズームに対応。"
+  ratio="2.25 / 1"
+/>
 
 agent は会話と構築の結果を 1 か所にまとめて保持し、複数のアプリを構築できます。**Publish** は、そのすべてをまとめて公開します。
+
+各部分の説明と 3 つのガイド付きストーリーは[システム概要](/ja/how-it-works/system-overview/)を、Agent が何でできているかは [Agent の中身](/ja/how-it-works/inside-an-agent/)をご覧ください。
 
 ## OpenStep の使い方は 3 通り
 

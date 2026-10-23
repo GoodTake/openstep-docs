@@ -1,9 +1,9 @@
 // Doc sections, shared by the sidebar (astro.config.mjs) and the home page (HomeSections.astro).
 export const sections = [
   {
-    label: 'Get started',
-    translations: { 'zh-TW': '開始使用', ja: 'はじめる', ko: '시작하기', fr: 'Commencer' },
-    dirs: ['start'],
+    label: 'Introduction',
+    translations: { 'zh-TW': '簡介', ja: 'はじめに', ko: '소개', fr: 'Introduction' },
+    dirs: ['start', 'how-it-works'],
   },
   {
     label: 'Agent',
@@ -24,11 +24,6 @@ export const sections = [
     label: 'SSU and account',
     translations: { 'zh-TW': 'SSU 與帳戶', ja: 'SSU とアカウント', ko: 'SSU와 계정', fr: 'SSU et compte' },
     dirs: ['account'],
-  },
-  {
-    label: 'How it works',
-    translations: { 'zh-TW': '運作原理', ja: 'しくみ', ko: '작동 방식', fr: 'Fonctionnement' },
-    dirs: ['how-it-works'],
   },
   {
     label: 'Reference',

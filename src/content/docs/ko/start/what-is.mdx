@@ -6,25 +6,23 @@ sidebar:
 ---
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import ArchDiagram from '../../../../components/ArchDiagram.astro';
 
 OpenStep은 대화를 동작하는 앱으로 바꿔 줍니다. Agent를 시작하고 필요한 것을 말하면, Agent가 하나 이상의 앱을 만들고, [builder.openstep.academy](https://builder.openstep.academy)에서 이를 미리 보고 게시할 수 있습니다.
 
-## 구성 요소의 관계
+## 작동 방식
 
-<div class="how-fits not-content">
-  <div class="node"><b>사용자</b><small>설명, 답변, 승인</small></div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="node accent"><b>Agent</b><small>대화 · 계획 · 빌드</small></div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="stack">
-    <div class="node"><b>App</b><small>미리보기 · 코드 · 데이터</small></div>
-    <div class="node"><b>App</b><small>필요한 만큼</small></div>
-  </div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="node"><b>라이브 링크</b><small>Publish 후</small></div>
-</div>
+<ArchDiagram
+  src="/architecture/ko/overview.html"
+  title="OpenStep 시스템 개요"
+  openLabel="인터랙티브 다이어그램 열기"
+  hint="전체 화면으로 열리며 가이드 스토리, 검색, 확대를 지원합니다."
+  ratio="2.25 / 1"
+/>
 
 Agent는 대화와 빌드를 한곳에 모아 두며, 여러 앱을 만들 수 있습니다. **Publish**는 그 앱을 모두 함께 라이브로 올립니다.
+
+각 부분의 설명과 세 가지 가이드 스토리는 [시스템 개요](/ko/how-it-works/system-overview/)에서, Agent가 무엇으로 이루어져 있는지는 [Agent 내부](/ko/how-it-works/inside-an-agent/)에서 볼 수 있습니다.
 
 ## OpenStep을 쓰는 세 가지 방법
 

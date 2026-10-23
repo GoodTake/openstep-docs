@@ -6,25 +6,23 @@ sidebar:
 ---
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import ArchDiagram from '../../../components/ArchDiagram.astro';
 
 OpenStep turns a conversation into a working app. You start an agent, tell it what you need, and it builds one or more apps that you can preview and publish at [builder.openstep.academy](https://builder.openstep.academy).
 
-## How the pieces fit
+## How it works
 
-<div class="how-fits not-content">
-  <div class="node"><b>You</b><small>describe, answer, approve</small></div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="node accent"><b>Agent</b><small>conversation · plan · builds</small></div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="stack">
-    <div class="node"><b>App</b><small>preview · code · data</small></div>
-    <div class="node"><b>App</b><small>as many as needed</small></div>
-  </div>
-  <span class="arrow" aria-hidden="true">→</span>
-  <div class="node"><b>Live link</b><small>after Publish</small></div>
-</div>
+<ArchDiagram
+  src="/architecture/en/overview.html"
+  title="OpenStep system overview"
+  openLabel="Open the interactive diagram"
+  hint="Full screen, with guided stories, search and zoom."
+  ratio="2.25 / 1"
+/>
 
 An agent keeps your conversation and its builds in one place, and can build several apps for you. **Publish** puts all of them live together.
+
+For each part and three guided stories, see [System overview](/how-it-works/system-overview/). [Inside an Agent](/how-it-works/inside-an-agent/) shows what an Agent is made of.
 
 ## Three ways to use OpenStep
 
