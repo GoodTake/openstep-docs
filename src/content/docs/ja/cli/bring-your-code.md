@@ -39,7 +39,7 @@ cd my-site
 openstep apps list
 ```
 
-`agent create` は新しい agent の ID を表示します。`--product` を付けないと、agent は **Web builder** を使います。`agent checkout` は、agent の App を `apps/<app-key>/` にコピーします。新しい agent の App は 1 つで、通常は `apps/app/` です。以下の例では App キーを `app` としています。`apps list` に表示されたキーを使ってください。
+`agent create` は新しい agent を JSON で表示し、その `id` が agent の ID です。`--product` を付けないと、agent は **Web builder** を使います。`agent checkout` は、agent の App を `apps/<app-key>/` にコピーします。新しい agent の App は 1 つで、通常は `apps/app/` です。以下の例では App キーを `app` としています。`apps list` に表示されたキーを使ってください。
 
 App は、小さく動くサイトと、コードが使うプラットフォームのファイルを持った状態で始まります。手順 3 で、サイトを自分のものに置き換えます。プラットフォームのファイルは残します。
 
@@ -56,10 +56,9 @@ openstep apps list
 
 ```sh
 openstep capabilities enable server --app app
-openstep pull
 ```
 
-これで App に `functions/` フォルダーが追加され、サーバーの `server.js` のひな形と、プラットフォームのサーバー用ヘルパーが入ります。自分のサーバーコードをコピーする前に実行してください。そうすると、自分のファイルがひな形の上に重なります。サイトがページだけなら、この手順は飛ばします。
+これで App に `functions/` フォルダーが追加され、あなたのフォルダーにも取り込まれます。中身は、サーバーの `server.js` のひな形、プラットフォームのサーバー用ヘルパーの `platform.js`、`runtime-config.js`、`viem.cjs`、そして `openapi.json`、`check-openapi.js`、`package.json`、`Dockerfile` です。自分のサーバーコードをコピーする前に実行してください。そうすると、自分のファイルがひな形の上に重なります。サイトがページだけなら、この手順は飛ばします。
 
 ## 3. コードを App に移す
 
@@ -69,33 +68,70 @@ openstep pull
 |---|---|
 | ページ | App のルートにある npm の構成で、`package.json` と `package-lock.json` を含みます。`npm run build` が完成したサイトを `dist/` に書き出し、その最上位に `index.html` を置きます。 |
 | ブラウザーが読む設定 | `VITE_` で始まる名前（例：`VITE_SITE_NAME`）。[`openstep env`](/ja/cli/apps-data-contracts/) で設定します。 |
-| サーバー | `functions/server.js`。`node server.js` で起動します。環境変数 `PORT` のポートで待ち受け、`GET /health` に応答し、`/api/` の下にルートを提供します。`functions/package.json` には依存関係が書かれていません。サーバーが npm パッケージを使う場合は、push の前にそれらを `server.js` にバンドルしてください。 |
-| サーバーの設定とキー | `functions/runtime-config.js` の `getVariable('NAME')` と `getSecret('NAME')` で読み、`openstep env` で設定します。 |
+| サーバー | `functions/server.js`。`node server.js` で起動します。環境変数 `PORT` のポートで待ち受け、`GET /health` に応答し、`/api/` の下にルートを提供します。`functions/package.json` には依存関係が書かれていません。サーバーが使う npm パッケージは `functions/vendor.cjs` にバンドルし、`server.js` と `functions/` のほかの自分のコードから `require('./vendor.cjs')` で読み込んでください。[サーバーの npm パッケージをバンドルする](#サーバーの-npm-パッケージをバンドルする) を参照してください。 |
+| サーバーの設定とキー | `functions/runtime-config.js` の `getVariable('NAME')` と `getSecret('NAME')` で読み、`openstep env` で設定します。`process.env.PORT` と `process.env.NODE_ENV` を除き、`functions/` にある自分のコードは `process.env` を読んではいけません。公開中のサーバーはそこに設定を持たず、Publish は App を拒否します。 |
 | ほかのサービスの呼び出し | サーバーから、`functions/platform.js` の `externalRequest(url)` を呼びます。各ホストは App の値 `BACKEND_EGRESS_HOSTS` に列挙します（下記参照）。 |
-| データベースのテーブル | `openstep data migrate` で作成します。[App、データ、コントラクト](/ja/cli/apps-data-contracts/) を参照してください。 |
+| データベースのテーブル | `openstep data migrate <id> <file> --app app` で作成します。たとえば `openstep data migrate 0002_add_bookings ./bookings.sql --app app` です。プラットフォーム自身のテーブルを含む `migrations/0001_platform_baseline.sql` は残してください。[App、データ、コントラクト](/ja/cli/apps-data-contracts/#データ) を参照してください。 |
 
 これらのパスはプラットフォームのものなので、自分のページはここに置かないでください。`/api/`（サーバーに送られます）、`/auth/`、`/data/`、`/_platform/`、`/__steps/`、`/_releases/` です。
 
-App に付いてきたプラットフォームのファイルは残してください。コードはそれらからインポートします。
+App に付いてきたプラットフォームのファイルは残してください。コードはそれらに依存します。
 
-- App 内：`src/lib/platform.ts`、`src/lib/useUser.ts`、`src/lib/live-auth.ts`、`src/lib/supabase.ts`、`src/lib/runtime.ts`、`src/lib/wagmi.ts`、そして `src/main.tsx` のウォレットプロバイダー。
-- `functions/` 内：`platform.js`、`runtime-config.js`、`viem.cjs`。
+- App 内：`src/lib/platform.ts`、`src/lib/useUser.ts`、`src/lib/live-auth.ts`、`src/lib/supabase.ts`、`src/lib/runtime.ts`、`src/lib/wagmi.ts`、`src/main.tsx` のウォレットプロバイダー、そして `migrations/0001_platform_baseline.sql`。
+- `functions/` 内：`platform.js`、`runtime-config.js`、`viem.cjs`、`openapi.json`、`check-openapi.js`。
 
-`openstep pull` は、これらの大半をプラットフォーム側のバージョンに戻します。編集せず、インポートして使ってください。
+`openstep pull` を実行したときと、`openstep push` のたびに、`src/lib/runtime.ts`、`src/lib/live-auth.ts`、`src/lib/supabase.ts`、`src/lib/useUser.ts`、`functions/platform.js`、`functions/runtime-config.js`、`functions/viem.cjs`、`functions/check-openapi.js` のプラットフォーム側の現在のバージョンが、フォルダーに戻されます。編集せず、インポートして使ってください。`src/lib/platform.ts`、`src/lib/wagmi.ts`、`src/main.tsx` は、App を作成したあとはあなたのものです。必要に応じて変更し、プラットフォームの部分は残してください。
 
 次のものはフォルダーに入れないでください。
 
-- `.env` ファイル、`.npmrc`、キーなどの認証情報のファイル。`openstep push` は受け付けません。値は環境値に入れてください。
+- 名前が `.env` で始まるファイル（`.env.example` も含みます）、`.npmrc`、`.yarnrc`、`*.pem`、`*.key`、`*.p12`、`*.pfx` などのキーファイル、そして `key`、`keys`、`secret`、`secrets`、`credential`、`credentials` という名前のフォルダー。これらのどれかが App のフォルダーにある間は、App の `.gitignore` に書かれていても、`openstep diff`、`pull`、`push` は `Local source path refused` で停止します。値は環境値に入れてください。
 - `node_modules` と `.git`。push はもともとこれらを除外します。
 - `dist/` などのビルド出力。Publish が自分でサイトをビルドします。
+
+App のフォルダーにある `.gitignore` ファイルが無視するパス（たとえば `dist/`）は、`openstep diff`、`push`、`pull` の対象になりません。公開するときも、push していない編集には数えられません。例外は、App の承認済みのソースにすでにあるファイルです。そのファイルは、push のたびに引き続き送られます。たとえば、古い CLI が push した `dist/` です。取り除くには、自分のフォルダーで削除して push してください。App の `.gitignore` に、サイトが必要とするファイルが書かれている場合（古い App では `vite.config.js` が書かれています）は、push の前にその行を削除してください。
 
 サーバーからほかのサービスを呼べるようにするには、`BACKEND_EGRESS_HOSTS` を一度定義し、ホストをカンマ区切りで渡します。
 
 ```sh
-openstep env define BACKEND_EGRESS_HOSTS --kind variable --targets backend --app app
-openstep env set BACKEND_EGRESS_HOSTS --app app --environment development --value "api.example.com"
+openstep env define BACKEND_EGRESS_HOSTS --kind variable --targets backend --app app --value "api.example.com"
 openstep env set BACKEND_EGRESS_HOSTS --app app --environment production --value "api.example.com"
 ```
+
+`env define` は値を開発用の設定とともに作成し、`env set` は本番用の設定を渡します。
+
+### サーバーの npm パッケージをバンドルする
+
+Publish は `functions/` を、push したとおりに、`npm install` なしで実行します。そのため、サーバーが使う npm パッケージは、バンドルした 1 つのファイル `functions/vendor.cjs` にまとめ、自分のコードは `server.js` と `functions/` のほかのファイルに置いてください。Publish が確認するのは自分のファイルで、`vendor.cjs` は確認しません。
+
+1. agent フォルダーで、パッケージ用のフォルダーを `apps/` の外に作り、push で送られないようにします。そこに、esbuild と一緒にパッケージをインストールします。
+
+   ```sh
+   mkdir server-packages
+   cd server-packages
+   npm init -y
+   npm install express esbuild
+   ```
+
+2. そのフォルダーに `index.js` を書きます。サーバーが使うものをエクスポートします。
+
+   ```js
+   module.exports = { express: require('express') };
+   ```
+
+3. App にバンドルして、agent フォルダーに戻ります。
+
+   ```sh
+   npx esbuild index.js --bundle --platform=node --format=cjs --outfile=../apps/app/functions/vendor.cjs
+   cd ..
+   ```
+
+4. `functions/server.js` で、バンドルからパッケージを取り込みます。
+
+   ```js
+   const { express } = require('./vendor.cjs');
+   ```
+
+パッケージを追加または更新したときは、push の前にもう一度バンドルしてください。`functions/` 全体は、`vendor.cjs` を含めて、最大 128 MiB です。
 
 ## 4. 自分のコンピューターで実行する
 
@@ -122,7 +158,46 @@ cd apps/app && npm install && cd ../..
 openstep dev
 ```
 
-`openstep dev` が表示するアドレスを開きます。ローカルのサイトはすでにプラットフォームとつながっています。App の開発用データを読み書きでき、AI とメールも動き、通常どおり課金されます。ウォレットでのサインインは、公開したサイトで行います。[App をローカルで実行する](/ja/cli/dev/) を参照してください。
+`openstep dev` が表示するアドレスを開きます。ローカルのサイトはすでにプラットフォームとつながっています。App の開発用データを読み書きでき、AI とメールも動き、通常どおり課金されます。`openstep dev` は、`PORT` を `backend` のポート（ここでは 8080）にしてサーバーを起動します。また、`/api` を公開中のサイトのルールで扱い、そこで失敗するリクエストについては警告します。[公開中のサイトでの動作の違い](#公開中のサイトでの動作の違い) と [App をローカルで実行する](/ja/cli/dev/) を参照してください。
+
+## 公開中のサイトでの動作の違い
+
+公開中のサイトでは、App はプラットフォームのゲートウェイの背後で動きます。そのため、自分で用意したサーバーとは動作が異なる点がいくつかあります。
+
+- リクエストボディの上限は 10 MiB です。サーバーは、JSON、テキスト、フォーム、ファイルのアップロードを、1 リクエストあたり 10 MiB まで受け取れます。それより大きいリクエストは 413 になり、サーバーには届きません。大きなファイルには、App のファイルストレージを使います。サーバーが `functions/platform.js` の `files.createUpload()` にアップロード用のリンクを求め、ページがそのリンクに直接ファイルを送ります。1 ファイルあたり 25 MiB までです。
+- 通るヘッダーは一部だけです。ブラウザーからサーバーに届くのは、`Accept`、`Accept-Language`、`Authorization`、`Content-Type`、`If-Match`、`If-None-Match`、`Range`、`Range-Unit`、`User-Agent` と、プラットフォーム自身の `x-steps-` ヘッダーだけです。ブラウザーに返るのは、`Accept-Ranges`、`Cache-Control`、`Content-Language`、`Content-Range`、`Content-Type`、`ETag`、`Last-Modified`、`Preference-Applied`、`Vary` だけです。
+- Cookie、リダイレクト、ダウンロードのファイル名は使えません。サーバーには Cookie が届かず、サーバーが返す `Set-Cookie`、`Location`、`Content-Disposition` ヘッダーはブラウザーに届きません。誰が呼んでいるかを知るには、`useUser()` によるサインインと `x-steps-user-address` ヘッダー（[ウォレットでのサインイン](#ウォレットでのサインイン) を参照）か、`Authorization` ヘッダーに入れた自分のトークンを使います。リダイレクトの代わりに JSON を返し、次のページへはブラウザーで移動します。ダウンロードでは、ページでファイルを取得し、そこから保存します。
+
+  ```ts
+  const blob = await (await fetch('/api/export.csv')).blob();
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'export.csv';
+  link.click();
+  ```
+
+- `/api` への URL には、`releaseRuntimePath()` が必要なものがあります。公開中のサイトは、ページが `fetch`、`XMLHttpRequest`、`sendBeacon` に渡す URL と、配信する HTML や CSS のファイルに書かれた URL を書き換えます。素の `/api` パスを指す、スクリプトで設定した URL（たとえば React が描画する `<img>`）、`<a href>`、`window.location` には、`src/lib/runtime` の `releaseRuntimePath('/api/...')` が必要です。これがないと、公開サイトは 404 を返します。
+
+  ```tsx
+  import { releaseRuntimePath } from './lib/runtime';
+
+  function Avatar() {
+    return <img src={releaseRuntimePath('/api/avatar/1')} alt="" />;
+  }
+  ```
+
+- ストリーミングはできません。サーバーのレスポンスは、終了してはじめてブラウザーに届きます。60 秒以内に終了しなければなりません。ページや `functions/` に `new EventSource(` や `new WebSocket(` があると、Publish は App を拒否します。
+- サーバーに届くのは、自分のページからのリクエストだけです。ほかのサービスはサーバーを呼び出せません。`/api/` を指す webhook やサインインのコールバックは届きません。代わりに、サインインのコールバックはサイトのページに向け、そのページが受け取った内容を `fetch` でサーバーに送らせてください。`POST` のように何かを変更するリクエストも、サイトのページから送られたものでなければなりません。
+- プラットフォームのデータクライアントを使ってください。`@supabase/supabase-js` の `createClient` や `supabase.co` のアドレスのような自前のデータベースクライアントがあると、Publish は App を拒否します。`index.html` に `<base>` 要素があるときも同じです。代わりに `src/lib/supabase` の `supabase` を使ってください（[データ](#データ) を参照）。
+
+サーバーのある App では、`openstep dev` が `/api` をこれらのルールで扱うので、ほとんどは、まず自分のコンピューターで確認できます。各種類のリクエストが最初に失敗したとき、CLI は `openstep:` で始まる警告を表示し、何を変えるべきかを伝えます。
+
+- ブラウザーが `fetch`、`XMLHttpRequest`、`sendBeacon` 以外の方法で読み込む素の `/api` URL は、404 になります。App の `src/lib/runtime.ts` がこのルールより前のバージョンの場合、読み込みは警告付きで通ります。`openstep pull` を実行してください。プラットフォームのファイルの現在のバージョンが、フォルダーに戻されます。
+- HTML や CSS のファイルに書かれた `/api` の URL も 404 になります。この場合、`openstep dev` は、そうした URL を書き換える公開中のサイトより厳格です。代わりに、スクリプトで `releaseRuntimePath()` を使って URL を設定してください。
+- `text/event-stream` を求める `/api` リクエストは、すべて 404 になります。サーバーがレスポンスを終えれば公開中のサイトが応答するはずの `fetch` でも同じです。`/api` への WebSocket も同様です。
+- ブラウザーとサーバーの間を通るのは、公開中のサイトが通すヘッダーだけです。CLI は、`Cookie`、`Set-Cookie`、`Location`、`Content-Disposition` を取り除いたときに警告します。
+- 10 MiB を超えるリクエストボディは 413 になります。
+- `curl` などのプログラムは `Sec-Fetch-Dest` ヘッダーを送らないので、それらのリクエストが読み込みとして拒否されることはありません。
 
 ## 5. コードから OpenStep を使う
 
@@ -144,7 +219,7 @@ function Account() {
 
 `signIn()` は、訪問者に Base で無料の署名を 1 回承認してもらいます。ウォレットのボタンは、`src/main.tsx` のプロバイダーから提供されます。
 
-サーバーでは、サインイン済みの訪問者からの `/api/` リクエストすべてに、そのウォレットアドレスが `x-steps-user-address` ヘッダーで付きます。誰が呼んでいるかは、これで判断します。
+公開中のサイトでは、サインインした訪問者からの `/api/` リクエストすべてに、そのウォレットアドレスが `x-steps-user-address` ヘッダーで付きます。サインインする前は、このヘッダーはありません。誰が呼んでいるかは、これで判断します。`openstep dev` では、ページは接続したウォレットを署名なしで使い、サーバーには、CLI にサインインしたウォレットが見えます。ブラウザーでも同じウォレットを接続してください。
 
 ### メール
 
@@ -169,13 +244,15 @@ function Account() {
    }
    ```
 
-   テンプレート ID には、小文字、数字、`-` を使います。値の型は `text`（200 文字まで）か `url` で、`url` の値はリンクの中に `href="{{link}}"` として入れます。1 つの App には最大 20 個のテンプレートを置けます。
+   テンプレート ID は小文字で始まり、小文字、数字、`-` を使います。値の型は `text`（200 文字まで）か `url` です。`url` の値はリンクの中に `href="{{link}}"` として入れ、App の公開アドレスかカスタムドメイン上の `https` の URL でなければなりません。テンプレート内のほかのリンクや画像の URL も、そうした URL か、`mailto:` のリンクでなければなりません。1 つの App には最大 20 個のテンプレートを置けます。
 
 2. 登録します。
 
    ```sh
    openstep email templates register emails.json --app app
    ```
+
+   ファイルのパスは、agent フォルダーからの相対パスです。登録すると、App のすべてのテンプレートが、ファイルにあるものに置き換わります。
 
 3. ブラウザー（`src/lib/platform`）またはサーバー（`functions/platform.js`）から送信します。
 
@@ -267,12 +344,12 @@ openstep publish --note "First release"
 openstep status <operation-id>
 ```
 
-最初の Publish の前に、agent のオーナーとして、コードが読む本番の値を設定してください。Publish は `npm ci` と `npm run build` でページをビルドし、`functions/server.js` を起動し、`/health` を確認してから、App を公開します。[push と公開](/ja/cli/push-publish/) を参照してください。
+最初の Publish の前に、agent のオーナーとして、コードが読む本番の値を設定してください。Publish は `npm ci` と `npm run build` でページをビルドし、`functions/server.js` を起動し、`GET /health` が 30 秒以内に 2xx か 3xx のステータスで応答することを確認してから、App を公開します。[push と公開](/ja/cli/push-publish/) を参照してください。
 
 ## 知っておくこと
 
 - AI の呼び出し、メール、オンチェーン操作、そして公開した App が動いている時間は、agent のオーナーに SSU で課金されます。[残高を確認する](/ja/account/balance/) を参照してください。
-- `openstep pull` はプラットフォームのファイルを元に戻します。自分のファイルを編集し、プラットフォームのファイルからはインポートして使ってください。
+- `openstep pull` を実行したときと、push のたびに、プラットフォームのファイルの現在のバージョンが、フォルダーに戻されます。自分のファイルを編集し、プラットフォームのファイルからはインポートして使ってください。
 - サイトが App に入ったあとは、作業ページのチャットや `openstep agent chat` からも変更できます。builder は同じコードを扱います。
 
 次へ：[SSU とは](/ja/account/what-is-ssu/)。

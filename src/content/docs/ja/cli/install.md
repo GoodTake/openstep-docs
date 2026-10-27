@@ -23,6 +23,8 @@ Node.js 24 以降が必要です。`node --version` で確認してください�
    openstep --version
    ```
 
+   この CLI のページにあるコマンドを使うには、`openstep --version` が 0.3.0 以降を表示する必要があります。
+
 ## サインイン
 
 1. ターミナルで次を実行します。
