@@ -90,5 +90,7 @@ openstep republish --note "Bring back the last live version"
 
 - 推送是擁有者和編輯者的工作。發布、回復、下線與重新上線是擁有者的工作。
 - builder 正在執行已規劃的建造時，Agent 是唯讀的。請等它完成，然後 `pull`，再推送。
+- `diff`、`push` 和 `pull` 會略過 App 資料夾裡的 `.gitignore` 檔案所忽略的檔案，例如 `dist/`，除非 Agent 已接受的原始碼本來就有這些檔案，這和 Git 對待已追蹤檔案的方式一樣。發布時，它們也不算尚未推送的編輯。要把這樣的檔案從已接受的原始碼中移除，請在你的資料夾裡刪除它，然後推送。
+- 名稱以 `.env` 開頭的檔案、`.npmrc`、金鑰檔案等，會讓 `diff`、`pull` 和 `push` 停止，即使 `.gitignore` 列出了它們也一樣。見 [把你的程式碼搬進 App](/zh-tw/cli/bring-your-code/#3-把你的程式碼搬進-app)。
 
 下一步：[App、資料與合約](/zh-tw/cli/apps-data-contracts/)。

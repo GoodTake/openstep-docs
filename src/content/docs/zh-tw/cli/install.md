@@ -23,6 +23,8 @@ sidebar:
    openstep --version
    ```
 
+   這些 CLI 頁面裡的指令，需要 `openstep --version` 印出 0.3.0 或更新的版本。
+
 ## 登入
 
 1. 在終端機裡執行：

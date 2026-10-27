@@ -39,7 +39,7 @@ cd my-site
 openstep apps list
 ```
 
-`agent create` 會印出新 Agent 的 ID。沒有 `--product` 時，Agent 使用 **Web builder**。`agent checkout` 會把 Agent 的各個 App 複製到 `apps/<app-key>/`；新的 Agent 有一個，通常是 `apps/app/`。下面的範例以 `app` 作為 App key；請改用 `apps list` 顯示的那一個。
+`agent create` 會以 JSON 印出新的 Agent，其中的 `id` 就是 Agent 的 ID。沒有 `--product` 時，Agent 使用 **Web builder**。`agent checkout` 會把 Agent 的各個 App 複製到 `apps/<app-key>/`；新的 Agent 有一個，通常是 `apps/app/`。下面的範例以 `app` 作為 App key；請改用 `apps list` 顯示的那一個。
 
 App 一開始是一個能運作的小網站，加上你的程式碼會用到的平台檔案。你會在第 3 步用自己的網站取代那個小網站，並保留平台檔案。
 
@@ -56,10 +56,9 @@ openstep apps list
 
 ```sh
 openstep capabilities enable server --app app
-openstep pull
 ```
 
-這會在 App 裡加上一個 `functions/` 資料夾，內有一個起始的 `server.js` 和平台的伺服器輔助檔案。請在複製你自己的伺服器程式碼之前先做這一步，這樣你的檔案才會蓋在起始檔案之上。如果你的網站只有頁面，就跳過這一步。
+這會在 App 裡加上一個 `functions/` 資料夾，並把它帶進你的資料夾：一個起始的 `server.js`、平台的伺服器輔助檔案 `platform.js`、`runtime-config.js` 和 `viem.cjs`，以及 `openapi.json`、`check-openapi.js`、`package.json` 和 `Dockerfile`。請在複製你自己的伺服器程式碼之前先做這一步，這樣你的檔案才會蓋在起始檔案之上。如果你的網站只有頁面，就跳過這一步。
 
 ## 3. 把你的程式碼搬進 App
 
@@ -69,33 +68,70 @@ openstep pull
 |---|---|
 | 頁面 | App 根目錄下的一組 npm 設定，包含 `package.json` 和 `package-lock.json`。`npm run build` 會把完成的網站寫到 `dist/`，最上層要有 `index.html`。 |
 | 瀏覽器讀取的設定 | 以 `VITE_` 開頭的名稱，例如 `VITE_SITE_NAME`，用 [`openstep env`](/zh-tw/cli/apps-data-contracts/) 設定。 |
-| 伺服器 | `functions/server.js`，以 `node server.js` 啟動。它監聽 `PORT` 環境變數指定的連接埠，回應 `GET /health`，並在 `/api/` 底下提供你的路由。`functions/package.json` 不列任何相依套件，所以如果你的伺服器用了 npm 套件，請在推送之前把它們打包進 `server.js`。 |
-| 伺服器設定和金鑰 | 用 `functions/runtime-config.js` 裡的 `getVariable('NAME')` 和 `getSecret('NAME')` 讀取，並用 `openstep env` 設定。 |
+| 伺服器 | `functions/server.js`，以 `node server.js` 啟動。它監聽 `PORT` 環境變數指定的連接埠，回應 `GET /health`，並在 `/api/` 底下提供你的路由。`functions/package.json` 不列任何相依套件，所以請把你的伺服器用到的 npm 套件打包進 `functions/vendor.cjs`，並在你自己寫在 `server.js` 和 `functions/` 其餘檔案裡的程式碼中 `require('./vendor.cjs')`。見 [打包你的伺服器用到的 npm 套件](#打包你的伺服器用到的-npm-套件)。 |
+| 伺服器設定和金鑰 | 用 `functions/runtime-config.js` 裡的 `getVariable('NAME')` 和 `getSecret('NAME')` 讀取，並用 `openstep env` 設定。除了 `process.env.PORT` 和 `process.env.NODE_ENV`，你在 `functions/` 裡自己寫的程式碼不可以讀取 `process.env`：線上的伺服器不在那裡保存任何設定，而且 Publish 會拒絕這個 App。 |
 | 呼叫其他服務 | 在伺服器裡呼叫 `functions/platform.js` 的 `externalRequest(url)`，並把每個主機列在 App 值 `BACKEND_EGRESS_HOSTS` 裡（見下方）。 |
-| 資料庫資料表 | 用 `openstep data migrate` 建立。見 [App、資料與合約](/zh-tw/cli/apps-data-contracts/)。 |
+| 資料庫資料表 | 用 `openstep data migrate <id> <file> --app app` 建立，例如 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`。請保留 `migrations/0001_platform_baseline.sql`，它存放平台自己的資料表。見 [App、資料與合約](/zh-tw/cli/apps-data-contracts/#資料)。 |
 
 這些路徑屬於平台，所以不要把你自己的頁面放在這些路徑上：`/api/`（送到你的伺服器）、`/auth/`、`/data/`、`/_platform/`、`/__steps/` 和 `/_releases/`。
 
-請保留 App 附帶的平台檔案。你的程式碼會從它們匯入：
+請保留 App 附帶的平台檔案。你的程式碼會依賴它們：
 
-- 在 App 裡：`src/lib/platform.ts`、`src/lib/useUser.ts`、`src/lib/live-auth.ts`、`src/lib/supabase.ts`、`src/lib/runtime.ts`、`src/lib/wagmi.ts`，以及 `src/main.tsx` 裡的錢包 provider。
-- 在 `functions/` 裡：`platform.js`、`runtime-config.js` 和 `viem.cjs`。
+- 在 App 裡：`src/lib/platform.ts`、`src/lib/useUser.ts`、`src/lib/live-auth.ts`、`src/lib/supabase.ts`、`src/lib/runtime.ts`、`src/lib/wagmi.ts`、`src/main.tsx` 裡的錢包 provider，以及 `migrations/0001_platform_baseline.sql`。
+- 在 `functions/` 裡：`platform.js`、`runtime-config.js`、`viem.cjs`、`openapi.json` 和 `check-openapi.js`。
 
-`openstep pull` 會把其中大多數檔案換回平台自己的版本，所以請用匯入的方式使用它們，不要編輯它們。
+`openstep pull` 和每一次 `openstep push`，都會把平台目前版本的 `src/lib/runtime.ts`、`src/lib/live-auth.ts`、`src/lib/supabase.ts`、`src/lib/useUser.ts`、`functions/platform.js`、`functions/runtime-config.js`、`functions/viem.cjs` 和 `functions/check-openapi.js` 放回你的資料夾，所以請用匯入的方式使用它們，不要編輯它們。`src/lib/platform.ts`、`src/lib/wagmi.ts` 和 `src/main.tsx` 在 App 建立之後就屬於你：可以依需要修改，但請保留其中屬於平台的部分。
 
 以下這些請不要放進資料夾：
 
-- `.env` 檔案、`.npmrc`、金鑰和其他憑證檔案。`openstep push` 會拒絕它們；請把它們的值放進環境值。
+- 名稱以 `.env` 開頭的檔案（包括 `.env.example`）、`.npmrc`、`.yarnrc`、金鑰檔案（例如 `*.pem`、`*.key`、`*.p12` 和 `*.pfx`），以及名為 `key`、`keys`、`secret`、`secrets`、`credential` 或 `credentials` 的資料夾。只要其中任何一個還在 App 的資料夾裡，`openstep diff`、`pull` 和 `push` 就會以 `Local source path refused` 停止，即使 App 的 `.gitignore` 列出了它也一樣。請把它們的值放進環境值。
 - `node_modules` 和 `.git`。push 本來就會略過它們。
 - `dist/` 之類的建置輸出。Publish 會自己建置網站。
+
+App 資料夾裡的 `.gitignore` 檔案所忽略的路徑，例如 `dist/`，不會出現在 `openstep diff`、`push` 和 `pull` 中，發布時也不算尚未推送的編輯。App 已接受的原始碼本來就有的檔案是例外：它仍會隨每一次 push 送上去，例如舊版 CLI 推上去的 `dist/`。要移除它，請在你的資料夾裡刪除它，然後推送。如果 App 的 `.gitignore` 列出了你的網站需要的檔案（較舊的 App 會列出 `vite.config.js`），請在推送之前移除那一行。
 
 要讓你的伺服器呼叫其他服務，請定義一次 `BACKEND_EGRESS_HOSTS`，並用逗號分隔列出主機：
 
 ```sh
-openstep env define BACKEND_EGRESS_HOSTS --kind variable --targets backend --app app
-openstep env set BACKEND_EGRESS_HOSTS --app app --environment development --value "api.example.com"
+openstep env define BACKEND_EGRESS_HOSTS --kind variable --targets backend --app app --value "api.example.com"
 openstep env set BACKEND_EGRESS_HOSTS --app app --environment production --value "api.example.com"
 ```
+
+`env define` 會建立這個值，並一併設好它的開發值，`env set` 再設定它的上線值。
+
+### 打包你的伺服器用到的 npm 套件
+
+Publish 會照你推送的原樣執行 `functions/`，不會跑 `npm install`。所以請把你的伺服器用到的 npm 套件放進一個打包好的檔案 `functions/vendor.cjs`，你自己的程式碼則留在 `server.js` 和 `functions/` 的其餘檔案裡。Publish 會檢查你自己的檔案，但不會檢查 `vendor.cjs`。
+
+1. 在 Agent 資料夾裡，於 `apps/` 之外建立一個放套件的資料夾，這樣 push 就永遠不會送出它，然後在那裡連同 esbuild 一起安裝這些套件：
+
+   ```sh
+   mkdir server-packages
+   cd server-packages
+   npm init -y
+   npm install express esbuild
+   ```
+
+2. 在那個資料夾裡寫一個 `index.js`。它匯出你的伺服器用到的東西：
+
+   ```js
+   module.exports = { express: require('express') };
+   ```
+
+3. 把它打包進 App，然後回到 Agent 資料夾：
+
+   ```sh
+   npx esbuild index.js --bundle --platform=node --format=cjs --outfile=../apps/app/functions/vendor.cjs
+   cd ..
+   ```
+
+4. 在 `functions/server.js` 裡，從打包檔取用這些套件：
+
+   ```js
+   const { express } = require('./vendor.cjs');
+   ```
+
+每當你新增或更新套件，請在推送之前再打包一次。整個 `functions/`（包括 `vendor.cjs`）大小最多 128 MiB。
 
 ## 4. 在你的電腦上執行
 
@@ -122,7 +158,46 @@ cd apps/app && npm install && cd ../..
 openstep dev
 ```
 
-開啟 `openstep dev` 印出的網址。你的本機網站已經能和平台溝通：它會讀寫 App 的開發資料，AI 和電子郵件也能運作，並照常計費。錢包登入要在已發布的網站上進行。見 [在本機執行 App](/zh-tw/cli/dev/)。
+開啟 `openstep dev` 印出的網址。你的本機網站已經能和平台溝通：它會讀寫 App 的開發資料，AI 和電子郵件也能運作，並照常計費。`openstep dev` 啟動你的伺服器時，會把 `PORT` 設成 `backend` 的連接埠，這裡是 8080。它也會依照線上網站的規則處理 `/api`，並在某個請求到了線上網站會失敗時，向你發出警告。見 [線上網站有哪些不同](#線上網站有哪些不同) 和 [在本機執行 App](/zh-tw/cli/dev/)。
+
+## 線上網站有哪些不同
+
+在線上網站上，你的 App 是在平台的閘道後面執行。與在你自己的伺服器上相比，有幾件事在那裡運作得不一樣：
+
+- 請求本文的上限是 10 MiB。你的伺服器可以接收 JSON、文字、表單和檔案上傳，每個請求最多 10 MiB；更大的請求會得到 413，而且不會送到你的伺服器。較大的檔案請用 App 的檔案儲存：你的伺服器透過 `functions/platform.js` 的 `files.createUpload()` 取得一個上傳連結，頁面再把檔案直接送到那個連結，每個檔案最多 25 MiB。
+- 只有部分標頭能通過。從瀏覽器送來的請求，你的伺服器只會收到 `Accept`、`Accept-Language`、`Authorization`、`Content-Type`、`If-Match`、`If-None-Match`、`Range`、`Range-Unit` 和 `User-Agent`，加上平台自己以 `x-steps-` 開頭的標頭。回到瀏覽器的標頭只有 `Accept-Ranges`、`Cache-Control`、`Content-Language`、`Content-Range`、`Content-Type`、`ETag`、`Last-Modified`、`Preference-Applied` 和 `Vary`。
+- 沒有 Cookie、重新導向或下載檔名。你的伺服器收不到任何 Cookie，它送出的 `Set-Cookie`、`Location` 和 `Content-Disposition` 標頭也永遠到不了瀏覽器。要知道是誰在呼叫，請用 `useUser()` 登入和 `x-steps-user-address` 標頭（見 [錢包登入](#錢包登入)），或是在 `Authorization` 標頭裡放你自己的 token。不要用重新導向，改回應 JSON，再在瀏覽器裡前往下一頁。要下載檔案時，請在頁面裡取得檔案，再從頁面儲存：
+
+  ```ts
+  const blob = await (await fetch('/api/export.csv')).blob();
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'export.csv';
+  link.click();
+  ```
+
+- 有些指向 `/api` 的網址需要 `releaseRuntimePath()`。線上網站會改寫你的頁面傳給 `fetch`、`XMLHttpRequest` 和 `sendBeacon` 的網址，以及它所提供的 HTML 和 CSS 檔案裡寫的網址。由指令碼設定的網址（例如 React 渲染出來的 `<img>`）、`<a href>` 或 `window.location`，如果指向單純的 `/api` 路徑，就需要用 `src/lib/runtime` 的 `releaseRuntimePath('/api/...')`，否則公開的線上網站會回應 404：
+
+  ```tsx
+  import { releaseRuntimePath } from './lib/runtime';
+
+  function Avatar() {
+    return <img src={releaseRuntimePath('/api/avatar/1')} alt="" />;
+  }
+  ```
+
+- 不支援串流。伺服器的回應要等到結束才會送到瀏覽器，而且必須在 60 秒內結束。你的頁面或 `functions/` 裡只要出現 `new EventSource(` 或 `new WebSocket(`，Publish 就會拒絕這個 App。
+- 只有你自己的頁面能連到你的伺服器。其他服務無法呼叫它：指向 `/api/` 的 webhook 或登入回呼無法通過。請改讓登入回呼指向你網站的一個頁面，再由那個頁面用 `fetch` 把收到的內容送給你的伺服器。會造成變更的請求，例如 `POST`，也必須來自你網站的頁面。
+- 請使用平台的資料用戶端。你自己的資料庫用戶端，例如 `@supabase/supabase-js` 的 `createClient` 或 `supabase.co` 網址，會讓 Publish 拒絕這個 App，`index.html` 裡的 `<base>` 元素也一樣。請改用 `src/lib/supabase` 的 `supabase`（見 [資料](#資料)）。
+
+對有伺服器的 App，`openstep dev` 會依照這些規則處理 `/api`，所以你大多會先在自己的電腦上遇到它們。每一種請求第一次失敗時，CLI 會印出一則以 `openstep:` 開頭的警告，並說明該改什麼：
+
+- 瀏覽器用 `fetch`、`XMLHttpRequest` 或 `sendBeacon` 以外的方式載入單純的 `/api` 網址，會得到 404。如果你的 App 的 `src/lib/runtime.ts` 是這條規則出現之前的舊版，載入仍會通過，但會有警告。請執行 `openstep pull`：它會把平台檔案的目前版本放回你的資料夾。
+- 寫在 HTML 或 CSS 檔案裡的 `/api` 網址也會得到 404。這裡 `openstep dev` 比線上網站更嚴格，因為線上網站會改寫這樣的網址；請改在指令碼裡用 `releaseRuntimePath()` 設定網址。
+- 任何要求 `text/event-stream` 的 `/api` 請求都會得到 404，即使是線上網站會等你的伺服器結束回應後才回覆的 `fetch` 也一樣。連到 `/api` 的 WebSocket 也會得到 404。
+- 只有線上網站會放行的標頭，才會在瀏覽器和你的伺服器之間傳遞。CLI 在捨棄 `Cookie`、`Set-Cookie`、`Location` 或 `Content-Disposition` 時，會發出警告。
+- 超過 10 MiB 的請求本文會得到 413。
+- `curl` 和其他程式不會送出 `Sec-Fetch-Dest` 標頭，所以它們的請求絕不會被當成載入而遭拒絕。
 
 ## 5. 在你的程式碼裡使用 OpenStep
 
@@ -144,7 +219,7 @@ function Account() {
 
 `signIn()` 會請訪客在 Base 上核准一次免費簽署。錢包按鈕來自 `src/main.tsx` 裡的 provider。
 
-在你的伺服器上，每個來自已登入訪客的 `/api/` 請求，都會在 `x-steps-user-address` 標頭中帶著他們的錢包位址。用它來判斷是誰在呼叫。
+在線上網站上，每個來自已登入訪客的 `/api/` 請求，都會在 `x-steps-user-address` 標頭中帶著他們的錢包位址；訪客登入之前，請求沒有這個標頭。用它來判斷是誰在呼叫。在 `openstep dev` 下，頁面使用你連接的錢包，不需要簽署，而你的伺服器看到的是你登入 CLI 時使用的錢包。請在瀏覽器裡連接同一個錢包。
 
 ### 電子郵件
 
@@ -169,13 +244,15 @@ function Account() {
    }
    ```
 
-   範本 ID 使用小寫字母、數字和 `-`。值的類型是 `text`（最多 200 個字元）或 `url`，而 `url` 值要以 `href="{{link}}"` 放進連結裡。一個 App 最多可以有 20 個範本。
+   範本 ID 以小寫字母開頭，並使用小寫字母、數字和 `-`。值的類型是 `text`（最多 200 個字元）或 `url`。`url` 值要以 `href="{{link}}"` 放進連結裡，而且必須是 App 上線網址或其自訂網域上的 `https` 網址。範本裡其他的每個連結或圖片網址，也都必須是這樣的網址，或是 `mailto:` 連結。一個 App 最多可以有 20 個範本。
 
 2. 註冊它們：
 
    ```sh
    openstep email templates register emails.json --app app
    ```
+
+   檔案路徑是相對於 Agent 資料夾。註冊會把 App 的所有範本，替換成檔案裡的範本。
 
 3. 從瀏覽器（`src/lib/platform`）或伺服器（`functions/platform.js`）寄出：
 
@@ -267,12 +344,12 @@ openstep publish --note "First release"
 openstep status <operation-id>
 ```
 
-第一次 Publish 之前，請以 Agent 擁有者的身分，設定你的程式碼會讀取的上線值。Publish 會用 `npm ci` 和 `npm run build` 建置你的頁面，啟動 `functions/server.js`，檢查 `/health`，然後讓 App 上線。見 [推送與發布](/zh-tw/cli/push-publish/)。
+第一次 Publish 之前，請以 Agent 擁有者的身分，設定你的程式碼會讀取的上線值。Publish 會用 `npm ci` 和 `npm run build` 建置你的頁面，啟動 `functions/server.js`，檢查 `GET /health` 是否在 30 秒內回應 2xx 或 3xx 狀態，然後讓 App 上線。見 [推送與發布](/zh-tw/cli/push-publish/)。
 
 ## 注意事項
 
 - AI 呼叫、電子郵件、鏈上操作，以及你已發布的 App 的執行時間，都以 SSU 向 Agent 的擁有者計費。見 [查看餘額](/zh-tw/account/balance/)。
-- `openstep pull` 會還原平台檔案。請編輯你自己的檔案，並從平台檔案匯入。
+- `openstep pull` 和每一次 push，都會把平台檔案的目前版本放回你的資料夾。請編輯你自己的檔案，並從平台檔案匯入。
 - 等你的網站進了 App 之後，你也可以在工作頁的對話中，或用 `openstep agent chat` 來修改它。builder 處理的是同一份程式碼。
 
 下一步：[SSU 是什麼](/zh-tw/account/what-is-ssu/)。

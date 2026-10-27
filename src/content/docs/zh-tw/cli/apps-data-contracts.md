@@ -52,7 +52,7 @@ openstep env delete BOOKING_EMAIL --app admin
 ```
 
 - `env list` 會顯示每個值的名稱、類型，以及是否已提供。它不會顯示機密值。
-- `env define` 會建立一個值。名稱使用大寫字母、數字和底線。
+- `env define` 會建立一個值，並為一個環境設定它：除非你指定 `--environment`，否則是 `development`。變數的值用 `--value` 給定；機密值，以及沒有給 `--value` 的變數，CLI 會向你要求這個值。名稱使用大寫字母、數字和底線。
 - `env set` 會為已定義的值設定新值。`env clear` 會移除它。
 - `env targets` 會變更值可以被讀取的位置。`env delete` 會移除沒有人再使用的定義。
 - 目標（targets）遵循兩條規則。`frontend` 目標需要 `variable` 類型，以及以 `VITE_` 開頭的名稱，而以 `VITE_` 開頭的名稱必須以 `frontend` 為目標。機密值絕不以 `builder` 為目標，而變數只有在它存放的是鏈上位址，或它是存放鏈的 RPC URL 的 `BASE_RPC_URL` 時，才可以以 `builder` 為目標。
