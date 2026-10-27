@@ -23,6 +23,8 @@ You need Node.js 24 or newer. Check with `node --version`.
    openstep --version
    ```
 
+   The commands in these CLI pages need `openstep --version` to print 0.3.0 or newer.
+
 ## Sign in
 
 1. In the terminal, run:
