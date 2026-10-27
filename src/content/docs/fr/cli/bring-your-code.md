@@ -84,7 +84,7 @@ Gardez les fichiers de la plateforme fournis avec l'App. Votre code s'appuie des
 
 Laissez ceci hors du dossier :
 
-- Les fichiers dont le nom commence par `.env` (`.env.example` compris), les fichiers `.npmrc` et `.yarnrc`, les fichiers de clés comme `*.pem`, `*.key`, `*.p12` et `*.pfx`, et les dossiers nommés `key`, `keys`, `secret`, `secrets`, `credential` ou `credentials`. Mettez plutôt leurs valeurs dans les valeurs d'environnement. Tant que l'un d'eux est dans le dossier de l'App, `openstep diff`, `pull` et `push` s'arrêtent, même si le `.gitignore` de l'App le liste, avec un message qui indique le chemin et la raison, par exemple `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`.
+- Les fichiers dont le nom commence par `.env` (`.env.example` compris), les fichiers `.npmrc` et `.yarnrc`, les fichiers de clés comme `*.pem`, `*.key`, `*.p12` et `*.pfx`, et les dossiers nommés `key`, `keys`, `secret`, `secrets`, `credential` ou `credentials`. Mettez plutôt leurs valeurs dans les valeurs d'environnement. Tant que l'un d'eux est dans le dossier de l'App, `openstep diff`, `pull` et `push` s'arrêtent, même si le `.gitignore` de l'App liste ce fichier ou ce dossier lui-même, avec un message qui indique le chemin et la raison, par exemple `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`. Les fichiers situés dans un dossier que `.gitignore` ignore et qui n'a jamais été poussé ne sont pas examinés du tout.
 - `node_modules` et `.git`. Push les ignore de toute façon.
 - Les sorties de construction comme `dist/`. Publish construit le site lui-même.
 
@@ -131,7 +131,7 @@ Publish exécute `functions/` exactement comme vous l'avez poussé, sans `npm in
    const { express } = require('./vendor.cjs');
    ```
 
-Regroupez de nouveau avant de pousser chaque fois que vous ajoutez ou mettez à jour un paquet. L'ensemble de `functions/`, `vendor.cjs` compris, peut faire au plus 128 Mio. Vérifiez que le `.gitignore` de l'App n'ignore pas `functions/vendor.cjs`, par exemple avec une ligne `*.cjs` : push laisse de côté les fichiers qu'il ignore, et le fichier regroupé n'atteindrait donc jamais la plateforme.
+Regroupez de nouveau avant de pousser chaque fois que vous ajoutez ou mettez à jour un paquet. Publish accepte jusqu'à 128 Mio pour l'ensemble de `functions/`, `vendor.cjs` compris, mais gardez chaque fichier, `vendor.cjs` aussi, sous 25 Mio : un fichier plus gros fait échouer l'aperçu de l'App sur la page de travail et les tours du builder. Vérifiez que le `.gitignore` de l'App n'ignore pas `functions/vendor.cjs`, par exemple avec une ligne `*.cjs` : push laisse de côté les fichiers qu'il ignore, et le fichier regroupé n'atteindrait donc jamais la plateforme.
 
 ## 4. L'exécuter sur votre ordinateur
 

@@ -84,7 +84,7 @@ Keep the platform files that came with the App. Your code relies on them:
 
 Leave these out of the folder:
 
-- Files whose names start with `.env` (`.env.example` included), `.npmrc`, `.yarnrc`, key files such as `*.pem`, `*.key`, `*.p12` and `*.pfx`, and folders named `key`, `keys`, `secret`, `secrets`, `credential` or `credentials`. Put their values in environment values instead. While one of them is in the App's folder, `openstep diff`, `pull` and `push` stop, even when the App's `.gitignore` lists it, with a message that names the path and why, for example `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`.
+- Files whose names start with `.env` (`.env.example` included), `.npmrc`, `.yarnrc`, key files such as `*.pem`, `*.key`, `*.p12` and `*.pfx`, and folders named `key`, `keys`, `secret`, `secrets`, `credential` or `credentials`. Put their values in environment values instead. While one of them is in the App's folder, `openstep diff`, `pull` and `push` stop, even when the App's `.gitignore` lists that file or folder itself, with a message that names the path and why, for example `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`. Files inside a folder that `.gitignore` ignores, and that was never pushed, are not looked at at all.
 - `node_modules` and `.git`. Push skips them anyway.
 - Build output such as `dist/`. Publish builds the site itself.
 
@@ -131,7 +131,7 @@ Publish runs `functions/` exactly as you pushed it, without `npm install`. So pu
    const { express } = require('./vendor.cjs');
    ```
 
-Bundle again before you push whenever you add or update a package. All of `functions/`, `vendor.cjs` included, can be at most 128 MiB. Check that the App's `.gitignore` does not ignore `functions/vendor.cjs`, for example with a `*.cjs` line: push leaves out the files it ignores, so the bundle would never reach the platform.
+Bundle again before you push whenever you add or update a package. Publish takes up to 128 MiB for all of `functions/`, `vendor.cjs` included, but keep every single file, `vendor.cjs` too, under 25 MiB: a larger file makes the App's preview on the work page and the builder's turns fail. Check that the App's `.gitignore` does not ignore `functions/vendor.cjs`, for example with a `*.cjs` line: push leaves out the files it ignores, so the bundle would never reach the platform.
 
 ## 4. Run it on your computer
 

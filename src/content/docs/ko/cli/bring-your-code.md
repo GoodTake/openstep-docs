@@ -84,7 +84,7 @@ openstep capabilities enable server --app app
 
 다음은 폴더에 넣지 마세요.
 
-- 이름이 `.env`로 시작하는 파일(`.env.example` 포함), `.npmrc`, `.yarnrc`, 키 파일(`*.pem`, `*.key`, `*.p12`, `*.pfx` 등), 그리고 이름이 `key`, `keys`, `secret`, `secrets`, `credential`, `credentials` 중 하나인 폴더. 그 값은 환경 값에 넣으세요. 이 중 하나라도 앱 폴더에 있으면 앱의 `.gitignore`에 적혀 있어도 `openstep diff`, `pull`, `push`가 멈추고, 그 경로와 이유를 알려 주는 메시지가 나옵니다. 예를 들면 `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`입니다.
+- 이름이 `.env`로 시작하는 파일(`.env.example` 포함), `.npmrc`, `.yarnrc`, 키 파일(`*.pem`, `*.key`, `*.p12`, `*.pfx` 등), 그리고 이름이 `key`, `keys`, `secret`, `secrets`, `credential`, `credentials` 중 하나인 폴더. 그 값은 환경 값에 넣으세요. 이 중 하나라도 앱 폴더에 있으면 앱의 `.gitignore`에 그 파일이나 폴더 자체가 적혀 있어도 `openstep diff`, `pull`, `push`가 멈추고, 그 경로와 이유를 알려 주는 메시지가 나옵니다. 예를 들면 `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`입니다. `.gitignore`가 무시하고 한 번도 푸시된 적 없는 폴더 안의 파일은 아예 살펴보지 않습니다.
 - `node_modules`와 `.git`. 푸시는 어차피 건너뜁니다.
 - `dist/` 같은 빌드 결과물. Publish가 사이트를 직접 빌드합니다.
 
@@ -131,7 +131,7 @@ Publish는 `functions/`를 푸시한 그대로 실행하며 `npm install`을 하
    const { express } = require('./vendor.cjs');
    ```
 
-패키지를 추가하거나 업데이트할 때마다 푸시하기 전에 다시 번들로 묶으세요. `vendor.cjs`를 포함한 `functions/` 전체는 최대 128 MiB입니다. 앱의 `.gitignore`가 `*.cjs` 같은 줄로 `functions/vendor.cjs`를 무시하고 있지 않은지 확인하세요. 푸시는 무시되는 파일을 빼고 올리므로, 그러면 번들이 플랫폼에 닿지 않습니다.
+패키지를 추가하거나 업데이트할 때마다 푸시하기 전에 다시 번들로 묶으세요. Publish는 `vendor.cjs`를 포함한 `functions/` 전체를 최대 128 MiB까지 받지만, 파일 하나하나는 `vendor.cjs`까지 포함해 25 MiB 미만으로 유지하세요. 그보다 큰 파일이 있으면 작업 페이지에서 앱의 Preview와 builder의 턴이 실패합니다. 앱의 `.gitignore`가 `*.cjs` 같은 줄로 `functions/vendor.cjs`를 무시하고 있지 않은지 확인하세요. 푸시는 무시되는 파일을 빼고 올리므로, 그러면 번들이 플랫폼에 닿지 않습니다.
 
 ## 4. 내 컴퓨터에서 실행하기
 

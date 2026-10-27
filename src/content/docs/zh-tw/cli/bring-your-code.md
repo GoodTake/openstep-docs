@@ -84,7 +84,7 @@ openstep capabilities enable server --app app
 
 以下這些請不要放進資料夾：
 
-- 名稱以 `.env` 開頭的檔案（包括 `.env.example`）、`.npmrc`、`.yarnrc`、金鑰檔案（例如 `*.pem`、`*.key`、`*.p12` 和 `*.pfx`），以及名為 `key`、`keys`、`secret`、`secrets`、`credential` 或 `credentials` 的資料夾。請把它們的值放進環境值。只要其中任何一個還在 App 的資料夾裡，`openstep diff`、`pull` 和 `push` 就會停止，即使 App 的 `.gitignore` 列出了它也一樣，並在訊息裡指出路徑和原因，例如 `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`。
+- 名稱以 `.env` 開頭的檔案（包括 `.env.example`）、`.npmrc`、`.yarnrc`、金鑰檔案（例如 `*.pem`、`*.key`、`*.p12` 和 `*.pfx`），以及名為 `key`、`keys`、`secret`、`secrets`、`credential` 或 `credentials` 的資料夾。請把它們的值放進環境值。只要其中任何一個還在 App 的資料夾裡，`openstep diff`、`pull` 和 `push` 就會停止，即使 App 的 `.gitignore` 列出的正是這個檔案或資料夾本身也一樣，並在訊息裡指出路徑和原因，例如 `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`。被 `.gitignore` 忽略、而且從未推送過的資料夾，裡面的檔案完全不會被查看。
 - `node_modules` 和 `.git`。push 本來就會略過它們。
 - `dist/` 之類的建置輸出。Publish 會自己建置網站。
 
@@ -131,7 +131,7 @@ Publish 會照你推送的原樣執行 `functions/`，不會跑 `npm install`。
    const { express } = require('./vendor.cjs');
    ```
 
-每當你新增或更新套件，請在推送之前再打包一次。整個 `functions/`（包括 `vendor.cjs`）大小最多 128 MiB。請確認 App 的 `.gitignore` 沒有忽略 `functions/vendor.cjs`（例如寫了一行 `*.cjs`）：push 會略過它忽略的檔案，打包檔就永遠到不了平台。
+每當你新增或更新套件，請在推送之前再打包一次。Publish 最多接受 128 MiB 的整個 `functions/`（包括 `vendor.cjs`），但每個單一檔案（`vendor.cjs` 也一樣）都要小於 25 MiB：更大的檔案會讓工作頁上該 App 的預覽和 builder 的每一輪都失敗。請確認 App 的 `.gitignore` 沒有忽略 `functions/vendor.cjs`（例如寫了一行 `*.cjs`）：push 會略過它忽略的檔案，打包檔就永遠到不了平台。
 
 ## 4. 在你的電腦上執行
 

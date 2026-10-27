@@ -84,7 +84,7 @@ App に付いてきたプラットフォームのファイルは残してくだ�
 
 次のものはフォルダーに入れないでください。
 
-- 名前が `.env` で始まるファイル（`.env.example` も含みます）、`.npmrc`、`.yarnrc`、`*.pem`、`*.key`、`*.p12`、`*.pfx` などのキーファイル、そして `key`、`keys`、`secret`、`secrets`、`credential`、`credentials` という名前のフォルダー。値は環境値に入れてください。これらのどれかが App のフォルダーにある間は、App の `.gitignore` に書かれていても、`openstep diff`、`pull`、`push` は停止し、パスと理由を示すメッセージを出します。たとえば `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)` です。
+- 名前が `.env` で始まるファイル（`.env.example` も含みます）、`.npmrc`、`.yarnrc`、`*.pem`、`*.key`、`*.p12`、`*.pfx` などのキーファイル、そして `key`、`keys`、`secret`、`secrets`、`credential`、`credentials` という名前のフォルダー。値は環境値に入れてください。これらのどれかが App のフォルダーにある間は、App の `.gitignore` にそのファイルやフォルダー自体が書かれていても、`openstep diff`、`pull`、`push` は停止し、パスと理由を示すメッセージを出します。たとえば `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)` です。`.gitignore` が無視していて、一度も push されていないフォルダーの中のファイルは、まったく調べられません。
 - `node_modules` と `.git`。push はもともとこれらを除外します。
 - `dist/` などのビルド出力。Publish が自分でサイトをビルドします。
 
@@ -131,7 +131,7 @@ Publish は `functions/` を、push したとおりに、`npm install` なしで
    const { express } = require('./vendor.cjs');
    ```
 
-パッケージを追加または更新したときは、push の前にもう一度バンドルしてください。`functions/` 全体は、`vendor.cjs` を含めて、最大 128 MiB です。App の `.gitignore` が、`*.cjs` という行などで `functions/vendor.cjs` を無視していないか確認してください。push は無視されたファイルを送らないので、バンドルがプラットフォームに届かなくなります。
+パッケージを追加または更新したときは、push の前にもう一度バンドルしてください。Publish は `vendor.cjs` を含む `functions/` 全体を最大 128 MiB まで受け付けますが、ファイルは 1 つずつ、`vendor.cjs` も含めて 25 MiB 未満にしてください。それより大きいファイルがあると、作業ページでの App のプレビューと builder のターンが失敗します。App の `.gitignore` が、`*.cjs` という行などで `functions/vendor.cjs` を無視していないか確認してください。push は無視されたファイルを送らないので、バンドルがプラットフォームに届かなくなります。
 
 ## 4. 自分のコンピューターで実行する
 

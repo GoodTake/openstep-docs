@@ -91,6 +91,6 @@ If a push or publish is cut off, for example by a network drop, you may not know
 - Pushing is for owners and editors. Publishing, rolling back, unpublishing and republishing are for owners.
 - While the builder is running a planned build, the agent is read-only. Wait for it to finish, then `pull`, then push.
 - `diff`, `push` and `pull` leave out files that the `.gitignore` files in an App's folder ignore, such as `dist/`, unless the agent's accepted source already has them, as Git does with files it already tracks. They don't count as edits you have not pushed when you publish, either. To remove such a file from the accepted source, delete it in your folder and push.
-- Files whose names start with `.env`, `.npmrc`, key files and the like stop `diff`, `pull` and `push`, even when `.gitignore` lists them. The message names the path and why, starting with `Local source path refused:`. See [Move your code into the App](/cli/bring-your-code/#3-move-your-code-into-the-app).
+- Files whose names start with `.env`, `.npmrc`, key files and the like stop `diff`, `pull` and `push`, even when `.gitignore` lists the files themselves. The message names the path and why, starting with `Local source path refused:`. Files inside a folder that `.gitignore` ignores, and that was never pushed, are not looked at. See [Move your code into the App](/cli/bring-your-code/#3-move-your-code-into-the-app).
 
 Next: [Apps, data and contracts](/cli/apps-data-contracts/).
