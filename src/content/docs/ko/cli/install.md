@@ -23,6 +23,8 @@ Node.js 24 이상이 필요합니다. `node --version`으로 확인하세요.
    openstep --version
    ```
 
+   이 CLI 페이지들의 명령을 쓰려면 `openstep --version`이 0.3.0 이상을 출력해야 합니다.
+
 ## 로그인
 
 1. 터미널에서 다음을 실행합니다.

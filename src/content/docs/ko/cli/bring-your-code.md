@@ -39,7 +39,7 @@ cd my-site
 openstep apps list
 ```
 
-`agent create`는 새 Agent의 ID를 출력합니다. `--product`를 쓰지 않으면 Agent는 **Web builder**를 사용합니다. `agent checkout`은 Agent의 앱들을 `apps/<app-key>/`로 복사하며, 새 Agent에는 앱이 하나 있고 보통 `apps/app/`입니다. 아래 예시는 앱 키로 `app`을 씁니다. `apps list`에 나온 키를 사용하세요.
+`agent create`는 새 Agent를 JSON으로 출력하며, 그 안의 `id`가 Agent ID입니다. `--product`를 쓰지 않으면 Agent는 **Web builder**를 사용합니다. `agent checkout`은 Agent의 앱들을 `apps/<app-key>/`로 복사하며, 새 Agent에는 앱이 하나 있고 보통 `apps/app/`입니다. 아래 예시는 앱 키로 `app`을 씁니다. `apps list`에 나온 키를 사용하세요.
 
 앱은 작게 동작하는 사이트와, 내 코드가 쓸 플랫폼 파일을 가진 채로 시작합니다. 3단계에서 사이트를 내 것으로 바꾸고, 플랫폼 파일은 그대로 둡니다.
 
@@ -56,10 +56,9 @@ openstep apps list
 
 ```sh
 openstep capabilities enable server --app app
-openstep pull
 ```
 
-이렇게 하면 앱에 `functions/` 폴더가 추가되고, 시작용 `server.js`와 플랫폼의 서버 도우미가 들어옵니다. 내 서버 코드를 복사해 넣기 전에 먼저 하세요. 그래야 내 파일이 시작용 파일 위에 덮입니다. 사이트에 페이지만 있다면 이 단계는 건너뜁니다.
+이렇게 하면 앱에 `functions/` 폴더가 추가되고, 그 폴더가 내 폴더로 들어옵니다. 안에는 시작용 `server.js`, 플랫폼의 서버 도우미인 `platform.js`, `runtime-config.js`, `viem.cjs`, 그리고 `openapi.json`, `check-openapi.js`, `package.json`, `Dockerfile`이 있습니다. 내 서버 코드를 복사해 넣기 전에 먼저 하세요. 그래야 내 파일이 시작용 파일 위에 덮입니다. 사이트에 페이지만 있다면 이 단계는 건너뜁니다.
 
 ## 3. 내 코드를 앱으로 옮기기
 
@@ -69,33 +68,70 @@ openstep pull
 |---|---|
 | 페이지 | 앱 루트의 npm 구성으로, `package.json`과 `package-lock.json`이 있어야 합니다. `npm run build`가 완성된 사이트를 `dist/`에 쓰며, 그 최상위에 `index.html`이 있어야 합니다. |
 | 브라우저가 읽는 설정 | `VITE_`로 시작하는 이름(예: `VITE_SITE_NAME`)이며, [`openstep env`](/ko/cli/apps-data-contracts/)로 설정합니다. |
-| 서버 | `functions/server.js`이며 `node server.js`로 시작합니다. 환경 변수 `PORT`의 포트에서 요청을 받고, `GET /health`에 응답하며, `/api/` 아래에서 내 라우트를 제공합니다. `functions/package.json`에는 의존성이 적혀 있지 않으므로, 서버가 npm 패키지를 쓴다면 푸시하기 전에 `server.js`에 번들로 묶으세요. |
-| 서버 설정과 키 | `functions/runtime-config.js`의 `getVariable('NAME')`과 `getSecret('NAME')`으로 읽고, `openstep env`로 설정합니다. |
+| 서버 | `functions/server.js`이며 `node server.js`로 시작합니다. 환경 변수 `PORT`의 포트에서 요청을 받고, `GET /health`에 응답하며, `/api/` 아래에서 내 라우트를 제공합니다. `functions/package.json`에는 의존성이 적혀 있지 않으므로, 서버가 쓰는 npm 패키지는 `functions/vendor.cjs`에 번들로 묶고, `server.js`와 `functions/`의 나머지에 있는 내 코드에서는 `require('./vendor.cjs')`로 가져오세요. [서버의 npm 패키지를 번들로 묶기](#서버의-npm-패키지를-번들로-묶기)를 참고하세요. |
+| 서버 설정과 키 | `functions/runtime-config.js`의 `getVariable('NAME')`과 `getSecret('NAME')`으로 읽고, `openstep env`로 설정합니다. `process.env.PORT`와 `process.env.NODE_ENV`를 제외하면, `functions/`에 있는 내 코드는 `process.env`를 읽으면 안 됩니다. 라이브 서버는 거기에 설정을 두지 않으며, Publish가 그런 앱을 거부합니다. |
 | 다른 서비스 호출 | 서버에서 `functions/platform.js`의 `externalRequest(url)`을 호출하고, 각 호스트를 앱 값 `BACKEND_EGRESS_HOSTS`에 적습니다(아래 참고). |
-| 데이터베이스 테이블 | `openstep data migrate`로 만듭니다. [앱, 데이터, 컨트랙트](/ko/cli/apps-data-contracts/)를 참고하세요. |
+| 데이터베이스 테이블 | `openstep data migrate <id> <file> --app app`으로 만듭니다. 예를 들면 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`입니다. 플랫폼 자체의 테이블이 들어 있는 `migrations/0001_platform_baseline.sql`은 그대로 두세요. [앱, 데이터, 컨트랙트](/ko/cli/apps-data-contracts/#데이터)를 참고하세요. |
 
 이 경로들은 플랫폼의 것이므로 내 페이지를 여기에 두지 마세요. `/api/`(내 서버로 전달됨), `/auth/`, `/data/`, `/_platform/`, `/__steps/`, `/_releases/`입니다.
 
-앱과 함께 온 플랫폼 파일은 그대로 두세요. 내 코드가 이 파일들에서 가져다 씁니다.
+앱과 함께 온 플랫폼 파일은 그대로 두세요. 내 코드가 이 파일들에 의존합니다.
 
-- 앱 안에서: `src/lib/platform.ts`, `src/lib/useUser.ts`, `src/lib/live-auth.ts`, `src/lib/supabase.ts`, `src/lib/runtime.ts`, `src/lib/wagmi.ts`, 그리고 `src/main.tsx`의 지갑 provider.
-- `functions/` 안에서: `platform.js`, `runtime-config.js`, `viem.cjs`.
+- 앱 안에서: `src/lib/platform.ts`, `src/lib/useUser.ts`, `src/lib/live-auth.ts`, `src/lib/supabase.ts`, `src/lib/runtime.ts`, `src/lib/wagmi.ts`, `src/main.tsx`의 지갑 provider, 그리고 `migrations/0001_platform_baseline.sql`.
+- `functions/` 안에서: `platform.js`, `runtime-config.js`, `viem.cjs`, `openapi.json`, `check-openapi.js`.
 
-`openstep pull`은 이 파일들 대부분을 플랫폼의 버전으로 되돌립니다. 편집하지 말고 가져와서 쓰세요.
+`openstep pull`과 모든 `openstep push`는 `src/lib/runtime.ts`, `src/lib/live-auth.ts`, `src/lib/supabase.ts`, `src/lib/useUser.ts`, `functions/platform.js`, `functions/runtime-config.js`, `functions/viem.cjs`, `functions/check-openapi.js`를 플랫폼의 현재 버전으로 내 폴더에 되돌려 놓습니다. 그러니 편집하지 말고 가져와서 쓰세요. `src/lib/platform.ts`, `src/lib/wagmi.ts`, `src/main.tsx`는 앱이 만들어진 뒤에는 내 것입니다. 필요한 대로 바꾸되, 그 안의 플랫폼 부분은 그대로 두세요.
 
 다음은 폴더에 넣지 마세요.
 
-- `.env` 파일, `.npmrc`, 키와 그 밖의 자격 증명 파일. `openstep push`가 거부합니다. 그 값은 환경 값에 넣으세요.
+- 이름이 `.env`로 시작하는 파일(`.env.example` 포함), `.npmrc`, `.yarnrc`, 키 파일(`*.pem`, `*.key`, `*.p12`, `*.pfx` 등), 그리고 이름이 `key`, `keys`, `secret`, `secrets`, `credential`, `credentials` 중 하나인 폴더. 이 중 하나라도 앱 폴더에 있으면 앱의 `.gitignore`에 적혀 있어도 `openstep diff`, `pull`, `push`가 `Local source path refused` 오류와 함께 멈춥니다. 그 값은 환경 값에 넣으세요.
 - `node_modules`와 `.git`. 푸시는 어차피 건너뜁니다.
 - `dist/` 같은 빌드 결과물. Publish가 사이트를 직접 빌드합니다.
+
+앱 폴더의 `.gitignore` 파일이 무시하는 경로(예: `dist/`)는 `openstep diff`, `push`, `pull`에서 제외되며, 게시할 때도 푸시하지 않은 편집으로 세지 않습니다. 앱의 수락된 소스에 이미 있는 파일은 예외입니다. 그런 파일은 푸시할 때마다 여전히 함께 올라갑니다. 예를 들어 이전 버전 CLI가 푸시한 `dist/`가 그렇습니다. 없애려면 내 폴더에서 삭제한 뒤 푸시하세요. 앱의 `.gitignore`에 사이트에 필요한 파일이 적혀 있다면(예전에 만든 앱에는 `vite.config.js`가 적혀 있습니다), 푸시하기 전에 그 줄을 지우세요.
 
 서버가 다른 서비스를 호출할 수 있게 하려면 `BACKEND_EGRESS_HOSTS`를 한 번 정의하고, 호스트를 쉼표로 구분해 지정합니다.
 
 ```sh
-openstep env define BACKEND_EGRESS_HOSTS --kind variable --targets backend --app app
-openstep env set BACKEND_EGRESS_HOSTS --app app --environment development --value "api.example.com"
+openstep env define BACKEND_EGRESS_HOSTS --kind variable --targets backend --app app --value "api.example.com"
 openstep env set BACKEND_EGRESS_HOSTS --app app --environment production --value "api.example.com"
 ```
+
+`env define`은 값을 만들 때 개발용 값도 함께 지정하고, `env set`은 프로덕션 값을 지정합니다.
+
+### 서버의 npm 패키지를 번들로 묶기
+
+Publish는 `functions/`를 푸시한 그대로 실행하며 `npm install`을 하지 않습니다. 그러니 서버가 쓰는 npm 패키지는 번들 파일 하나, `functions/vendor.cjs`에 넣고, 내 코드는 `server.js`와 `functions/`의 나머지에 두세요. Publish는 내가 작성한 파일은 검사하지만 `vendor.cjs`는 검사하지 않습니다.
+
+1. Agent 폴더에서 패키지용 폴더를 `apps/` 밖에 만들면 푸시가 그 폴더를 보내지 않습니다. 그 안에 패키지를 esbuild와 함께 설치합니다.
+
+   ```sh
+   mkdir server-packages
+   cd server-packages
+   npm init -y
+   npm install express esbuild
+   ```
+
+2. 그 폴더에 `index.js`를 작성합니다. 서버가 쓰는 것을 내보내는 파일입니다.
+
+   ```js
+   module.exports = { express: require('express') };
+   ```
+
+3. 번들로 묶어 앱에 넣고 Agent 폴더로 돌아갑니다.
+
+   ```sh
+   npx esbuild index.js --bundle --platform=node --format=cjs --outfile=../apps/app/functions/vendor.cjs
+   cd ..
+   ```
+
+4. `functions/server.js`에서 번들의 패키지를 가져옵니다.
+
+   ```js
+   const { express } = require('./vendor.cjs');
+   ```
+
+패키지를 추가하거나 업데이트할 때마다 푸시하기 전에 다시 번들로 묶으세요. `vendor.cjs`를 포함한 `functions/` 전체는 최대 128 MiB입니다.
 
 ## 4. 내 컴퓨터에서 실행하기
 
@@ -122,7 +158,46 @@ cd apps/app && npm install && cd ../..
 openstep dev
 ```
 
-`openstep dev`가 출력하는 주소를 엽니다. 로컬 사이트는 이미 플랫폼과 이어져 있습니다. 앱의 개발 데이터를 읽고 쓰며, AI와 이메일도 동작하고 평소처럼 요금이 청구됩니다. 지갑 로그인은 게시한 사이트에서 이루어집니다. [앱을 로컬에서 실행하기](/ko/cli/dev/)를 참고하세요.
+`openstep dev`가 출력하는 주소를 엽니다. 로컬 사이트는 이미 플랫폼과 이어져 있습니다. 앱의 개발 데이터를 읽고 쓰며, AI와 이메일도 동작하고 평소처럼 요금이 청구됩니다. `openstep dev`는 `PORT`를 `backend` 포트(여기서는 8080)로 설정해 서버를 시작합니다. 또한 `/api`를 라이브 사이트의 규칙대로 처리하고, 라이브 사이트에서 실패할 요청이 있으면 경고합니다. [라이브 사이트에서 달라지는 점](#라이브-사이트에서-달라지는-점)과 [앱을 로컬에서 실행하기](/ko/cli/dev/)를 참고하세요.
+
+## 라이브 사이트에서 달라지는 점
+
+라이브 사이트에서 내 앱은 플랫폼의 게이트웨이 뒤에서 실행되므로, 내가 직접 운영하는 서버와 다르게 동작하는 부분이 몇 가지 있습니다.
+
+- 요청 본문은 10 MiB까지입니다. 서버는 JSON, 텍스트, 폼, 파일 업로드를 요청당 최대 10 MiB까지 받을 수 있습니다. 그보다 큰 요청은 413 응답을 받고 서버에 도달하지 않습니다. 더 큰 파일은 앱의 파일 저장소를 사용하세요. 서버가 `functions/platform.js`의 `files.createUpload()`로 업로드 링크를 받아 오면, 페이지가 그 링크로 파일을 곧바로 보냅니다. 파일 하나당 최대 25 MiB입니다.
+- 일부 헤더만 통과합니다. 브라우저에서 보낸 것 중 서버가 받는 헤더는 `Accept`, `Accept-Language`, `Authorization`, `Content-Type`, `If-Match`, `If-None-Match`, `Range`, `Range-Unit`, `User-Agent`와 플랫폼 자체의 `x-steps-` 헤더뿐입니다. 브라우저가 돌려받는 헤더는 `Accept-Ranges`, `Cache-Control`, `Content-Language`, `Content-Range`, `Content-Type`, `ETag`, `Last-Modified`, `Preference-Applied`, `Vary`뿐입니다.
+- 쿠키, 리디렉션, 다운로드 파일 이름을 쓸 수 없습니다. 서버는 쿠키를 받지 못하고, 서버가 보낸 `Set-Cookie`, `Location`, `Content-Disposition` 헤더는 브라우저에 도달하지 않습니다. 누가 호출하는지 알려면 `useUser()` 로그인과 `x-steps-user-address` 헤더([지갑 로그인](#지갑-로그인) 참고)를 쓰거나, `Authorization` 헤더에 내 토큰을 넣으세요. 리디렉션 대신 JSON으로 응답하고, 다음 페이지로의 이동은 브라우저에서 하세요. 다운로드는 페이지에서 파일을 가져와 그 페이지에서 저장하세요.
+
+  ```ts
+  const blob = await (await fetch('/api/export.csv')).blob();
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'export.csv';
+  link.click();
+  ```
+
+- `/api`로 가는 일부 URL에는 `releaseRuntimePath()`가 필요합니다. 라이브 사이트는 페이지가 `fetch`, `XMLHttpRequest`, `sendBeacon`에 넘기는 URL과, 제공하는 HTML 및 CSS 파일에 적힌 URL을 다시 써 줍니다. 스크립트로 설정한 URL(예를 들어 React가 렌더링하는 `<img>`), `<a href>`, `window.location`이 접두사 없는 `/api` 경로를 가리키면 `src/lib/runtime`의 `releaseRuntimePath('/api/...')`를 써야 합니다. 쓰지 않으면 공개 라이브 사이트가 404로 응답합니다.
+
+  ```tsx
+  import { releaseRuntimePath } from './lib/runtime';
+
+  function Avatar() {
+    return <img src={releaseRuntimePath('/api/avatar/1')} alt="" />;
+  }
+  ```
+
+- 스트리밍은 되지 않습니다. 서버의 응답은 끝난 뒤에야 브라우저에 도달하며, 60초 안에 끝나야 합니다. 페이지나 `functions/`에 `new EventSource(`나 `new WebSocket(`이 있으면 Publish가 앱을 거부합니다.
+- 내 사이트의 페이지만 서버에 도달합니다. 다른 서비스는 서버를 호출할 수 없습니다. `/api/`를 가리키는 웹훅이나 로그인 콜백은 통과하지 못합니다. 로그인 콜백은 대신 내 사이트의 페이지로 지정하고, 그 페이지가 받은 내용을 `fetch`로 서버에 보내게 하세요. `POST`처럼 무언가를 바꾸는 요청도 내 사이트의 페이지에서 와야 합니다.
+- 플랫폼의 데이터 클라이언트를 사용하세요. `@supabase/supabase-js`의 `createClient` 같은 자체 데이터베이스 클라이언트나 `supabase.co` 주소가 있으면 Publish가 앱을 거부하며, `index.html`에 `<base>` 요소가 있어도 마찬가지입니다. 대신 `src/lib/supabase`의 `supabase`를 사용하세요([데이터](#데이터) 참고).
+
+서버가 있는 앱에서는 `openstep dev`가 `/api`를 이 규칙대로 처리하므로, 대부분을 내 컴퓨터에서 먼저 만나게 됩니다. 요청 종류마다 처음 실패할 때 CLI가 `openstep:`으로 시작하는 경고를 출력해 무엇을 바꿔야 하는지 알려 줍니다.
+
+- 브라우저가 `fetch`, `XMLHttpRequest`, `sendBeacon`이 아닌 다른 방식으로 불러오는 접두사 없는 `/api` URL에는 404가 돌아옵니다. 앱의 `src/lib/runtime.ts`가 이 규칙이 생기기 전의 버전이면, 그 불러오기는 경고와 함께 그대로 통과합니다. `openstep pull`을 실행하세요. 플랫폼 파일을 플랫폼의 현재 버전으로 내 폴더에 되돌려 놓습니다.
+- HTML이나 CSS 파일에 적힌 `/api` URL도 404가 돌아옵니다. 이 경우 `openstep dev`는 이런 URL을 다시 써 주는 라이브 사이트보다 엄격합니다. 대신 스크립트에서 `releaseRuntimePath()`로 URL을 설정하세요.
+- `text/event-stream`을 요청하는 `/api` 요청은 모두 404가 돌아옵니다. 서버가 응답을 끝내면 라이브 사이트가 답해 줄 `fetch`도 마찬가지입니다. `/api`로 가는 WebSocket에도 404가 돌아옵니다.
+- 라이브 사이트가 통과시키는 헤더만 브라우저와 서버 사이를 오갑니다. CLI는 `Cookie`, `Set-Cookie`, `Location`, `Content-Disposition`을 제거할 때 경고합니다.
+- 10 MiB를 넘는 요청 본문에는 413이 돌아옵니다.
+- `curl` 같은 프로그램은 `Sec-Fetch-Dest` 헤더를 보내지 않으므로, 그 요청이 불러오기로 간주되어 거부되는 일은 없습니다.
 
 ## 5. 내 코드에서 OpenStep 사용하기
 
@@ -144,7 +219,7 @@ function Account() {
 
 `signIn()`은 방문자에게 Base에서 무료 서명 한 번을 승인해 달라고 요청합니다. 지갑 버튼은 `src/main.tsx`의 provider에서 제공됩니다.
 
-서버에서는 로그인한 방문자가 보낸 모든 `/api/` 요청에 그 지갑 주소가 `x-steps-user-address` 헤더로 실립니다. 누가 호출하는지 구분할 때 이 값을 사용하세요.
+라이브 사이트에서는 로그인한 방문자가 보낸 모든 `/api/` 요청에 그 지갑 주소가 `x-steps-user-address` 헤더로 실립니다. 로그인하기 전에는 이 헤더가 없습니다. 누가 호출하는지 구분할 때 이 값을 사용하세요. `openstep dev`에서는 페이지가 내가 연결한 지갑을 서명 없이 사용하고, 서버는 내가 CLI에 로그인한 지갑을 봅니다. 브라우저에서도 같은 지갑을 연결하세요.
 
 ### 이메일
 
@@ -169,13 +244,15 @@ function Account() {
    }
    ```
 
-   템플릿 ID에는 소문자, 숫자, `-`를 사용합니다. 값의 종류는 `text`(최대 200자) 또는 `url`이며, `url` 값은 링크 안에 `href="{{link}}"`로 넣습니다. 앱 하나에는 템플릿을 최대 20개까지 둘 수 있습니다.
+   템플릿 ID는 소문자로 시작하며 소문자, 숫자, `-`를 사용합니다. 값의 종류는 `text`(최대 200자) 또는 `url`입니다. `url` 값은 링크 안에 `href="{{link}}"`로 넣으며, 앱의 라이브 주소나 커스텀 도메인에 있는 `https` URL이어야 합니다. 템플릿의 다른 모든 링크나 이미지 URL도 그런 URL이거나 `mailto:` 링크여야 합니다. 앱 하나에는 템플릿을 최대 20개까지 둘 수 있습니다.
 
 2. 등록합니다.
 
    ```sh
    openstep email templates register emails.json --app app
    ```
+
+   파일 경로는 Agent 폴더 기준입니다. 등록하면 앱의 템플릿 전체가 파일에 있는 템플릿으로 교체됩니다.
 
 3. 브라우저(`src/lib/platform`) 또는 서버(`functions/platform.js`)에서 보냅니다.
 
@@ -267,12 +344,12 @@ openstep publish --note "First release"
 openstep status <operation-id>
 ```
 
-첫 Publish 전에, Agent의 소유자로서 내 코드가 읽는 프로덕션 값을 설정하세요. Publish는 `npm ci`와 `npm run build`로 페이지를 빌드하고, `functions/server.js`를 시작하고, `/health`를 확인한 다음 앱을 라이브로 올립니다. [푸시와 게시](/ko/cli/push-publish/)를 참고하세요.
+첫 Publish 전에, Agent의 소유자로서 내 코드가 읽는 프로덕션 값을 설정하세요. Publish는 `npm ci`와 `npm run build`로 페이지를 빌드하고, `functions/server.js`를 시작하고, `GET /health`가 30초 안에 2xx 또는 3xx 상태로 응답하는지 확인한 다음 앱을 라이브로 올립니다. [푸시와 게시](/ko/cli/push-publish/)를 참고하세요.
 
 ## 알아 두기
 
 - AI 호출, 이메일, 온체인 동작, 그리고 게시한 앱이 실행되는 시간은 Agent 소유자에게 SSU로 청구됩니다. [잔액 확인](/ko/account/balance/)을 참고하세요.
-- `openstep pull`은 플랫폼 파일을 되돌립니다. 내 파일을 편집하고, 플랫폼 파일에서는 가져와서 쓰세요.
+- `openstep pull`과 모든 푸시는 플랫폼 파일을 플랫폼의 현재 버전으로 내 폴더에 되돌려 놓습니다. 내 파일을 편집하고, 플랫폼 파일에서는 가져와서 쓰세요.
 - 사이트가 앱 안에 들어간 뒤에는 작업 페이지의 채팅이나 `openstep agent chat`으로도 바꿀 수 있습니다. builder는 같은 코드를 작업합니다.
 
 다음: [SSU란](/ko/account/what-is-ssu/).

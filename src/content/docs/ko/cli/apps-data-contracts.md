@@ -52,7 +52,7 @@ openstep env delete BOOKING_EMAIL --app admin
 ```
 
 - `env list`는 각 값의 이름, 종류, 제공 여부를 보여 줍니다. 비밀 값은 표시하지 않습니다.
-- `env define`은 값을 만듭니다. 이름은 대문자, 숫자, 밑줄을 사용합니다.
+- `env define`은 값을 만들고 환경 하나에 설정합니다. `--environment`를 지정하지 않으면 `development`에 설정합니다. variable의 값은 `--value`로 지정합니다. 비밀 값이거나 `--value`가 없는 variable이면 CLI가 값을 묻습니다. 이름은 대문자, 숫자, 밑줄을 사용합니다.
 - `env set`은 이미 정의된 값에 새 값을 지정합니다. `env clear`는 그 값을 제거합니다.
 - `env targets`는 값을 읽을 수 있는 위치를 바꿉니다. `env delete`는 더 이상 아무도 쓰지 않는 정의를 제거합니다.
 - 대상에는 두 가지 규칙이 있습니다. `frontend` 대상은 `variable` 종류이고 이름이 `VITE_`로 시작해야 하며, 이름이 `VITE_`로 시작하는 값은 반드시 `frontend`를 대상으로 해야 합니다. 비밀 값은 `builder`를 대상으로 할 수 없고, variable은 체인 주소를 담고 있거나 체인의 RPC URL을 담은 `BASE_RPC_URL`일 때만 `builder`를 대상으로 할 수 있습니다.

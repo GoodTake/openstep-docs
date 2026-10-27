@@ -90,5 +90,7 @@ openstep republish --note "Bring back the last live version"
 
 - 푸시는 소유자와 편집자가 할 수 있습니다. 게시, 롤백, 게시 취소, 다시 게시는 소유자 전용입니다.
 - builder가 계획된 빌드를 실행하는 동안 Agent는 읽기 전용입니다. 끝날 때까지 기다린 뒤 `pull`하고 푸시합니다.
+- `diff`, `push`, `pull`은 앱 폴더의 `.gitignore` 파일이 무시하는 파일(예: `dist/`)을 대상에서 뺍니다. 단 Agent가 수락한 소스에 이미 있는 파일은 빼지 않습니다. Git이 이미 추적하는 파일을 다루는 방식과 같습니다. 게시할 때도 이런 파일은 푸시하지 않은 편집으로 세지 않습니다. 이런 파일을 Agent가 수락한 소스에서 없애려면 내 폴더에서 삭제한 뒤 푸시하세요.
+- 이름이 `.env`로 시작하는 파일, `.npmrc`, 키 파일 등이 폴더에 있으면 `.gitignore`에 적혀 있어도 `diff`, `pull`, `push`가 멈춥니다. [내 코드를 앱으로 옮기기](/ko/cli/bring-your-code/#3-내-코드를-앱으로-옮기기)를 참고하세요.
 
 다음: [앱, 데이터, 컨트랙트](/ko/cli/apps-data-contracts/).
