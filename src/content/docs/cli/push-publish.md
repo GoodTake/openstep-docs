@@ -55,9 +55,30 @@ Publishing is for owners.
    openstep status <operation-id>
    ```
 
-   `openstep status` with no ID reads the last publish, rollback, unpublish or republish you started. If there is none, it reads the agent.
+   `openstep status` with no ID reads the last publish, stage, rollback, unpublish or republish you started. If there is none, it reads the agent.
 
 Publishing keeps your data. See [Publish and share](/agent/publish-and-share/) for who can open the live Apps and what a visitor sees.
+
+## Stage a candidate for review
+
+A stage builds a candidate from the agent's accepted source, as Publish would, and stops before it goes live. The live version does not change. Owners and editors can stage.
+
+1. Stage. Like publish, it needs every App synchronized, with no conflicts and no edits you have not pushed. The note is optional.
+
+   ```sh
+   openstep stage --note "Candidate for review"
+   ```
+
+2. Check how it went with the operation ID. Once the status is `succeeded`, the output lists `reviewLinks`, one link for each App.
+
+   ```sh
+   openstep status <operation-id>
+   ```
+
+3. The agent's owner and the members of its workspace can open the links and try the candidate. It runs on the live site's data: what they do in it changes that data, and its new tables and columns can reach the live database when you stage. An owner or editor puts it live in the **Console**, in **Production**, with **Put candidate live**. The CLI has no command for that.
+4. Run `openstep pull`. A stage, like a publish, can add platform files such as `.steps/world/*.json` to the agent's accepted source.
+
+Pushing new code makes the candidate stale, so it can no longer go live. A publish, rollback, unpublish, republish or newer stage discards it.
 
 ## Roll back, unpublish and republish
 
@@ -88,7 +109,7 @@ If a push or publish is cut off, for example by a network drop, you may not know
 
 ## Good to know
 
-- Pushing is for owners and editors. Publishing, rolling back, unpublishing and republishing are for owners.
+- Pushing, staging and rolling back are for owners and editors. Publishing, unpublishing and republishing are for owners.
 - While the builder is running a planned build, the agent is read-only. Wait for it to finish, then `pull`, then push.
 - `diff`, `push` and `pull` leave out files that the `.gitignore` files in an App's folder ignore, such as `dist/`, unless the agent's accepted source already has them, as Git does with files it already tracks. They don't count as edits you have not pushed when you publish, either. To remove such a file from the accepted source, delete it in your folder and push.
 - Files whose names start with `.env`, `.npmrc`, key files and the like stop `diff`, `pull` and `push`, even when `.gitignore` lists the files themselves. The message names the path and why, starting with `Local source path refused:`. Files inside a folder that `.gitignore` ignores, and that was never pushed, are not looked at. See [Move your code into the App](/cli/bring-your-code/#3-move-your-code-into-the-app).

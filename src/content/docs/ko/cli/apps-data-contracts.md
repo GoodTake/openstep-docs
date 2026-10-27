@@ -84,6 +84,27 @@ openstep data migrate 0002_add_bookings ./migration.sql --app admin
 - 파일은 UTF-8 텍스트여야 하며 최대 4 MiB입니다.
 - 이 명령은 먼저 pull을 하므로 실행하기 전에 충돌을 정리해 둡니다. 그다음 SQL을 앱의 소스와 함께 저장하고 앱의 개발 데이터에 적용합니다.
 
+### 마이그레이션에 쓸 수 있는 문
+
+이름에는 점을 쓰지 마세요. `public.messages`가 아니라 `messages`, `messages.id`가 아니라 `id`로 씁니다. 플랫폼은 각 앱의 테이블을 그 앱만의 스키마에 두고, 마이그레이션을 그 안에서 실행합니다.
+
+마이그레이션에는 다음을 쓸 수 있습니다.
+
+- `CREATE TABLE`, `CREATE INDEX`(`CREATE UNIQUE INDEX` 포함), `CREATE TYPE`, `CREATE SEQUENCE`, `CREATE POLICY`.
+- `ADD COLUMN`, `ADD CONSTRAINT`, `ENABLE ROW LEVEL SECURITY` 또는 `FORCE ROW LEVEL SECURITY`가 붙은 `ALTER TABLE`.
+- `COMMENT ON`.
+- 앱 자체의 테이블, 열, 인덱스, 정책, 타입, 시퀀스 변경: `DROP`, `DROP`·`RENAME`·`ALTER COLUMN`이 붙은 `ALTER TABLE`, `ALTER POLICY`, `ALTER TYPE`, `TRUNCATE`. 이것들로 지운 데이터는 되돌릴 수 없습니다. 라이브 사이트에서는 게시할 때 실행됩니다.
+
+그 밖의 것은 모두 거부됩니다. 예를 들면 다음과 같습니다.
+
+- 행 쓰기: `INSERT`, `UPDATE`, `DELETE`, `MERGE`, `CREATE TABLE … AS`
+- 뷰, 함수, 프로시저, 트리거
+- `BEGIN`, `COMMIT` 같은 트랜잭션 문
+- `GRANT`, 역할, 다른 스키마, `CREATE EXTENSION`, 플랫폼 자체의 `steps_` 객체 변경
+- `nextval()`, `setval()`, `current_setting()` 같은 호출. 일련번호에는 `serial`이나 `GENERATED ALWAYS AS IDENTITY`를 쓰세요.
+
+마이그레이션이 바꾸는 것은 테이블이지 행이 아닙니다. 고정된 선택지 목록처럼 앱이 처음부터 필요한 행은 앱 자체의 코드에 두거나 앱의 코드가 만들게 하세요. 라이브 사이트는 개발 데이터를 하나도 가지지 않은 채 시작합니다. SQL 파일을 직접 `migrations/`에 복사하지도 마세요. 개발 데이터에 한 번도 적용되지 않은 마이그레이션은 Publish가 거부하므로, 하나하나 `openstep data migrate`로 적용하세요.
+
 편집자와 소유자는 둘 다 실행할 수 있습니다. 개발 데이터와 라이브 데이터가 어떻게 분리되는지는 [사이트 데이터](/ko/build/data/)를 참고하세요.
 
 ## 앱 기능(capabilities)

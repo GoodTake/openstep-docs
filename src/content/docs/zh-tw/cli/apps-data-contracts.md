@@ -84,6 +84,27 @@ openstep data migrate 0002_add_bookings ./migration.sql --app admin
 - 檔案必須是 UTF-8 文字，且最大 4 MiB。
 - 指令會先 pull，所以請在執行前解決任何衝突。接著它會把 SQL 連同 App 的原始碼一起儲存，並套用到 App 的開發資料。
 
+### migration 可以包含什麼
+
+每個名稱都不要加點號：寫 `messages`，不寫 `public.messages`；寫 `id`，不寫 `messages.id`。平台把每個 App 的資料表放在它自己的 schema 裡，並在那裡執行 migration。
+
+migration 可以包含：
+
+- `CREATE TABLE`、`CREATE INDEX`（也包括 `CREATE UNIQUE INDEX`）、`CREATE TYPE`、`CREATE SEQUENCE` 和 `CREATE POLICY`。
+- 帶有 `ADD COLUMN`、`ADD CONSTRAINT`、`ENABLE ROW LEVEL SECURITY` 或 `FORCE ROW LEVEL SECURITY` 的 `ALTER TABLE`。
+- `COMMENT ON`。
+- 對 App 自己的資料表、欄位、索引、policy、type 和 sequence 所做的變更：`DROP`、帶有 `DROP`、`RENAME` 或 `ALTER COLUMN` 的 `ALTER TABLE`、`ALTER POLICY`、`ALTER TYPE` 和 `TRUNCATE`。它們刪掉的資料無法找回；在線上網站，它們會在你發布時執行。
+
+其他一律會被拒絕，例如：
+
+- 寫入資料列：`INSERT`、`UPDATE`、`DELETE`、`MERGE` 和 `CREATE TABLE … AS`；
+- view、函式、procedure 和 trigger；
+- `BEGIN`、`COMMIT` 之類的交易陳述式；
+- `GRANT`、角色、其他 schema、`CREATE EXTENSION`，以及對平台自己的 `steps_` 物件所做的變更；
+- `nextval()`、`setval()` 和 `current_setting()` 之類的呼叫。要做計數器，請用 `serial` 或 `GENERATED ALWAYS AS IDENTITY`。
+
+migration 改的是資料表，不是資料列。App 一開始就需要的資料列，例如一份固定的選項清單，應該寫在它自己的程式碼裡，或由它的程式碼建立：線上網站不會帶著你的任何開發資料開始。也不要自己把 SQL 檔案複製進 `migrations/`。Publish 會拒絕從未套用到開發資料的 migration，所以每一個都請用 `openstep data migrate` 套用。
+
 編輯者和擁有者都能執行這兩者。開發資料與上線資料如何保持分開，見 [網站資料](/zh-tw/build/data/)。
 
 ## 功能（Capabilities）

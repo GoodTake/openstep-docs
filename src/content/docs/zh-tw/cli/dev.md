@@ -63,7 +63,7 @@ sidebar:
 
 ## 線上網站的規則
 
-對有後端的 App，`openstep dev` 會依照線上網站的規則處理 `/api`，所以多數在線上網站會失敗的請求，在你的電腦上也會失敗。每一種請求第一次失敗時，CLI 會印出一則以 `openstep:` 開頭的警告，並說明該改什麼。每條規則的說明見 [線上網站有哪些不同](/zh-tw/cli/bring-your-code/#線上網站有哪些不同)。
+對有後端的 App，`openstep dev` 會依照線上網站的規則處理 `/api`，所以多數在線上網站會失敗的請求，在你的電腦上也會失敗。CLI 第一次以下面的某個 404 或 413 回應，或捨棄下面的某個標頭時，會印出一則以 `openstep:` 開頭的警告，並說明該改什麼。每條規則的說明見 [線上網站有哪些不同](/zh-tw/cli/bring-your-code/#線上網站有哪些不同)。
 
 - 頁面用 `fetch`、`XMLHttpRequest` 和 `sendBeacon` 發出的呼叫，照常送到你的伺服器。
 - 任何其他以單純 `/api` 網址載入的情況，都會得到 404，和公開的線上網站一樣：例如元件渲染出來的 `<img>`、連結、表單或 `window.location`。這樣的網址請用 `src/lib/runtime` 的 `releaseRuntimePath('/api/...')` 組成。在 `openstep dev` 下，它回傳的是 `/_releases/openstep-dev/_generations/1` 底下的路徑，CLI 再把它以單純的路徑送到你的伺服器。
@@ -81,6 +81,7 @@ App 的其餘部分，例如頁面和檔案，會照原樣提供。沒有後端�
 - 這是真實資料：在本機執行時，用的是和工作頁上該 App 的預覽相同的開發資料。你執行的 SQL 會改動那些資料。它不是用完即丟的副本。見 [網站資料](/zh-tw/build/data/)。
 - 這會花費 SSU：AI、電子郵件和鏈上呼叫等平台功能照常計費，即使 App 是在你的電腦上執行。見 [查看餘額](/zh-tw/account/balance/)。
 - 你的伺服器會把你當成訪客：每個 `/api` 請求都會在 `x-steps-user-address` 標頭裡，帶著你登入 CLI 時使用的錢包。請在瀏覽器裡連接同一個錢包。
+- CLI 印出的網址，對來自其他網站的任何請求（`Origin` 不是這個網址），以及用其他名稱連到這個網址的請求（例如用 `localhost` 而不是 `127.0.0.1`），都會回應 403，而且不會有警告。這是為了不讓其他頁面使用你在本機的憑證。
 - 不要把機密值放進原始碼：CLI 會為每次執行提供它自己的憑證，以及該 App 的環境值。要設定某個值，見 [App、資料與合約](/zh-tw/cli/apps-data-contracts/) 和 [環境值](/zh-tw/build/environment-values/)。
 - 你啟動的每個 App 都需要在 `openstep.config.json` 中有一段設定。如果你啟動所有 App，而其中一個沒有設定，指令會停止並指出它。
 - 如果你設定的任何一個處理程序結束，`openstep dev` 會停止它啟動的每個 App 並結束指令。非零的結束碼會讓它以錯誤 `App runtime exited with code N` 結束。請閱讀失敗的處理程序自己的輸出，了解原因。

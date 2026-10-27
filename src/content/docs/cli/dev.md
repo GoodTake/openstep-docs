@@ -63,7 +63,7 @@ sidebar:
 
 ## Live site rules
 
-For an App with a backend, `openstep dev` handles `/api` by the live site's rules, so most requests that would fail there fail on your computer too. The first time each kind of request fails, the CLI prints a warning that starts with `openstep:` and says what to change. [What works differently on the live site](/cli/bring-your-code/#what-works-differently-on-the-live-site) explains each rule.
+For an App with a backend, `openstep dev` handles `/api` by the live site's rules, so most requests that would fail there fail on your computer too. The first time it answers with one of the 404s or the 413 below, or drops one of the headers below, the CLI prints a warning that starts with `openstep:` and says what to change. [What works differently on the live site](/cli/bring-your-code/#what-works-differently-on-the-live-site) explains each rule.
 
 - The page's calls with `fetch`, `XMLHttpRequest` and `sendBeacon` reach your server as usual.
 - Any other load of a bare `/api` URL gets 404, as on the public live site: for example an `<img>` a component renders, a link, a form or `window.location`. Build such a URL with `releaseRuntimePath('/api/...')` from `src/lib/runtime`. Under `openstep dev` it returns the path under `/_releases/openstep-dev/_generations/1`, and the CLI sends it to your server as the bare path.
@@ -81,6 +81,7 @@ The rest of the App, such as its pages and files, is served as it is. An App wit
 - It is real data. A local run uses the same development data as the App's preview on the work page. SQL you run changes that data. It is not a throwaway copy. See [Site data](/build/data/).
 - It costs SSU. Platform abilities such as AI, email and chain calls are charged as usual, even when the App runs on your computer. See [Check your balance](/account/balance/).
 - Your server sees you as the visitor. Each `/api` request carries the wallet you signed in to the CLI with, in the `x-steps-user-address` header. Connect the same wallet in the browser.
+- The address the CLI prints answers 403, with no warning, to any request from another site, one whose `Origin` is not that address, and to the address under another name, such as `localhost` instead of `127.0.0.1`. This keeps other pages from using your local credentials.
 - Do not put secrets in source. The CLI gives each run its own credentials and the environment values for that App. To set a value, see [Apps, data and contracts](/cli/apps-data-contracts/) and [Environment values](/build/environment-values/).
 - Every App you start needs an entry in `openstep.config.json`. If you start all Apps and one has no entry, the command stops and names it.
 - If any process you configured exits, `openstep dev` stops every App it started and ends the command. A non-zero exit code ends it with the error `App runtime exited with code N`. Read the failing process's own output to see why.

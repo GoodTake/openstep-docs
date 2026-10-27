@@ -62,7 +62,7 @@ openstep capabilities enable server --app app
 
 ## 3. 내 코드를 앱으로 옮기기
 
-내 사이트를 `apps/app/`에 복사해 시작용 페이지를 바꿉니다. 앱에는 다음과 같은 구성이 필요합니다.
+내 사이트를 `apps/app/`에 복사해 시작용 페이지를 바꿉니다. 앱 자체의 `package.json`, `package-lock.json`, `tsconfig.json`, `tsconfig.node.json`, `vite.config.ts`는 그대로 두세요. 플랫폼 파일에는 이 파일들에 있는 패키지와 설정이 필요합니다. 예를 들어 `wagmi`, `viem`, `@rainbow-me/rainbowkit`, `@tanstack/react-query`, `@supabase/supabase-js`, 그리고 비주얼 편집에 쓰이는 `@babel/core`가 그렇습니다. 내 `package.json`으로 덮어쓰지 말고, `apps/app`에서 `npm install <package>`로 사이트의 패키지를 추가하세요. 내 Vite 설정도 앱의 `vite.config.ts`에 추가하세요. 앱에는 다음과 같은 구성이 필요합니다.
 
 | 부분 | 앱에 필요한 것 |
 |---|---|
@@ -71,7 +71,7 @@ openstep capabilities enable server --app app
 | 서버 | `functions/server.js`이며 `node server.js`로 시작합니다. 환경 변수 `PORT`의 포트에서 요청을 받고, `GET /health`에 응답하며, `/api/` 아래에서 내 라우트를 제공합니다. `functions/package.json`에는 의존성이 적혀 있지 않으므로, 서버가 쓰는 npm 패키지는 `functions/vendor.cjs`에 번들로 묶고, `server.js`와 `functions/`의 나머지에 있는 내 코드에서는 `require('./vendor.cjs')`로 가져오세요. [서버의 npm 패키지를 번들로 묶기](#서버의-npm-패키지를-번들로-묶기)를 참고하세요. |
 | 서버 설정과 키 | `functions/runtime-config.js`의 `getVariable('NAME')`과 `getSecret('NAME')`으로 읽고, `openstep env`로 설정합니다. `process.env.PORT`와 `process.env.NODE_ENV`를 제외하면, `functions/`에 있는 내 코드는 `process.env`를 읽으면 안 됩니다. 라이브 서버는 거기에 설정을 두지 않으며, Publish가 그런 앱을 거부합니다. |
 | 다른 서비스 호출 | 서버에서 `functions/platform.js`의 `externalRequest(url)`을 호출하고, 각 호스트를 앱 값 `BACKEND_EGRESS_HOSTS`에 적습니다(아래 참고). |
-| 데이터베이스 테이블 | `openstep data migrate <id> <file> --app app`으로 만듭니다. 예를 들면 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`입니다. 플랫폼 자체의 테이블이 들어 있는 `migrations/0001_platform_baseline.sql`은 그대로 두세요. [앱, 데이터, 컨트랙트](/ko/cli/apps-data-contracts/#데이터)를 참고하세요. |
+| 데이터베이스 테이블 | `openstep data migrate <id> <file> --app app`으로 만듭니다. 예를 들면 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`입니다. 이름에는 스키마를 붙이지 말고(`public.bookings`가 아니라 `bookings`), [마이그레이션에 쓸 수 있는 문](/ko/cli/apps-data-contracts/#마이그레이션에-쓸-수-있는-문)에 나온 문만 쓰세요. 플랫폼 자체의 테이블이 들어 있는 `migrations/0001_platform_baseline.sql`은 그대로 두세요. |
 
 이 경로들은 플랫폼의 것이므로 내 페이지를 여기에 두지 마세요. `/api/`(내 서버로 전달됨), `/auth/`, `/data/`, `/_platform/`, `/__steps/`, `/_releases/`입니다.
 
@@ -190,7 +190,7 @@ openstep dev
 - 내 사이트의 페이지만 서버에 도달합니다. 다른 서비스는 서버를 호출할 수 없습니다. `/api/`를 가리키는 웹훅이나 로그인 콜백은 통과하지 못합니다. 로그인 콜백은 대신 내 사이트의 페이지로 지정하고, 그 페이지가 받은 내용을 `fetch`로 서버에 보내게 하세요. `POST`처럼 무언가를 바꾸는 요청도 내 사이트의 페이지에서 와야 합니다.
 - 플랫폼의 데이터 클라이언트를 사용하세요. `@supabase/supabase-js`의 `createClient` 같은 자체 데이터베이스 클라이언트나 `supabase.co` 주소가 있으면 Publish가 앱을 거부하며, `index.html`에 `<base>` 요소가 있어도 마찬가지입니다. 대신 `src/lib/supabase`의 `supabase`를 사용하세요([데이터](#데이터) 참고).
 
-서버가 있는 앱에서는 `openstep dev`가 `/api`를 이 규칙대로 처리하므로, 대부분을 내 컴퓨터에서 먼저 만나게 됩니다. 요청 종류마다 처음 실패할 때 CLI가 `openstep:`으로 시작하는 경고를 출력해 무엇을 바꿔야 하는지 알려 줍니다.
+서버가 있는 앱에서는 `openstep dev`가 `/api`를 이 규칙대로 처리하므로, 대부분을 내 컴퓨터에서 먼저 만나게 됩니다. 아래의 404나 413 중 하나로 처음 응답하거나 아래의 헤더 중 하나를 처음 제거할 때, CLI가 `openstep:`으로 시작하는 경고를 출력해 무엇을 바꿔야 하는지 알려 줍니다.
 
 - 브라우저가 `fetch`, `XMLHttpRequest`, `sendBeacon`이 아닌 다른 방식으로 불러오는 접두사 없는 `/api` URL에는 404가 돌아옵니다. 앱의 `src/lib/runtime.ts`가 이 규칙이 생기기 전의 버전이면, 그 불러오기는 경고와 함께 그대로 통과합니다. `openstep pull`을 실행하세요. 플랫폼 파일을 플랫폼의 현재 버전으로 내 폴더에 되돌려 놓습니다.
 - HTML이나 CSS 파일에 적힌 `/api` URL도 404가 돌아옵니다. 이 경우 `openstep dev`는 이런 URL을 다시 써 주는 라이브 사이트보다 엄격합니다. 대신 스크립트에서 `releaseRuntimePath()`로 URL을 설정하세요.
@@ -198,6 +198,7 @@ openstep dev
 - 라이브 사이트가 통과시키는 헤더와, 본문을 보낸 그대로 전달하는 데 필요한 `Content-Length`, `Transfer-Encoding`, `Content-Encoding`만 브라우저와 서버 사이를 오갑니다. CLI는 `Cookie`, `Set-Cookie`, `Location`, `Content-Disposition`을 제거할 때 경고합니다.
 - 10 MiB를 넘는 요청 본문에는 413이 돌아옵니다.
 - `curl` 같은 프로그램은 `Sec-Fetch-Dest` 헤더를 보내지 않으므로, 그 요청이 불러오기로 간주되어 거부되는 일은 없습니다.
+- 다른 사이트에서 온 요청, 즉 `Origin`이 `openstep dev`가 출력한 주소가 아닌 요청은 경고 없이 403을 받습니다. 그 주소에 다른 이름으로 접속한 요청도 마찬가지입니다(예: `127.0.0.1` 대신 `localhost`). 다른 페이지가 내 로컬 자격 증명을 쓰지 못하게 하기 위해서입니다.
 
 ## 5. 내 코드에서 OpenStep 사용하기
 

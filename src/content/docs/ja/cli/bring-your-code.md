@@ -62,7 +62,7 @@ openstep capabilities enable server --app app
 
 ## 3. コードを App に移す
 
-サイトを `apps/app/` にコピーし、ひな形のページを置き換えます。App には次の形が必要です。
+サイトを `apps/app/` にコピーし、ひな形のページを置き換えます。App 自身の `package.json`、`package-lock.json`、`tsconfig.json`、`tsconfig.node.json`、`vite.config.ts` は残してください。プラットフォームのファイルは、これらにあるパッケージと設定を必要とします。たとえば `wagmi`、`viem`、`@rainbow-me/rainbowkit`、`@tanstack/react-query`、`@supabase/supabase-js`、そしてビジュアル編集が使う `@babel/core` です。自分の `package.json` で上書きせずに、`apps/app` で `npm install <package>` を実行してサイトのパッケージを追加し、自分の Vite の設定は App の `vite.config.ts` に加えてください。App には次の形が必要です。
 
 | 部分 | App に必要なもの |
 |---|---|
@@ -71,7 +71,7 @@ openstep capabilities enable server --app app
 | サーバー | `functions/server.js`。`node server.js` で起動します。環境変数 `PORT` のポートで待ち受け、`GET /health` に応答し、`/api/` の下にルートを提供します。`functions/package.json` には依存関係が書かれていません。サーバーが使う npm パッケージは `functions/vendor.cjs` にバンドルし、`server.js` と `functions/` のほかの自分のコードから `require('./vendor.cjs')` で読み込んでください。[サーバーの npm パッケージをバンドルする](#サーバーの-npm-パッケージをバンドルする) を参照してください。 |
 | サーバーの設定とキー | `functions/runtime-config.js` の `getVariable('NAME')` と `getSecret('NAME')` で読み、`openstep env` で設定します。`process.env.PORT` と `process.env.NODE_ENV` を除き、`functions/` にある自分のコードは `process.env` を読んではいけません。公開中のサーバーはそこに設定を持たず、Publish は App を拒否します。 |
 | ほかのサービスの呼び出し | サーバーから、`functions/platform.js` の `externalRequest(url)` を呼びます。各ホストは App の値 `BACKEND_EGRESS_HOSTS` に列挙します（下記参照）。 |
-| データベースのテーブル | `openstep data migrate <id> <file> --app app` で作成します。たとえば `openstep data migrate 0002_add_bookings ./bookings.sql --app app` です。プラットフォーム自身のテーブルを含む `migrations/0001_platform_baseline.sql` は残してください。[App、データ、コントラクト](/ja/cli/apps-data-contracts/#データ) を参照してください。 |
+| データベースのテーブル | `openstep data migrate <id> <file> --app app` で作成します。たとえば `openstep data migrate 0002_add_bookings ./bookings.sql --app app` です。名前にはスキーマを付けず（`public.bookings` ではなく `bookings`）、[マイグレーションに書けるもの](/ja/cli/apps-data-contracts/#マイグレーションに書けるもの) にある文だけを使ってください。プラットフォーム自身のテーブルを含む `migrations/0001_platform_baseline.sql` は残してください。 |
 
 これらのパスはプラットフォームのものなので、自分のページはここに置かないでください。`/api/`（サーバーに送られます）、`/auth/`、`/data/`、`/_platform/`、`/__steps/`、`/_releases/` です。
 
@@ -190,7 +190,7 @@ openstep dev
 - サーバーに届くのは、自分のページからのリクエストだけです。ほかのサービスはサーバーを呼び出せません。`/api/` を指す webhook やサインインのコールバックは届きません。代わりに、サインインのコールバックはサイトのページに向け、そのページが受け取った内容を `fetch` でサーバーに送らせてください。`POST` のように何かを変更するリクエストも、サイトのページから送られたものでなければなりません。
 - プラットフォームのデータクライアントを使ってください。`@supabase/supabase-js` の `createClient` や `supabase.co` のアドレスのような自前のデータベースクライアントがあると、Publish は App を拒否します。`index.html` に `<base>` 要素があるときも同じです。代わりに `src/lib/supabase` の `supabase` を使ってください（[データ](#データ) を参照）。
 
-サーバーのある App では、`openstep dev` が `/api` をこれらのルールで扱うので、ほとんどは、まず自分のコンピューターで確認できます。各種類のリクエストが最初に失敗したとき、CLI は `openstep:` で始まる警告を表示し、何を変えるべきかを伝えます。
+サーバーのある App では、`openstep dev` が `/api` をこれらのルールで扱うので、ほとんどは、まず自分のコンピューターで確認できます。下の 404 や 413 のどれかで最初に応答したとき、または下のヘッダーのどれかを最初に取り除いたとき、CLI は `openstep:` で始まる警告を表示し、何を変えるべきかを伝えます。
 
 - ブラウザーが `fetch`、`XMLHttpRequest`、`sendBeacon` 以外の方法で読み込む素の `/api` URL は、404 になります。App の `src/lib/runtime.ts` がこのルールより前のバージョンの場合、読み込みは警告付きで通ります。`openstep pull` を実行してください。プラットフォームのファイルの現在のバージョンが、フォルダーに戻されます。
 - HTML や CSS のファイルに書かれた `/api` の URL も 404 になります。この場合、`openstep dev` は、そうした URL を書き換える公開中のサイトより厳格です。代わりに、スクリプトで `releaseRuntimePath()` を使って URL を設定してください。
@@ -198,6 +198,7 @@ openstep dev
 - ブラウザーとサーバーの間を通るのは、公開中のサイトが通すヘッダーと、ボディを送られたとおりに運ぶ `Content-Length`、`Transfer-Encoding`、`Content-Encoding` だけです。CLI は、`Cookie`、`Set-Cookie`、`Location`、`Content-Disposition` を取り除いたときに警告します。
 - 10 MiB を超えるリクエストボディは 413 になります。
 - `curl` などのプログラムは `Sec-Fetch-Dest` ヘッダーを送らないので、それらのリクエストが読み込みとして拒否されることはありません。
+- 別のサイトからのリクエスト、つまり `Origin` が `openstep dev` の表示したアドレスでないリクエストは、警告なしで 403 になります。そのアドレスに別の名前でアクセスしたリクエストも同じです（たとえば `127.0.0.1` ではなく `localhost`）。これは、ほかのページにローカルの認証情報を使わせないためです。
 
 ## 5. コードから OpenStep を使う
 

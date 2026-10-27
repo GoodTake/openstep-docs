@@ -55,9 +55,30 @@ sidebar:
    openstep status <operation-id>
    ```
 
-   不帶 ID 的 `openstep status` 會讀取你最近一次啟動的 publish、rollback、unpublish 或 republish。如果沒有，它會讀取 Agent。
+   不帶 ID 的 `openstep status` 會讀取你最近一次啟動的 publish、stage、rollback、unpublish 或 republish。如果沒有，它會讀取 Agent。
 
 發布會保留你的資料。誰可以開啟上線的 App，以及訪客會看到什麼，見 [發布與分享](/zh-tw/agent/publish-and-share/)。
+
+## 建立供審閱的候選版本
+
+stage 會像 Publish 一樣，從 Agent 已接受的原始碼建出一個候選版本，但在上線之前停下來。上線版本不會改變。擁有者和編輯者都能執行 stage。
+
+1. 執行 stage。和 publish 一樣，它需要每個 App 都已同步，沒有衝突，也沒有尚未推送的編輯。備註是選填。
+
+   ```sh
+   openstep stage --note "Candidate for review"
+   ```
+
+2. 用 operation ID 檢查結果如何。狀態變成 `succeeded` 之後，輸出會列出 `reviewLinks`，每個 App 一個連結。
+
+   ```sh
+   openstep status <operation-id>
+   ```
+
+3. Agent 的擁有者和它所在工作區的成員，都可以開啟這些連結試用候選版本。它跑在線上網站的資料上：他們在裡面做的事會改動那些資料，而它新增的資料表和欄位，在你執行 stage 時就可能進入線上資料庫。擁有者或編輯者可以在 **Console** 的 **Production** 裡，用 **Put candidate live** 讓它上線。CLI 沒有這個指令。
+4. 執行 `openstep pull`。stage 和 publish 一樣，可能會把 `.steps/world/*.json` 之類的平台檔案加進 Agent 已接受的原始碼。
+
+推送新的程式碼會讓候選版本過期，它就不能再上線了。publish、rollback、unpublish、republish 或更新的 stage 都會捨棄它。
 
 ## 回復、下線與重新上線
 
@@ -88,7 +109,7 @@ openstep republish --note "Bring back the last live version"
 
 ## 注意事項
 
-- 推送是擁有者和編輯者的工作。發布、回復、下線與重新上線是擁有者的工作。
+- 推送、stage 和回復是擁有者和編輯者的工作。發布、下線與重新上線是擁有者的工作。
 - builder 正在執行已規劃的建造時，Agent 是唯讀的。請等它完成，然後 `pull`，再推送。
 - `diff`、`push` 和 `pull` 會略過 App 資料夾裡的 `.gitignore` 檔案所忽略的檔案，例如 `dist/`，除非 Agent 已接受的原始碼本來就有這些檔案，這和 Git 對待已追蹤檔案的方式一樣。發布時，它們也不算尚未推送的編輯。要把這樣的檔案從已接受的原始碼中移除，請在你的資料夾裡刪除它，然後推送。
 - 名稱以 `.env` 開頭的檔案、`.npmrc`、金鑰檔案等，會讓 `diff`、`pull` 和 `push` 停止，即使 `.gitignore` 列出的正是這些檔案本身也一樣。訊息會指出路徑和原因，開頭是 `Local source path refused:`。被 `.gitignore` 忽略、而且從未推送過的資料夾，裡面的檔案不會被查看。見 [把你的程式碼搬進 App](/zh-tw/cli/bring-your-code/#3-把你的程式碼搬進-app)。

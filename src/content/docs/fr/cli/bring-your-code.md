@@ -62,7 +62,7 @@ Cela ajoute un dossier `functions/` à l'App et le rapatrie dans votre dossier :
 
 ## 3. Déplacer votre code dans l'App
 
-Copiez votre site dans `apps/app/`, en remplaçant les pages de départ. L'App doit avoir cette forme :
+Copiez votre site dans `apps/app/`, en remplaçant les pages de départ. Gardez les fichiers `package.json`, `package-lock.json`, `tsconfig.json`, `tsconfig.node.json` et `vite.config.ts` de l'App : les fichiers de la plateforme ont besoin des paquets et des réglages qu'ils contiennent, comme `wagmi`, `viem`, `@rainbow-me/rainbowkit`, `@tanstack/react-query`, `@supabase/supabase-js`, et `@babel/core`, qu'utilise l'édition visuelle. Ajoutez les paquets de votre site avec `npm install <package>` dans `apps/app` au lieu de copier votre propre `package.json` par-dessus, et ajoutez vos propres réglages Vite au `vite.config.ts` de l'App. L'App doit avoir cette forme :
 
 | Élément | Ce dont l'App a besoin |
 |---|---|
@@ -71,7 +71,7 @@ Copiez votre site dans `apps/app/`, en remplaçant les pages de départ. L'App d
 | Serveur | `functions/server.js`, démarré avec `node server.js`. Il écoute sur le port de la variable d'environnement `PORT`, répond à `GET /health` et sert vos routes sous `/api/`. `functions/package.json` ne liste aucune dépendance : regroupez donc les paquets npm que votre serveur utilise dans `functions/vendor.cjs`, et utilisez `require('./vendor.cjs')` dans votre propre code de `server.js` et du reste de `functions/`. Voir [Regrouper les paquets npm de votre serveur](#regrouper-les-paquets-npm-de-votre-serveur). |
 | Réglages et clés du serveur | Lisez-les avec `getVariable('NAME')` et `getSecret('NAME')` de `functions/runtime-config.js`, et définissez-les avec `openstep env`. En dehors de `process.env.PORT` et `process.env.NODE_ENV`, votre propre code dans `functions/` ne doit pas lire `process.env` : le serveur en ligne n'y garde aucun réglage, et Publish refuse l'App. |
 | Appels à d'autres services | Depuis le serveur, appelez `externalRequest(url)` de `functions/platform.js`, et listez chaque hôte dans la valeur d'App `BACKEND_EGRESS_HOSTS` (voir ci-dessous). |
-| Tables de la base de données | Créées avec `openstep data migrate <id> <file> --app app`, par exemple `openstep data migrate 0002_add_bookings ./bookings.sql --app app`. Gardez `migrations/0001_platform_baseline.sql`, qui contient les tables propres à la plateforme. Voir [Apps, données et contrats](/fr/cli/apps-data-contracts/#données). |
+| Tables de la base de données | Créées avec `openstep data migrate <id> <file> --app app`, par exemple `openstep data migrate 0002_add_bookings ./bookings.sql --app app`. Écrivez les noms sans schéma (`bookings`, pas `public.bookings`), et seulement les instructions de [Ce qu'une migration peut contenir](/fr/cli/apps-data-contracts/#ce-quune-migration-peut-contenir). Gardez `migrations/0001_platform_baseline.sql`, qui contient les tables propres à la plateforme. |
 
 Ces chemins appartiennent à la plateforme, donc n'y mettez pas vos propres pages : `/api/` (envoyé à votre serveur), `/auth/`, `/data/`, `/_platform/`, `/__steps/` et `/_releases/`.
 
@@ -190,7 +190,7 @@ Sur le site en ligne, votre App tourne derrière la passerelle de la plateforme.
 - Seules vos propres pages atteignent votre serveur. Les autres services ne peuvent pas l'appeler : un webhook ou un callback de connexion qui pointe vers `/api/` ne passe pas. Faites plutôt pointer le callback de connexion vers une page de votre site, puis laissez cette page transmettre à votre serveur, avec `fetch`, ce qu'elle a reçu. Une requête qui modifie quelque chose, comme un `POST`, doit aussi venir d'une page de votre site.
 - Utilisez le client de données de la plateforme. Votre propre client de base de données, comme `createClient` de `@supabase/supabase-js` ou une adresse `supabase.co`, fait que Publish refuse l'App, tout comme un élément `<base>` dans `index.html`. Utilisez plutôt `supabase` de `src/lib/supabase` (voir [Données](#données)).
 
-`openstep dev` traite `/api` selon ces règles pour une App avec un serveur : vous en rencontrez donc la plupart d'abord sur votre ordinateur. La première fois que chaque type de requête échoue, la CLI affiche un avertissement qui commence par `openstep:` et dit quoi changer :
+`openstep dev` traite `/api` selon ces règles pour une App avec un serveur : vous en rencontrez donc la plupart d'abord sur votre ordinateur. La première fois qu'elle répond par l'une des erreurs 404 ou 413 ci-dessous, ou qu'elle retire l'un des en-têtes ci-dessous, la CLI affiche un avertissement qui commence par `openstep:` et dit quoi changer :
 
 - Une URL `/api` nue que le navigateur charge autrement qu'avec `fetch`, `XMLHttpRequest` ou `sendBeacon` reçoit une erreur 404. Si le `src/lib/runtime.ts` de votre App date d'avant cette règle, le chargement passe quand même, avec un avertissement. Exécutez `openstep pull` : la commande remet dans votre dossier la version actuelle des fichiers de la plateforme.
 - Une URL `/api` écrite dans un fichier HTML ou CSS reçoit aussi une erreur 404. Ici `openstep dev` est plus strict que le site en ligne, qui réécrit de telles URL : définissez plutôt l'URL depuis un script avec `releaseRuntimePath()`.
@@ -198,6 +198,7 @@ Sur le site en ligne, votre App tourne derrière la passerelle de la plateforme.
 - Seuls les en-têtes que le site en ligne laisse passer circulent entre le navigateur et votre serveur, ainsi que `Content-Length`, `Transfer-Encoding` et `Content-Encoding`, qui transportent le corps tel qu'il a été envoyé. La CLI avertit quand elle retire `Cookie`, `Set-Cookie`, `Location` ou `Content-Disposition`.
 - Un corps de requête de plus de 10 Mio reçoit une erreur 413.
 - `curl` et les autres programmes n'envoient pas d'en-tête `Sec-Fetch-Dest` ; leurs requêtes ne sont donc jamais refusées comme des chargements.
+- Toute requête venant d'un autre site, dont l'en-tête `Origin` n'est pas l'adresse affichée par `openstep dev`, reçoit une erreur 403 sans avertissement, de même qu'une requête vers cette adresse sous un autre nom, comme `localhost` au lieu de `127.0.0.1`. Cela empêche d'autres pages d'utiliser vos identifiants locaux.
 
 ## 5. Utiliser OpenStep depuis votre code
 

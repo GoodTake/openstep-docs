@@ -84,6 +84,27 @@ openstep data migrate 0002_add_bookings ./migration.sql --app admin
 - Le fichier doit être du texte UTF-8 et faire au plus 4 Mio.
 - La commande commence par un pull : réglez donc les conflits avant de l'exécuter. Elle enregistre ensuite le SQL avec le code source de l'App et l'applique aux données de développement de l'App.
 
+### Ce qu'une migration peut contenir
+
+Écrivez chaque nom sans point : `messages`, pas `public.messages`, et `id`, pas `messages.id`. La plateforme garde les tables de chaque App dans un schéma qui lui est propre et y exécute la migration.
+
+Une migration peut contenir :
+
+- `CREATE TABLE`, `CREATE INDEX` (y compris `CREATE UNIQUE INDEX`), `CREATE TYPE`, `CREATE SEQUENCE` et `CREATE POLICY`.
+- `ALTER TABLE` avec `ADD COLUMN`, `ADD CONSTRAINT`, `ENABLE ROW LEVEL SECURITY` ou `FORCE ROW LEVEL SECURITY`.
+- `COMMENT ON`.
+- Des changements des tables, colonnes, index, politiques, types et séquences propres à l'App : `DROP`, `ALTER TABLE` avec `DROP`, `RENAME` ou `ALTER COLUMN`, `ALTER POLICY`, `ALTER TYPE` et `TRUNCATE`. Les données qu'ils suppriment ne peuvent pas être récupérées ; sur le site en ligne, ils s'exécutent quand vous publiez.
+
+Tout le reste est refusé, par exemple :
+
+- l'écriture de lignes : `INSERT`, `UPDATE`, `DELETE`, `MERGE` et `CREATE TABLE … AS` ;
+- les vues, fonctions, procédures et triggers ;
+- les instructions de transaction comme `BEGIN` et `COMMIT` ;
+- `GRANT`, les rôles, les autres schémas, `CREATE EXTENSION` et les changements des objets `steps_` de la plateforme ;
+- les appels comme `nextval()`, `setval()` et `current_setting()`. Pour un compteur, utilisez `serial` ou `GENERATED ALWAYS AS IDENTITY`.
+
+Une migration change des tables, pas des lignes. Les lignes dont votre App a besoin dès le départ, comme une liste fixe d'options, ont leur place dans son propre code, ou son code les crée : le site en ligne démarre sans aucune de vos données de développement. Ne copiez pas non plus vous-même de fichiers SQL dans `migrations/`. Publish refuse une migration qui n'a jamais été appliquée aux données de développement : appliquez donc chacune avec `openstep data migrate`.
+
 Les éditeurs et les propriétaires peuvent exécuter les deux. Voir [Données du site](/fr/build/data/) pour la façon dont les données de développement et les données en ligne restent séparées.
 
 ## Capacités

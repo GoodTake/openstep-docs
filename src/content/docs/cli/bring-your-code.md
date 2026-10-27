@@ -62,7 +62,7 @@ This adds a `functions/` folder to the App and brings it into your folder: a sta
 
 ## 3. Move your code into the App
 
-Copy your site into `apps/app/`, replacing the starter pages. The App needs this shape:
+Copy your site into `apps/app/`, replacing the starter pages. Keep the App's own `package.json`, `package-lock.json`, `tsconfig.json`, `tsconfig.node.json` and `vite.config.ts`: the platform files need the packages and settings in them, such as `wagmi`, `viem`, `@rainbow-me/rainbowkit`, `@tanstack/react-query`, `@supabase/supabase-js`, and `@babel/core`, which visual editing uses. Add your site's packages with `npm install <package>` in `apps/app` instead of copying your own `package.json` over, and add your own Vite settings to the App's `vite.config.ts`. The App needs this shape:
 
 | Part | What the App needs |
 |---|---|
@@ -71,7 +71,7 @@ Copy your site into `apps/app/`, replacing the starter pages. The App needs this
 | Server | `functions/server.js`, started with `node server.js`. It listens on the port in the `PORT` environment variable, answers `GET /health`, and serves your routes under `/api/`. `functions/package.json` lists no dependencies, so bundle the npm packages your server uses into `functions/vendor.cjs`, and `require('./vendor.cjs')` from your own code in `server.js` and the rest of `functions/`. See [Bundle your server's npm packages](#bundle-your-servers-npm-packages). |
 | Server settings and keys | Read them with `getVariable('NAME')` and `getSecret('NAME')` from `functions/runtime-config.js`, and set them with `openstep env`. Apart from `process.env.PORT` and `process.env.NODE_ENV`, your own code in `functions/` must not read `process.env`: the live server keeps no settings there, and Publish refuses the App. |
 | Calls to other services | From the server, call `externalRequest(url)` from `functions/platform.js`, and list each host in the App value `BACKEND_EGRESS_HOSTS` (see below). |
-| Database tables | Created with `openstep data migrate <id> <file> --app app`, for example `openstep data migrate 0002_add_bookings ./bookings.sql --app app`. Keep `migrations/0001_platform_baseline.sql`, which holds the platform's own tables. See [Apps, data and contracts](/cli/apps-data-contracts/#data). |
+| Database tables | Created with `openstep data migrate <id> <file> --app app`, for example `openstep data migrate 0002_add_bookings ./bookings.sql --app app`. Write names without a schema (`bookings`, not `public.bookings`), and only the statements in [What a migration can contain](/cli/apps-data-contracts/#what-a-migration-can-contain). Keep `migrations/0001_platform_baseline.sql`, which holds the platform's own tables. |
 
 These paths belong to the platform, so keep your own pages off them: `/api/` (sent to your server), `/auth/`, `/data/`, `/_platform/`, `/__steps/` and `/_releases/`.
 
@@ -190,7 +190,7 @@ On the live site, your App runs behind the platform's gateway. A few things work
 - Only your own pages reach your server. Other services can't call it: a webhook or a sign-in callback that points at `/api/` does not get through. Point a sign-in callback at a page of your site instead, and have that page send what it got to your server with `fetch`. A request that changes something, such as a `POST`, must come from a page of your site too.
 - Use the platform's data client. Your own database client, such as `createClient` from `@supabase/supabase-js` or a `supabase.co` address, makes Publish refuse the App, and so does a `<base>` element in `index.html`. Use `supabase` from `src/lib/supabase` instead (see [Data](#data)).
 
-`openstep dev` handles `/api` by these rules for an App with a server, so you meet most of them on your computer first. The first time each kind of request fails, the CLI prints a warning that starts with `openstep:` and says what to change:
+`openstep dev` handles `/api` by these rules for an App with a server, so you meet most of them on your computer first. The first time it answers with one of the 404s or the 413 below, or drops one of the headers below, the CLI prints a warning that starts with `openstep:` and says what to change:
 
 - A bare `/api` URL that the browser loads any other way than with `fetch`, `XMLHttpRequest` or `sendBeacon` gets 404. If your App's `src/lib/runtime.ts` predates this rule, the load still goes through, with a warning. Run `openstep pull`: it puts the platform's current version of the platform files back into your folder.
 - A `/api` URL written in an HTML or CSS file gets 404 too. Here `openstep dev` is stricter than the live site, which rewrites such URLs: set the URL from script with `releaseRuntimePath()` instead.
@@ -198,6 +198,7 @@ On the live site, your App runs behind the platform's gateway. A few things work
 - Only the headers the live site passes go between the browser and your server, plus `Content-Length`, `Transfer-Encoding` and `Content-Encoding`, which carry the body as it was sent. The CLI warns when it drops `Cookie`, `Set-Cookie`, `Location` or `Content-Disposition`.
 - A request body over 10 MiB gets 413.
 - `curl` and other programs send no `Sec-Fetch-Dest` header, so their requests are never refused as loads.
+- Any request from another site, one whose `Origin` is not the address `openstep dev` printed, gets 403 with no warning, and so does a request to that address under another name, such as `localhost` instead of `127.0.0.1`. This keeps other pages from using your local credentials.
 
 ## 5. Use OpenStep from your code
 

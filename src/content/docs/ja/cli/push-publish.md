@@ -55,9 +55,30 @@ push と公開は、2 つの別のステップです。push はソースを agen
    openstep status <operation-id>
    ```
 
-   ID を付けない `openstep status` は、最後に開始した publish、rollback、unpublish、republish を読みます。それがなければ、agent の状態を読みます。
+   ID を付けない `openstep status` は、最後に開始した publish、stage、rollback、unpublish、republish を読みます。それがなければ、agent の状態を読みます。
 
 公開してもデータは保持されます。公開された App を誰が開けるか、訪問者に何が見えるかは、[公開と共有](/ja/agent/publish-and-share/) を参照してください。
+
+## レビュー用の候補を stage する
+
+stage は、Publish と同じように agent の承認済みのソースから候補をビルドし、公開の手前で止まります。公開中のバージョンは変わりません。stage はオーナーとエディターが実行できます。
+
+1. stage を実行します。publish と同じく、すべての App が同期済みで、競合がなく、push していない編集がないことが必要です。メモは任意です。
+
+   ```sh
+   openstep stage --note "Candidate for review"
+   ```
+
+2. 操作 ID で結果を確認します。ステータスが `succeeded` になると、出力に `reviewLinks` が App ごとに 1 つずつ表示されます。
+
+   ```sh
+   openstep status <operation-id>
+   ```
+
+3. agent のオーナーと、agent があるワークスペースのメンバーは、これらのリンクを開いて候補を試せます。候補は公開中のサイトのデータで動きます。そこで行った操作はそのデータを変え、候補が追加するテーブルや列は、stage した時点で公開中のデータベースに入ることがあります。オーナーかエディターが、**Console** の **Production** で **Put candidate live** を使って公開します。CLI にはこのためのコマンドはありません。
+4. `openstep pull` を実行します。stage は publish と同じく、`.steps/world/*.json` などのプラットフォームのファイルを agent の承認済みのソースに追加することがあります。
+
+新しいコードを push すると候補は古くなり、公開できなくなります。publish、rollback、unpublish、republish、または新しい stage で候補は破棄されます。
 
 ## ロールバック、unpublish、republish
 
@@ -88,7 +109,7 @@ openstep republish --note "Bring back the last live version"
 
 ## 知っておくこと
 
-- push はオーナーとエディター向けです。公開、ロールバック、unpublish、republish はオーナー向けです。
+- push、stage、ロールバックはオーナーとエディター向けです。公開、unpublish、republish はオーナー向けです。
 - builder が計画された構築を実行している間、agent は読み取り専用です。終わるのを待ってから `pull` し、そのあと push してください。
 - `diff`、`push`、`pull` は、App のフォルダーにある `.gitignore` ファイルが無視するファイル（たとえば `dist/`）を対象にしません。ただし、agent の承認済みのソースにすでにあるファイルは別で、Git が追跡済みのファイルを扱うのと同じです。公開するときも、これらは push していない編集には数えられません。そうしたファイルを承認済みのソースから取り除くには、自分のフォルダーで削除して push してください。
 - 名前が `.env` で始まるファイル、`.npmrc`、キーファイルなどがあると、`.gitignore` にそのファイル自体が書かれていても、`diff`、`pull`、`push` は停止します。メッセージはパスと理由を示し、`Local source path refused:` で始まります。`.gitignore` が無視していて、一度も push されていないフォルダーの中のファイルは調べられません。[コードを App に移す](/ja/cli/bring-your-code/#3-コードを-app-に移す) を参照してください。

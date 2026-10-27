@@ -55,9 +55,30 @@ sidebar:
    openstep status <operation-id>
    ```
 
-   ID 없이 `openstep status`를 실행하면 마지막으로 시작한 publish, rollback, unpublish, republish를 읽습니다. 없으면 Agent를 읽습니다.
+   ID 없이 `openstep status`를 실행하면 마지막으로 시작한 publish, stage, rollback, unpublish, republish를 읽습니다. 없으면 Agent를 읽습니다.
 
 게시해도 데이터는 유지됩니다. 라이브 앱을 열 수 있는 사람과 방문자에게 보이는 내용은 [게시와 공유](/ko/agent/publish-and-share/)를 참고하세요.
+
+## 검토용 후보 stage하기
+
+stage는 Publish처럼 Agent가 수락한 소스로 후보를 빌드하고, 라이브로 올리기 직전에 멈춥니다. 라이브 버전은 바뀌지 않습니다. 소유자와 편집자가 stage할 수 있습니다.
+
+1. stage를 실행합니다. publish와 마찬가지로 모든 앱이 동기화되어 있고, 충돌이 없으며, 푸시하지 않은 편집이 없어야 합니다. 노트는 선택 사항입니다.
+
+   ```sh
+   openstep stage --note "Candidate for review"
+   ```
+
+2. 작업 ID로 결과를 확인합니다. 상태가 `succeeded`가 되면 출력에 `reviewLinks`가 앱마다 하나씩 나옵니다.
+
+   ```sh
+   openstep status <operation-id>
+   ```
+
+3. Agent의 소유자와 Agent가 속한 워크스페이스의 멤버는 이 링크를 열어 후보를 써 볼 수 있습니다. 후보는 라이브 사이트의 데이터로 동작합니다. 그 안에서 한 일은 그 데이터를 바꾸고, 후보가 추가하는 테이블과 열은 stage할 때 이미 라이브 데이터베이스에 들어갈 수 있습니다. 소유자나 편집자가 **Console**의 **Production**에서 **Put candidate live**로 후보를 라이브로 올립니다. CLI에는 이 일을 하는 명령이 없습니다.
+4. `openstep pull`을 실행합니다. stage는 publish처럼 `.steps/world/*.json` 같은 플랫폼 파일을 Agent가 수락한 소스에 추가할 수 있습니다.
+
+새 코드를 푸시하면 후보가 오래된 것이 되어 더는 라이브로 올릴 수 없습니다. publish, rollback, unpublish, republish 또는 더 새로운 stage가 후보를 버립니다.
 
 ## 롤백, 게시 취소, 다시 게시
 
@@ -88,7 +109,7 @@ openstep republish --note "Bring back the last live version"
 
 ## 알아 두기
 
-- 푸시는 소유자와 편집자가 할 수 있습니다. 게시, 롤백, 게시 취소, 다시 게시는 소유자 전용입니다.
+- 푸시, stage, 롤백은 소유자와 편집자가 할 수 있습니다. 게시, 게시 취소, 다시 게시는 소유자 전용입니다.
 - builder가 계획된 빌드를 실행하는 동안 Agent는 읽기 전용입니다. 끝날 때까지 기다린 뒤 `pull`하고 푸시합니다.
 - `diff`, `push`, `pull`은 앱 폴더의 `.gitignore` 파일이 무시하는 파일(예: `dist/`)을 대상에서 뺍니다. 단 Agent가 수락한 소스에 이미 있는 파일은 빼지 않습니다. Git이 이미 추적하는 파일을 다루는 방식과 같습니다. 게시할 때도 이런 파일은 푸시하지 않은 편집으로 세지 않습니다. 이런 파일을 Agent가 수락한 소스에서 없애려면 내 폴더에서 삭제한 뒤 푸시하세요.
 - 이름이 `.env`로 시작하는 파일, `.npmrc`, 키 파일 등이 폴더에 있으면 `.gitignore`에 그 파일 자체가 적혀 있어도 `diff`, `pull`, `push`가 멈춥니다. 메시지는 `Local source path refused:`로 시작하며 경로와 이유를 알려 줍니다. `.gitignore`가 무시하고 한 번도 푸시된 적 없는 폴더 안의 파일은 살펴보지 않습니다. [내 코드를 앱으로 옮기기](/ko/cli/bring-your-code/#3-내-코드를-앱으로-옮기기)를 참고하세요.

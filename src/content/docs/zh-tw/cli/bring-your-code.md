@@ -62,7 +62,7 @@ openstep capabilities enable server --app app
 
 ## 3. 把你的程式碼搬進 App
 
-把你的網站複製到 `apps/app/`，取代起始頁面。App 需要具備以下結構：
+把你的網站複製到 `apps/app/`，取代起始頁面。請保留 App 自己的 `package.json`、`package-lock.json`、`tsconfig.json`、`tsconfig.node.json` 和 `vite.config.ts`：平台檔案需要其中的套件和設定，例如 `wagmi`、`viem`、`@rainbow-me/rainbowkit`、`@tanstack/react-query`、`@supabase/supabase-js`，以及視覺化編輯用到的 `@babel/core`。請在 `apps/app` 裡用 `npm install <package>` 加入你的網站需要的套件，不要用你自己的 `package.json` 覆蓋它；你自己的 Vite 設定也請加進 App 的 `vite.config.ts`。App 需要具備以下結構：
 
 | 部分 | App 需要什麼 |
 |---|---|
@@ -71,7 +71,7 @@ openstep capabilities enable server --app app
 | 伺服器 | `functions/server.js`，以 `node server.js` 啟動。它監聽 `PORT` 環境變數指定的連接埠，回應 `GET /health`，並在 `/api/` 底下提供你的路由。`functions/package.json` 不列任何相依套件，所以請把你的伺服器用到的 npm 套件打包進 `functions/vendor.cjs`，並在你自己寫在 `server.js` 和 `functions/` 其餘檔案裡的程式碼中 `require('./vendor.cjs')`。見 [打包你的伺服器用到的 npm 套件](#打包你的伺服器用到的-npm-套件)。 |
 | 伺服器設定和金鑰 | 用 `functions/runtime-config.js` 裡的 `getVariable('NAME')` 和 `getSecret('NAME')` 讀取，並用 `openstep env` 設定。除了 `process.env.PORT` 和 `process.env.NODE_ENV`，你在 `functions/` 裡自己寫的程式碼不可以讀取 `process.env`：線上的伺服器不在那裡保存任何設定，而且 Publish 會拒絕這個 App。 |
 | 呼叫其他服務 | 在伺服器裡呼叫 `functions/platform.js` 的 `externalRequest(url)`，並把每個主機列在 App 值 `BACKEND_EGRESS_HOSTS` 裡（見下方）。 |
-| 資料庫資料表 | 用 `openstep data migrate <id> <file> --app app` 建立，例如 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`。請保留 `migrations/0001_platform_baseline.sql`，它存放平台自己的資料表。見 [App、資料與合約](/zh-tw/cli/apps-data-contracts/#資料)。 |
+| 資料庫資料表 | 用 `openstep data migrate <id> <file> --app app` 建立，例如 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`。名稱不要加 schema（寫 `bookings`，不寫 `public.bookings`），而且只能用 [migration 可以包含什麼](/zh-tw/cli/apps-data-contracts/#migration-可以包含什麼) 列出的陳述式。請保留 `migrations/0001_platform_baseline.sql`，它存放平台自己的資料表。 |
 
 這些路徑屬於平台，所以不要把你自己的頁面放在這些路徑上：`/api/`（送到你的伺服器）、`/auth/`、`/data/`、`/_platform/`、`/__steps/` 和 `/_releases/`。
 
@@ -190,7 +190,7 @@ openstep dev
 - 只有你自己的頁面能連到你的伺服器。其他服務無法呼叫它：指向 `/api/` 的 webhook 或登入回呼無法通過。請改讓登入回呼指向你網站的一個頁面，再由那個頁面用 `fetch` 把收到的內容送給你的伺服器。會造成變更的請求，例如 `POST`，也必須來自你網站的頁面。
 - 請使用平台的資料用戶端。你自己的資料庫用戶端，例如 `@supabase/supabase-js` 的 `createClient` 或 `supabase.co` 網址，會讓 Publish 拒絕這個 App，`index.html` 裡的 `<base>` 元素也一樣。請改用 `src/lib/supabase` 的 `supabase`（見 [資料](#資料)）。
 
-對有伺服器的 App，`openstep dev` 會依照這些規則處理 `/api`，所以你大多會先在自己的電腦上遇到它們。每一種請求第一次失敗時，CLI 會印出一則以 `openstep:` 開頭的警告，並說明該改什麼：
+對有伺服器的 App，`openstep dev` 會依照這些規則處理 `/api`，所以你大多會先在自己的電腦上遇到它們。CLI 第一次以下面的某個 404 或 413 回應，或捨棄下面的某個標頭時，會印出一則以 `openstep:` 開頭的警告，並說明該改什麼：
 
 - 瀏覽器用 `fetch`、`XMLHttpRequest` 或 `sendBeacon` 以外的方式載入單純的 `/api` 網址，會得到 404。如果你的 App 的 `src/lib/runtime.ts` 是這條規則出現之前的舊版，載入仍會通過，但會有警告。請執行 `openstep pull`：它會把平台檔案的目前版本放回你的資料夾。
 - 寫在 HTML 或 CSS 檔案裡的 `/api` 網址也會得到 404。這裡 `openstep dev` 比線上網站更嚴格，因為線上網站會改寫這樣的網址；請改在指令碼裡用 `releaseRuntimePath()` 設定網址。
@@ -198,6 +198,7 @@ openstep dev
 - 只有線上網站會放行的標頭，以及照原樣傳送本文所需的 `Content-Length`、`Transfer-Encoding` 和 `Content-Encoding`，才會在瀏覽器和你的伺服器之間傳遞。CLI 在捨棄 `Cookie`、`Set-Cookie`、`Location` 或 `Content-Disposition` 時，會發出警告。
 - 超過 10 MiB 的請求本文會得到 413。
 - `curl` 和其他程式不會送出 `Sec-Fetch-Dest` 標頭，所以它們的請求絕不會被當成載入而遭拒絕。
+- 來自其他網站的請求，也就是 `Origin` 不是 `openstep dev` 印出的那個網址的請求，一律得到 403，而且不會有警告；用其他名稱連到那個網址的請求也一樣，例如用 `localhost` 而不是 `127.0.0.1`。這是為了不讓其他頁面使用你在本機的憑證。
 
 ## 5. 在你的程式碼裡使用 OpenStep
 

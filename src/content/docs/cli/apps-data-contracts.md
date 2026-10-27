@@ -84,6 +84,27 @@ openstep data migrate 0002_add_bookings ./migration.sql --app admin
 - The file must be UTF-8 text and at most 4 MiB.
 - The command pulls first, so settle any conflicts before you run it. It then saves the SQL with the App's source and applies it to the App's development data.
 
+### What a migration can contain
+
+Write each name without a dot: `messages`, not `public.messages`, and `id`, not `messages.id`. The platform keeps each App's tables in a schema of its own and runs the migration there.
+
+A migration can contain:
+
+- `CREATE TABLE`, `CREATE INDEX` (also `CREATE UNIQUE INDEX`), `CREATE TYPE`, `CREATE SEQUENCE` and `CREATE POLICY`.
+- `ALTER TABLE` with `ADD COLUMN`, `ADD CONSTRAINT`, `ENABLE ROW LEVEL SECURITY` or `FORCE ROW LEVEL SECURITY`.
+- `COMMENT ON`.
+- Changes to the App's own tables, columns, indexes, policies, types and sequences: `DROP`, `ALTER TABLE` with `DROP`, `RENAME` or `ALTER COLUMN`, `ALTER POLICY`, `ALTER TYPE` and `TRUNCATE`. Data they remove cannot be brought back; on the live site, they run when you publish.
+
+Everything else is refused, for example:
+
+- writing rows: `INSERT`, `UPDATE`, `DELETE`, `MERGE` and `CREATE TABLE … AS`;
+- views, functions, procedures and triggers;
+- transaction statements such as `BEGIN` and `COMMIT`;
+- `GRANT`, roles, other schemas, `CREATE EXTENSION`, and changes to the platform's own `steps_` objects;
+- calls such as `nextval()`, `setval()` and `current_setting()`. For a counter, use `serial` or `GENERATED ALWAYS AS IDENTITY`.
+
+A migration changes tables, not rows. Rows your App needs from the start, such as a fixed list of options, belong in its own code, or its code creates them: the live site starts with none of your development data. Do not copy SQL files into `migrations/` yourself either. Publish refuses a migration that was never applied to development data, so apply each one with `openstep data migrate`.
+
 Editors and owners can run both. See [Site data](/build/data/) for how development data and live data stay apart.
 
 ## Capabilities

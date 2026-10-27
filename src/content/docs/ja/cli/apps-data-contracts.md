@@ -84,6 +84,27 @@ openstep data migrate 0002_add_bookings ./migration.sql --app admin
 - ファイルは UTF-8 のテキストで、最大 4 MiB です。
 - コマンドは最初に pull するので、競合があれば先に解決してから実行してください。そのあと、SQL を App のソースとともに保存し、App の開発用データに適用します。
 
+### マイグレーションに書けるもの
+
+名前にはドットを付けずに書きます。`public.messages` ではなく `messages`、`messages.id` ではなく `id` です。プラットフォームは各 App のテーブルを App 専用のスキーマに置き、マイグレーションをそこで実行します。
+
+マイグレーションに書けるのは次のものです。
+
+- `CREATE TABLE`、`CREATE INDEX`（`CREATE UNIQUE INDEX` も含みます）、`CREATE TYPE`、`CREATE SEQUENCE`、`CREATE POLICY`。
+- `ADD COLUMN`、`ADD CONSTRAINT`、`ENABLE ROW LEVEL SECURITY`、`FORCE ROW LEVEL SECURITY` を伴う `ALTER TABLE`。
+- `COMMENT ON`。
+- App 自身のテーブル、列、インデックス、ポリシー、型、シーケンスの変更：`DROP`、`DROP`・`RENAME`・`ALTER COLUMN` を伴う `ALTER TABLE`、`ALTER POLICY`、`ALTER TYPE`、`TRUNCATE`。これらで消えたデータは元に戻せません。公開中のサイトでは、publish したときに実行されます。
+
+それ以外はすべて拒否されます。たとえば次のものです。
+
+- 行の書き込み：`INSERT`、`UPDATE`、`DELETE`、`MERGE`、`CREATE TABLE … AS`
+- ビュー、関数、プロシージャ、トリガー
+- `BEGIN` や `COMMIT` などのトランザクションの文
+- `GRANT`、ロール、ほかのスキーマ、`CREATE EXTENSION`、プラットフォーム自身の `steps_` オブジェクトの変更
+- `nextval()`、`setval()`、`current_setting()` などの呼び出し。連番には `serial` か `GENERATED ALWAYS AS IDENTITY` を使ってください。
+
+マイグレーションが変えるのはテーブルで、行ではありません。決まった選択肢の一覧のように、App が最初から必要とする行は、App 自身のコードに書くか、App のコードで作成してください。公開中のサイトは、開発用データを何も持たずに始まります。SQL ファイルを自分で `migrations/` にコピーすることもしないでください。開発用データに一度も適用されていないマイグレーションは Publish で拒否されるので、どれも `openstep data migrate` で適用してください。
+
 エディターとオーナーは、どちらも実行できます。開発用データと公開中のデータがどのように分かれているかは、[サイトのデータ](/ja/build/data/) を参照してください。
 
 ## ケイパビリティ
