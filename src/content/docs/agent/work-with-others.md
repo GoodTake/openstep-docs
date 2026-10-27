@@ -11,8 +11,8 @@ Every agent belongs to a workspace. Your personal workspace has no other members
 
 | Role | What they can do |
 | --- | --- |
-| owner | Everything an editor can do, plus **Publish**, **Roll back**, **Put the last version back** and **Unpublish**; change who can open the agent; **Start a new session**; live environment values and domains; add collaborators and send invitations; transfer ownership, move, duplicate or delete the agent. |
-| editor | **Build** and **Brainstorm**; **Approve plan** and **Request changes**; answer the agent's questions and provide values it asks for; **Pause**, **Stop** and **Continue** a build; rename the agent; development environment values. |
+| owner | Everything an editor can do, plus **Publish**, **Put the last version back** and **Unpublish**; change who can open the agent; **Start a new session**; live environment values and domains; add collaborators and send invitations; transfer ownership, move, duplicate or delete the agent. |
+| editor | **Build** and **Brainstorm**; **Approve plan** and **Request changes**; answer the agent's questions and provide values it asks for; **Pause**, **Stop** and **Continue** a build; **Roll back** and **Put candidate live**; rename the agent; development environment values. |
 | viewer | Read only. They can open the agent and look at everything, and change nothing. |
 
 An agent has one owner. Everyone else in the workspace can view it, and the owner chooses who can edit.

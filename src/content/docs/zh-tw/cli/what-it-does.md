@@ -38,8 +38,8 @@ openstep publish --note "First release"
 
 CLI 沿用和工作頁相同的角色。
 
-- **Owner**（擁有者）：編輯者能做的一切，再加上 Publish、Rollback、Unpublish 和 Republish、上線環境值，以及部署合約。
-- **Editor**（編輯者）：與 builder 對話、編輯並推送原始碼、新增或封存 App，以及設定開發環境值。
+- **Owner**（擁有者）：編輯者能做的一切，再加上 Publish、Unpublish 和 Republish、上線環境值，以及部署合約。
+- **Editor**（編輯者）：與 builder 對話、編輯並推送原始碼、新增或封存 App、stage 候選版本和回復，以及設定開發環境值。
 - **Viewer**（檢視者）：唯讀。
 
 人們如何取得這些角色，見 [與他人協作](/zh-tw/agent/work-with-others/)。

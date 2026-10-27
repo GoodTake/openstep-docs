@@ -62,7 +62,15 @@ openstep capabilities enable server --app app
 
 ## 3. コードを App に移す
 
-サイトを `apps/app/` にコピーし、ひな形のページを置き換えます。App 自身の `package.json`、`package-lock.json`、`tsconfig.json`、`tsconfig.node.json`、`vite.config.ts` は残してください。プラットフォームのファイルは、これらにあるパッケージと設定を必要とします。たとえば `wagmi`、`viem`、`@rainbow-me/rainbowkit`、`@tanstack/react-query`、`@supabase/supabase-js`、そしてビジュアル編集が使う `@babel/core` です。自分の `package.json` で上書きせずに、`apps/app` で `npm install <package>` を実行してサイトのパッケージを追加し、自分の Vite の設定は App の `vite.config.ts` に加えてください。App には次の形が必要です。
+サイトを `apps/app/` にコピーし、ひな形のページを置き換えます。App 自身の `package.json`、`package-lock.json`、`tsconfig.json`、`tsconfig.node.json`、`vite.config.ts` は残してください。プラットフォームのファイルは、これらにあるパッケージと設定を必要とします。たとえば `wagmi`、`viem`、`@rainbow-me/rainbowkit`、`@tanstack/react-query`、`@supabase/supabase-js`、そしてビジュアル編集が使う `@babel/core` です。自分の `package.json` で上書きせずに、`apps/app` で `npm install <package>` を実行してサイトのパッケージを追加し、自分の Vite の設定は App の `vite.config.ts` に加えてください。
+
+App の `index.html` を自分のものに置き換える場合は、その `<head>` にこの行を残してください。残さないと、**Console** の **Analytics** でサイトの訪問者が数えられなくなります。
+
+```html
+<script defer referrerpolicy="same-origin" src="/_platform/analytics.js"></script>
+```
+
+App には次の形が必要です。
 
 | 部分 | App に必要なもの |
 |---|---|

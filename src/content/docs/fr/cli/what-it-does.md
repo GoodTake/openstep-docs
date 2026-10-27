@@ -38,8 +38,8 @@ openstep publish --note "First release"
 
 La CLI suit les mêmes rôles que la page de travail.
 
-- **Owner** : tout ce qu'un éditeur peut faire, plus Publish, Rollback, Unpublish et Republish, les valeurs d'environnement de production, et le déploiement des contrats.
-- **Editor** : discuter avec le builder, modifier et pousser le code source, ajouter ou archiver des Apps, et définir les valeurs d'environnement de développement.
+- **Owner** : tout ce qu'un éditeur peut faire, plus Publish, Unpublish et Republish, les valeurs d'environnement de production, et le déploiement des contrats.
+- **Editor** : discuter avec le builder, modifier et pousser le code source, ajouter ou archiver des Apps, lancer le stage d'un candidat et revenir en arrière, et définir les valeurs d'environnement de développement.
 - **Viewer** : lecture seule.
 
 Voir [Travailler à plusieurs](/fr/agent/work-with-others/) pour savoir comment les personnes obtiennent ces rôles.

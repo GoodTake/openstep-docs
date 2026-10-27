@@ -62,7 +62,15 @@ openstep capabilities enable server --app app
 
 ## 3. 把你的程式碼搬進 App
 
-把你的網站複製到 `apps/app/`，取代起始頁面。請保留 App 自己的 `package.json`、`package-lock.json`、`tsconfig.json`、`tsconfig.node.json` 和 `vite.config.ts`：平台檔案需要其中的套件和設定，例如 `wagmi`、`viem`、`@rainbow-me/rainbowkit`、`@tanstack/react-query`、`@supabase/supabase-js`，以及視覺化編輯用到的 `@babel/core`。請在 `apps/app` 裡用 `npm install <package>` 加入你的網站需要的套件，不要用你自己的 `package.json` 覆蓋它；你自己的 Vite 設定也請加進 App 的 `vite.config.ts`。App 需要具備以下結構：
+把你的網站複製到 `apps/app/`，取代起始頁面。請保留 App 自己的 `package.json`、`package-lock.json`、`tsconfig.json`、`tsconfig.node.json` 和 `vite.config.ts`：平台檔案需要其中的套件和設定，例如 `wagmi`、`viem`、`@rainbow-me/rainbowkit`、`@tanstack/react-query`、`@supabase/supabase-js`，以及視覺化編輯用到的 `@babel/core`。請在 `apps/app` 裡用 `npm install <package>` 加入你的網站需要的套件，不要用你自己的 `package.json` 覆蓋它；你自己的 Vite 設定也請加進 App 的 `vite.config.ts`。
+
+如果你用自己的 `index.html` 取代 App 的 `index.html`，請在它的 `<head>` 裡保留這一行，否則 **Console** 裡的 **Analytics** 就不會再統計你網站的訪客：
+
+```html
+<script defer referrerpolicy="same-origin" src="/_platform/analytics.js"></script>
+```
+
+App 需要具備以下結構：
 
 | 部分 | App 需要什麼 |
 |---|---|

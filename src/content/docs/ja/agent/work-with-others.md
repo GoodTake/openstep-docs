@@ -11,8 +11,8 @@ sidebar:
 
 | ロール | できること |
 | --- | --- |
-| オーナー | エディターができることすべてに加え、**Publish**、**Roll back**、**Put the last version back**、**Unpublish**。agent を誰が開けるかの変更。**Start a new session**。本番の環境値とドメイン。共同作業者の追加と招待の送信。所有権の譲渡、agent の移動、複製、削除。 |
-| エディター | **Build** と **Brainstorm**。**Approve plan** と **Request changes**。agent の質問への回答と、求められた値の提供。構築の **Pause**、**Stop**、**Continue**。agent の名前変更。開発用の環境値。 |
+| オーナー | エディターができることすべてに加え、**Publish**、**Put the last version back**、**Unpublish**。agent を誰が開けるかの変更。**Start a new session**。本番の環境値とドメイン。共同作業者の追加と招待の送信。所有権の譲渡、agent の移動、複製、削除。 |
+| エディター | **Build** と **Brainstorm**。**Approve plan** と **Request changes**。agent の質問への回答と、求められた値の提供。構築の **Pause**、**Stop**、**Continue**。**Roll back** と **Put candidate live**。agent の名前変更。開発用の環境値。 |
 | ビューアー | 読み取り専用です。agent を開いてすべてを見られますが、何も変更できません。 |
 
 agent のオーナーは 1 人です。ワークスペースの他のメンバーは全員 agent を見ることができ、誰が編集できるかはオーナーが選びます。

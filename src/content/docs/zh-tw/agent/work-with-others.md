@@ -11,8 +11,8 @@ sidebar:
 
 | 角色 | 能做什麼 |
 | --- | --- |
-| 擁有者 | 編輯者能做的一切，再加上 **Publish**、**Roll back**、**Put the last version back** 和 **Unpublish**；變更誰可以開啟這個 Agent；**Start a new session**；上線的環境值與網域；加入協作者並發出邀請；轉移所有權、移動、複製或刪除這個 Agent。 |
-| 編輯者 | **Build** 和 **Brainstorm**；**Approve plan** 和 **Request changes**；回答 Agent 的問題，並提供它索取的值；**Pause**、**Stop** 和 **Continue** 一次建造；重新命名 Agent；開發環境值。 |
+| 擁有者 | 編輯者能做的一切，再加上 **Publish**、**Put the last version back** 和 **Unpublish**；變更誰可以開啟這個 Agent；**Start a new session**；上線的環境值與網域；加入協作者並發出邀請；轉移所有權、移動、複製或刪除這個 Agent。 |
+| 編輯者 | **Build** 和 **Brainstorm**；**Approve plan** 和 **Request changes**；回答 Agent 的問題，並提供它索取的值；**Pause**、**Stop** 和 **Continue** 一次建造；**Roll back** 和 **Put candidate live**；重新命名 Agent；開發環境值。 |
 | 檢視者 | 唯讀。他們可以開啟 Agent 並查看所有內容，但不能變更任何東西。 |
 
 一個 Agent 只有一位擁有者。工作區裡的其他人都可以查看它，而由擁有者決定誰可以編輯。

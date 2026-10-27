@@ -11,8 +11,8 @@ Chaque agent appartient à un workspace. Votre workspace personnel n'a pas d'aut
 
 | Rôle | Ce qu'il peut faire |
 | --- | --- |
-| propriétaire | Tout ce qu'un éditeur peut faire, plus **Publish**, **Roll back**, **Put the last version back** et **Unpublish** ; changer qui peut ouvrir l'agent ; **Start a new session** ; les valeurs d'environnement en ligne et les domaines ; ajouter des collaborateurs et envoyer des invitations ; transférer la propriété, déplacer, dupliquer ou supprimer l'agent. |
-| éditeur | **Build** et **Brainstorm** ; **Approve plan** et **Request changes** ; répondre aux questions de l'agent et fournir les valeurs qu'il demande ; **Pause**, **Stop** et **Continue** sur une construction ; renommer l'agent ; les valeurs d'environnement de développement. |
+| propriétaire | Tout ce qu'un éditeur peut faire, plus **Publish**, **Put the last version back** et **Unpublish** ; changer qui peut ouvrir l'agent ; **Start a new session** ; les valeurs d'environnement en ligne et les domaines ; ajouter des collaborateurs et envoyer des invitations ; transférer la propriété, déplacer, dupliquer ou supprimer l'agent. |
+| éditeur | **Build** et **Brainstorm** ; **Approve plan** et **Request changes** ; répondre aux questions de l'agent et fournir les valeurs qu'il demande ; **Pause**, **Stop** et **Continue** sur une construction ; **Roll back** et **Put candidate live** ; renommer l'agent ; les valeurs d'environnement de développement. |
 | lecteur | Lecture seule. Il peut ouvrir l'agent et tout regarder, sans rien changer. |
 
 Un agent a un seul propriétaire. Toutes les autres personnes du workspace peuvent le voir, et le propriétaire choisit qui peut le modifier.

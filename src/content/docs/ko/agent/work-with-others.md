@@ -11,8 +11,8 @@ sidebar:
 
 | 역할 | 할 수 있는 일 |
 | --- | --- |
-| 소유자 | 편집자가 할 수 있는 모든 일에 더해 **Publish**, **Roll back**, **Put the last version back**, **Unpublish**; Agent를 열 수 있는 사람 변경; **Start a new session**; 라이브 환경 값과 도메인; 협업자 추가와 초대 발송; 소유권 이전, Agent 이동·복제·삭제. |
-| 편집자 | **Build**와 **Brainstorm**; **Approve plan**과 **Request changes**; Agent의 질문에 답하고 Agent가 요청하는 값 입력; 빌드 **Pause**, **Stop**, **Continue**; Agent 이름 변경; 개발용 환경 값. |
+| 소유자 | 편집자가 할 수 있는 모든 일에 더해 **Publish**, **Put the last version back**, **Unpublish**; Agent를 열 수 있는 사람 변경; **Start a new session**; 라이브 환경 값과 도메인; 협업자 추가와 초대 발송; 소유권 이전, Agent 이동·복제·삭제. |
+| 편집자 | **Build**와 **Brainstorm**; **Approve plan**과 **Request changes**; Agent의 질문에 답하고 Agent가 요청하는 값 입력; 빌드 **Pause**, **Stop**, **Continue**; **Roll back**과 **Put candidate live**; Agent 이름 변경; 개발용 환경 값. |
 | 뷰어 | 읽기 전용. Agent를 열어 모든 것을 볼 수 있지만 아무것도 바꿀 수 없습니다. |
 
 Agent의 소유자는 한 명입니다. 워크스페이스의 다른 모든 사람은 Agent를 볼 수 있고, 누가 편집할 수 있는지는 소유자가 정합니다.

@@ -62,7 +62,15 @@ Cela ajoute un dossier `functions/` à l'App et le rapatrie dans votre dossier :
 
 ## 3. Déplacer votre code dans l'App
 
-Copiez votre site dans `apps/app/`, en remplaçant les pages de départ. Gardez les fichiers `package.json`, `package-lock.json`, `tsconfig.json`, `tsconfig.node.json` et `vite.config.ts` de l'App : les fichiers de la plateforme ont besoin des paquets et des réglages qu'ils contiennent, comme `wagmi`, `viem`, `@rainbow-me/rainbowkit`, `@tanstack/react-query`, `@supabase/supabase-js`, et `@babel/core`, qu'utilise l'édition visuelle. Ajoutez les paquets de votre site avec `npm install <package>` dans `apps/app` au lieu de copier votre propre `package.json` par-dessus, et ajoutez vos propres réglages Vite au `vite.config.ts` de l'App. L'App doit avoir cette forme :
+Copiez votre site dans `apps/app/`, en remplaçant les pages de départ. Gardez les fichiers `package.json`, `package-lock.json`, `tsconfig.json`, `tsconfig.node.json` et `vite.config.ts` de l'App : les fichiers de la plateforme ont besoin des paquets et des réglages qu'ils contiennent, comme `wagmi`, `viem`, `@rainbow-me/rainbowkit`, `@tanstack/react-query`, `@supabase/supabase-js`, et `@babel/core`, qu'utilise l'édition visuelle. Ajoutez les paquets de votre site avec `npm install <package>` dans `apps/app` au lieu de copier votre propre `package.json` par-dessus, et ajoutez vos propres réglages Vite au `vite.config.ts` de l'App.
+
+Si vous remplacez le `index.html` de l'App par le vôtre, gardez cette ligne dans son `<head>`, sinon **Analytics** dans **Console** cesse de compter les visiteurs de votre site :
+
+```html
+<script defer referrerpolicy="same-origin" src="/_platform/analytics.js"></script>
+```
+
+L'App doit avoir cette forme :
 
 | Élément | Ce dont l'App a besoin |
 |---|---|

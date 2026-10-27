@@ -47,7 +47,7 @@ Tant que le site est hors ligne, **Production** indique **This agent is offline.
 
 ## À savoir
 
-- Seul le propriétaire peut faire **Publish**, **Roll back**, **Unpublish** et remettre une version en ligne. Les éditeurs et les lecteurs peuvent voir **Production**.
+- Seul le propriétaire peut faire **Publish**, **Unpublish** et remettre une version en ligne ; le propriétaire et les éditeurs peuvent faire **Roll back**. Les éditeurs et les lecteurs peuvent voir **Production**.
 - Pour repartir avec des données vides, utilisez **Start a new session** dans **Console** → **Sessions**. Publish ne le fait jamais. Voir [Publier et partager](/fr/agent/publish-and-share/).
 - Pour donner au site votre propre adresse, voir [Domaines](/fr/build/domains/).
 

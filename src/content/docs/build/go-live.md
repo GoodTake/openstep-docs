@@ -47,7 +47,7 @@ While the site is offline, **Production** says **This agent is offline. Its data
 
 ## Good to know
 
-- Only the owner can **Publish**, **Roll back**, **Unpublish** and put a version back. Editors and viewers can see **Production**.
+- Only the owner can **Publish**, **Unpublish** and put a version back; the owner and editors can **Roll back**. Editors and viewers can see **Production**.
 - To start over with empty data, use **Start a new session** in **Console** → **Sessions**. Publish never does that. See [Publish and share](/agent/publish-and-share/).
 - To give the site your own address, see [Domains](/build/domains/).
 

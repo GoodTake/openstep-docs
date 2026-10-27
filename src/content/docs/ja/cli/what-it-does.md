@@ -38,8 +38,8 @@ openstep publish --note "First release"
 
 CLI は、作業ページと同じロールに従います。
 
-- **Owner**：エディターができることすべてに加えて、Publish、Rollback、Unpublish、Republish、本番の環境値、コントラクトのデプロイができます。
-- **Editor**：builder とのチャット、ソースの編集と push、App の追加とアーカイブ、開発用の環境値の設定ができます。
+- **Owner**：エディターができることすべてに加えて、Publish、Unpublish、Republish、本番の環境値、コントラクトのデプロイができます。
+- **Editor**：builder とのチャット、ソースの編集と push、App の追加とアーカイブ、候補の stage とロールバック、開発用の環境値の設定ができます。
 - **Viewer**：読み取り専用です。
 
 ロールの付与については [他の人と作業する](/ja/agent/work-with-others/) を参照してください。

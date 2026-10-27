@@ -62,7 +62,15 @@ openstep capabilities enable server --app app
 
 ## 3. 내 코드를 앱으로 옮기기
 
-내 사이트를 `apps/app/`에 복사해 시작용 페이지를 바꿉니다. 앱 자체의 `package.json`, `package-lock.json`, `tsconfig.json`, `tsconfig.node.json`, `vite.config.ts`는 그대로 두세요. 플랫폼 파일에는 이 파일들에 있는 패키지와 설정이 필요합니다. 예를 들어 `wagmi`, `viem`, `@rainbow-me/rainbowkit`, `@tanstack/react-query`, `@supabase/supabase-js`, 그리고 비주얼 편집에 쓰이는 `@babel/core`가 그렇습니다. 내 `package.json`으로 덮어쓰지 말고, `apps/app`에서 `npm install <package>`로 사이트의 패키지를 추가하세요. 내 Vite 설정도 앱의 `vite.config.ts`에 추가하세요. 앱에는 다음과 같은 구성이 필요합니다.
+내 사이트를 `apps/app/`에 복사해 시작용 페이지를 바꿉니다. 앱 자체의 `package.json`, `package-lock.json`, `tsconfig.json`, `tsconfig.node.json`, `vite.config.ts`는 그대로 두세요. 플랫폼 파일에는 이 파일들에 있는 패키지와 설정이 필요합니다. 예를 들어 `wagmi`, `viem`, `@rainbow-me/rainbowkit`, `@tanstack/react-query`, `@supabase/supabase-js`, 그리고 비주얼 편집에 쓰이는 `@babel/core`가 그렇습니다. 내 `package.json`으로 덮어쓰지 말고, `apps/app`에서 `npm install <package>`로 사이트의 패키지를 추가하세요. 내 Vite 설정도 앱의 `vite.config.ts`에 추가하세요.
+
+앱의 `index.html`을 내 것으로 바꾼다면 그 `<head>`에 이 줄을 남겨 두세요. 그러지 않으면 **Console**의 **Analytics**가 사이트 방문자를 더 이상 세지 않습니다.
+
+```html
+<script defer referrerpolicy="same-origin" src="/_platform/analytics.js"></script>
+```
+
+앱에는 다음과 같은 구성이 필요합니다.
 
 | 부분 | 앱에 필요한 것 |
 |---|---|

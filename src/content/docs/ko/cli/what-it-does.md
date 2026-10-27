@@ -38,8 +38,8 @@ openstep publish --note "First release"
 
 CLI는 작업 페이지와 같은 역할을 따릅니다.
 
-- **Owner**: 편집자가 할 수 있는 모든 것에 더해 Publish, Rollback, Unpublish, Republish, 프로덕션 환경 값, 컨트랙트 배포.
-- **Editor**: builder와 채팅, 소스 편집과 푸시, 앱 추가 또는 보관, 개발용 환경 값 설정.
+- **Owner**: 편집자가 할 수 있는 모든 것에 더해 Publish, Unpublish, Republish, 프로덕션 환경 값, 컨트랙트 배포.
+- **Editor**: builder와 채팅, 소스 편집과 푸시, 앱 추가 또는 보관, 후보 stage와 롤백, 개발용 환경 값 설정.
 - **Viewer**: 읽기 전용.
 
 사람들이 이 역할을 얻는 방법은 [다른 사람과 함께 작업하기](/ko/agent/work-with-others/)를 참고하세요.

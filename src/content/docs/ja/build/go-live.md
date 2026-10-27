@@ -47,7 +47,7 @@ sidebar:
 
 ## 知っておくこと
 
-- **Publish**、**Roll back**、**Unpublish**、そしてバージョンを元に戻す操作ができるのは、オーナーだけです。エディターとビューアーは **Production** を見られます。
+- **Publish**、**Unpublish**、そしてバージョンを元に戻す操作ができるのは、オーナーだけです。**Roll back** はオーナーとエディターができます。エディターとビューアーは **Production** を見られます。
 - データを空にして最初からやり直すには、**Console** → **Sessions** の **Start a new session** を使います。Publish はそれを行いません。[公開と共有](/ja/agent/publish-and-share/) を参照してください。
 - サイトに自分のアドレスを付けるには、[ドメイン](/ja/build/domains/) を参照してください。
 

@@ -62,7 +62,15 @@ This adds a `functions/` folder to the App and brings it into your folder: a sta
 
 ## 3. Move your code into the App
 
-Copy your site into `apps/app/`, replacing the starter pages. Keep the App's own `package.json`, `package-lock.json`, `tsconfig.json`, `tsconfig.node.json` and `vite.config.ts`: the platform files need the packages and settings in them, such as `wagmi`, `viem`, `@rainbow-me/rainbowkit`, `@tanstack/react-query`, `@supabase/supabase-js`, and `@babel/core`, which visual editing uses. Add your site's packages with `npm install <package>` in `apps/app` instead of copying your own `package.json` over, and add your own Vite settings to the App's `vite.config.ts`. The App needs this shape:
+Copy your site into `apps/app/`, replacing the starter pages. Keep the App's own `package.json`, `package-lock.json`, `tsconfig.json`, `tsconfig.node.json` and `vite.config.ts`: the platform files need the packages and settings in them, such as `wagmi`, `viem`, `@rainbow-me/rainbowkit`, `@tanstack/react-query`, `@supabase/supabase-js`, and `@babel/core`, which visual editing uses. Add your site's packages with `npm install <package>` in `apps/app` instead of copying your own `package.json` over, and add your own Vite settings to the App's `vite.config.ts`.
+
+If you replace the App's `index.html` with your own, keep this line in its `<head>`, or **Analytics** in the **Console** stops counting your site's visitors:
+
+```html
+<script defer referrerpolicy="same-origin" src="/_platform/analytics.js"></script>
+```
+
+The App needs this shape:
 
 | Part | What the App needs |
 |---|---|

@@ -47,7 +47,7 @@ sidebar:
 
 ## 알아 두기
 
-- **Publish**, **Roll back**, **Unpublish**, 그리고 버전 되돌리기는 소유자만 할 수 있습니다. 편집자와 뷰어는 **Production**을 볼 수 있습니다.
+- **Publish**, **Unpublish**, 그리고 버전 되돌리기는 소유자만 할 수 있습니다. **Roll back**은 소유자와 편집자가 할 수 있습니다. 편집자와 뷰어는 **Production**을 볼 수 있습니다.
 - 데이터를 비우고 처음부터 다시 시작하려면 **Console** → **Sessions**의 **Start a new session**을 사용합니다. Publish는 절대 그렇게 하지 않습니다. [게시와 공유](/ko/agent/publish-and-share/)를 참고하세요.
 - 사이트에 내 주소를 주려면 [도메인](/ko/build/domains/)을 참고하세요.
 

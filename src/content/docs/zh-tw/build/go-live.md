@@ -47,7 +47,7 @@ sidebar:
 
 ## 注意事項
 
-- 只有擁有者能 **Publish**、**Roll back**、**Unpublish** 和放回版本。編輯者和檢視者可以看到 **Production**。
+- 只有擁有者能 **Publish**、**Unpublish** 和放回版本；擁有者和編輯者都能 **Roll back**。編輯者和檢視者可以看到 **Production**。
 - 要從空白資料重新開始，請使用 **Console** → **Sessions** 中的 **Start a new session**。Publish 絕不會那樣做。見 [發布與分享](/zh-tw/agent/publish-and-share/)。
 - 要讓網站使用你自己的網址，見 [網域](/zh-tw/build/domains/)。
 
