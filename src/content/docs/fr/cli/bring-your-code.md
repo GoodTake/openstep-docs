@@ -39,7 +39,7 @@ cd my-site
 openstep apps list
 ```
 
-`agent create` affiche l'ID du nouvel agent. Sans `--product`, l'agent utilise **Web builder**. `agent checkout` copie les Apps de l'agent dans `apps/<app-key>/` ; un nouvel agent en a une, en général `apps/app/`. Les exemples ci-dessous utilisent `app` comme clé d'App ; utilisez celle que `apps list` affiche.
+`agent create` affiche le nouvel agent en JSON ; son `id` est l'ID de l'agent. Sans `--product`, l'agent utilise **Web builder**. `agent checkout` copie les Apps de l'agent dans `apps/<app-key>/` ; un nouvel agent en a une, en général `apps/app/`. Les exemples ci-dessous utilisent `app` comme clé d'App ; utilisez celle que `apps list` affiche.
 
 L'App démarre avec un petit site qui fonctionne et les fichiers de la plateforme que votre code utilisera. Vous remplacez le site par le vôtre à l'étape 3 et vous gardez les fichiers de la plateforme.
 
@@ -56,10 +56,9 @@ La nouvelle App reçoit son propre dossier, ici `apps/admin/`, avec le même sit
 
 ```sh
 openstep capabilities enable server --app app
-openstep pull
 ```
 
-Cela ajoute un dossier `functions/` à l'App, avec un `server.js` de départ et les utilitaires serveur de la plateforme. Faites-le avant de copier votre propre code serveur, pour que vos fichiers se placent par-dessus ceux de départ. Passez cette étape si votre site n'a que des pages.
+Cela ajoute un dossier `functions/` à l'App et le rapatrie dans votre dossier : un `server.js` de départ, les utilitaires serveur de la plateforme `platform.js`, `runtime-config.js` et `viem.cjs`, ainsi que `openapi.json`, `check-openapi.js`, `package.json` et `Dockerfile`. Faites-le avant de copier votre propre code serveur, pour que vos fichiers se placent par-dessus ceux de départ. Passez cette étape si votre site n'a que des pages.
 
 ## 3. Déplacer votre code dans l'App
 
@@ -69,33 +68,70 @@ Copiez votre site dans `apps/app/`, en remplaçant les pages de départ. L'App d
 |---|---|
 | Pages | Une configuration npm à la racine de l'App, avec `package.json` et `package-lock.json`. `npm run build` écrit le site terminé dans `dist/`, avec `index.html` à sa racine. |
 | Réglages lus par le navigateur | Des noms qui commencent par `VITE_`, par exemple `VITE_SITE_NAME`, définis avec [`openstep env`](/fr/cli/apps-data-contracts/). |
-| Serveur | `functions/server.js`, démarré avec `node server.js`. Il écoute sur le port de la variable d'environnement `PORT`, répond à `GET /health` et sert vos routes sous `/api/`. `functions/package.json` ne liste aucune dépendance : si votre serveur utilise des paquets npm, regroupez-les dans `server.js` avant de pousser. |
-| Réglages et clés du serveur | Lisez-les avec `getVariable('NAME')` et `getSecret('NAME')` de `functions/runtime-config.js`, et définissez-les avec `openstep env`. |
+| Serveur | `functions/server.js`, démarré avec `node server.js`. Il écoute sur le port de la variable d'environnement `PORT`, répond à `GET /health` et sert vos routes sous `/api/`. `functions/package.json` ne liste aucune dépendance : regroupez donc les paquets npm que votre serveur utilise dans `functions/vendor.cjs`, et utilisez `require('./vendor.cjs')` dans votre propre code de `server.js` et du reste de `functions/`. Voir [Regrouper les paquets npm de votre serveur](#regrouper-les-paquets-npm-de-votre-serveur). |
+| Réglages et clés du serveur | Lisez-les avec `getVariable('NAME')` et `getSecret('NAME')` de `functions/runtime-config.js`, et définissez-les avec `openstep env`. En dehors de `process.env.PORT` et `process.env.NODE_ENV`, votre propre code dans `functions/` ne doit pas lire `process.env` : le serveur en ligne n'y garde aucun réglage, et Publish refuse l'App. |
 | Appels à d'autres services | Depuis le serveur, appelez `externalRequest(url)` de `functions/platform.js`, et listez chaque hôte dans la valeur d'App `BACKEND_EGRESS_HOSTS` (voir ci-dessous). |
-| Tables de la base de données | Créées avec `openstep data migrate`. Voir [Apps, données et contrats](/fr/cli/apps-data-contracts/). |
+| Tables de la base de données | Créées avec `openstep data migrate <id> <file> --app app`, par exemple `openstep data migrate 0002_add_bookings ./bookings.sql --app app`. Gardez `migrations/0001_platform_baseline.sql`, qui contient les tables propres à la plateforme. Voir [Apps, données et contrats](/fr/cli/apps-data-contracts/#données). |
 
 Ces chemins appartiennent à la plateforme, donc n'y mettez pas vos propres pages : `/api/` (envoyé à votre serveur), `/auth/`, `/data/`, `/_platform/`, `/__steps/` et `/_releases/`.
 
-Gardez les fichiers de la plateforme fournis avec l'App. Votre code les importe :
+Gardez les fichiers de la plateforme fournis avec l'App. Votre code s'appuie dessus :
 
-- Dans l'App : `src/lib/platform.ts`, `src/lib/useUser.ts`, `src/lib/live-auth.ts`, `src/lib/supabase.ts`, `src/lib/runtime.ts`, `src/lib/wagmi.ts`, et les providers de wallet dans `src/main.tsx`.
-- Dans `functions/` : `platform.js`, `runtime-config.js` et `viem.cjs`.
+- Dans l'App : `src/lib/platform.ts`, `src/lib/useUser.ts`, `src/lib/live-auth.ts`, `src/lib/supabase.ts`, `src/lib/runtime.ts`, `src/lib/wagmi.ts`, les providers de wallet dans `src/main.tsx`, et `migrations/0001_platform_baseline.sql`.
+- Dans `functions/` : `platform.js`, `runtime-config.js`, `viem.cjs`, `openapi.json` et `check-openapi.js`.
 
-`openstep pull` remet la version de la plateforme pour la plupart de ces fichiers : importez-les donc au lieu de les modifier.
+`openstep pull`, et chaque `openstep push`, remettent dans votre dossier la version actuelle de la plateforme pour `src/lib/runtime.ts`, `src/lib/live-auth.ts`, `src/lib/supabase.ts`, `src/lib/useUser.ts`, `functions/platform.js`, `functions/runtime-config.js`, `functions/viem.cjs` et `functions/check-openapi.js` : importez-les donc au lieu de les modifier. `src/lib/platform.ts`, `src/lib/wagmi.ts` et `src/main.tsx` sont à vous une fois l'App créée : modifiez-les selon vos besoins, et gardez-y les parties qui viennent de la plateforme.
 
 Laissez ceci hors du dossier :
 
-- Les fichiers `.env`, `.npmrc`, les clés et les autres fichiers d'identifiants. `openstep push` les refuse ; mettez plutôt leurs valeurs dans les valeurs d'environnement.
+- Les fichiers dont le nom commence par `.env` (`.env.example` compris), les fichiers `.npmrc` et `.yarnrc`, les fichiers de clés comme `*.pem`, `*.key`, `*.p12` et `*.pfx`, et les dossiers nommés `key`, `keys`, `secret`, `secrets`, `credential` ou `credentials`. Tant que l'un d'eux est dans le dossier de l'App, `openstep diff`, `pull` et `push` s'arrêtent avec `Local source path refused`, même si le `.gitignore` de l'App le liste. Mettez plutôt leurs valeurs dans les valeurs d'environnement.
 - `node_modules` et `.git`. Push les ignore de toute façon.
 - Les sorties de construction comme `dist/`. Publish construit le site lui-même.
+
+Les chemins qu'ignorent les `.gitignore` du dossier de l'App, comme `dist/`, restent hors de `openstep diff`, `push` et `pull`, et ne comptent pas comme des modifications non poussées quand vous publiez. Un fichier que le code source accepté de l'App contient déjà fait exception : il est quand même envoyé à chaque push, par exemple un `dist/` qu'une ancienne CLI a poussé. Pour le retirer, supprimez-le dans votre dossier, puis poussez. Si le `.gitignore` de votre App liste un fichier dont votre site a besoin (une ancienne App liste `vite.config.js`), supprimez cette ligne avant de pousser.
 
 Pour que votre serveur puisse appeler un autre service, définissez `BACKEND_EGRESS_HOSTS` une fois et donnez-lui les hôtes, séparés par des virgules :
 
 ```sh
-openstep env define BACKEND_EGRESS_HOSTS --kind variable --targets backend --app app
-openstep env set BACKEND_EGRESS_HOSTS --app app --environment development --value "api.example.com"
+openstep env define BACKEND_EGRESS_HOSTS --kind variable --targets backend --app app --value "api.example.com"
 openstep env set BACKEND_EGRESS_HOSTS --app app --environment production --value "api.example.com"
 ```
+
+`env define` crée la valeur avec son réglage de développement, et `env set` lui donne celui de production.
+
+### Regrouper les paquets npm de votre serveur
+
+Publish exécute `functions/` exactement comme vous l'avez poussé, sans `npm install`. Mettez donc les paquets npm que votre serveur utilise dans un seul fichier regroupé, `functions/vendor.cjs`, et gardez votre propre code dans `server.js` et le reste de `functions/`. Publish vérifie vos propres fichiers, mais pas `vendor.cjs`.
+
+1. Depuis le dossier de l'agent, créez un dossier pour les paquets en dehors de `apps/`, pour que push ne l'envoie jamais, et installez-y les paquets ainsi qu'esbuild :
+
+   ```sh
+   mkdir server-packages
+   cd server-packages
+   npm init -y
+   npm install express esbuild
+   ```
+
+2. Dans ce dossier, écrivez `index.js`. Il exporte ce que votre serveur utilise :
+
+   ```js
+   module.exports = { express: require('express') };
+   ```
+
+3. Regroupez-le dans l'App, puis revenez au dossier de l'agent :
+
+   ```sh
+   npx esbuild index.js --bundle --platform=node --format=cjs --outfile=../apps/app/functions/vendor.cjs
+   cd ..
+   ```
+
+4. Dans `functions/server.js`, prenez les paquets dans le fichier regroupé :
+
+   ```js
+   const { express } = require('./vendor.cjs');
+   ```
+
+Regroupez de nouveau avant de pousser chaque fois que vous ajoutez ou mettez à jour un paquet. L'ensemble de `functions/`, `vendor.cjs` compris, peut faire au plus 128 Mio.
 
 ## 4. L'exécuter sur votre ordinateur
 
@@ -122,7 +158,46 @@ cd apps/app && npm install && cd ../..
 openstep dev
 ```
 
-Ouvrez l'adresse qu'affiche `openstep dev`. Votre site local parle déjà à la plateforme : il lit et écrit les données de développement de l'App, et l'IA et l'e-mail fonctionnent, facturés comme d'habitude. La connexion par wallet se fait sur le site publié. Voir [Exécuter des apps en local](/fr/cli/dev/).
+Ouvrez l'adresse qu'affiche `openstep dev`. Votre site local parle déjà à la plateforme : il lit et écrit les données de développement de l'App, et l'IA et l'e-mail fonctionnent, facturés comme d'habitude. `openstep dev` démarre votre serveur avec `PORT` défini sur le port `backend`, ici 8080. Il traite aussi `/api` selon les règles du site en ligne et vous avertit quand une requête y échouerait. Voir [Ce qui fonctionne différemment sur le site en ligne](#ce-qui-fonctionne-différemment-sur-le-site-en-ligne) et [Exécuter des apps en local](/fr/cli/dev/).
+
+## Ce qui fonctionne différemment sur le site en ligne
+
+Sur le site en ligne, votre App tourne derrière la passerelle de la plateforme. Quelques points y fonctionnent autrement que sur votre propre serveur :
+
+- Les corps de requête sont limités à 10 Mio. Votre serveur peut recevoir du JSON, du texte, des formulaires et des envois de fichiers, jusqu'à 10 Mio par requête ; une requête plus grosse reçoit une erreur 413 et ne l'atteint jamais. Pour des fichiers plus gros, utilisez le stockage de fichiers de l'App : votre serveur demande un lien d'envoi à `files.createUpload()` de `functions/platform.js`, et la page envoie le fichier directement à ce lien, jusqu'à 25 Mio par fichier.
+- Seuls certains en-têtes passent. Depuis le navigateur, votre serveur ne reçoit que `Accept`, `Accept-Language`, `Authorization`, `Content-Type`, `If-Match`, `If-None-Match`, `Range`, `Range-Unit` et `User-Agent`, plus les en-têtes `x-steps-` propres à la plateforme. Le navigateur ne reçoit en retour que `Accept-Ranges`, `Cache-Control`, `Content-Language`, `Content-Range`, `Content-Type`, `ETag`, `Last-Modified`, `Preference-Applied` et `Vary`.
+- Il n'y a ni cookies, ni redirections, ni noms de téléchargement. Votre serveur ne reçoit aucun cookie, et ses en-têtes `Set-Cookie`, `Location` et `Content-Disposition` n'atteignent jamais le navigateur. Pour savoir qui appelle, utilisez la connexion de `useUser()` et l'en-tête `x-steps-user-address` (voir [Connexion par wallet](#connexion-par-wallet)), ou votre propre jeton dans l'en-tête `Authorization`. Au lieu d'une redirection, répondez avec du JSON et passez à la page suivante dans le navigateur. Pour un téléchargement, récupérez le fichier dans la page et enregistrez-le depuis celle-ci :
+
+  ```ts
+  const blob = await (await fetch('/api/export.csv')).blob();
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'export.csv';
+  link.click();
+  ```
+
+- Certaines URL vers `/api` ont besoin de `releaseRuntimePath()`. Le site en ligne réécrit les URL que votre page passe à `fetch`, `XMLHttpRequest` et `sendBeacon`, ainsi que les URL écrites dans les fichiers HTML et CSS qu'il sert. Une URL définie depuis un script (par exemple une balise `<img>` rendue par React), un `<a href>` ou `window.location` qui pointent vers un chemin `/api` nu ont besoin de `releaseRuntimePath('/api/...')` de `src/lib/runtime` ; sinon le site en ligne public répond par une erreur 404 :
+
+  ```tsx
+  import { releaseRuntimePath } from './lib/runtime';
+
+  function Avatar() {
+    return <img src={releaseRuntimePath('/api/avatar/1')} alt="" />;
+  }
+  ```
+
+- Rien n'est diffusé en continu. La réponse de votre serveur n'arrive au navigateur qu'une fois terminée, et elle doit se terminer dans les 60 secondes. Publish refuse l'App si `new EventSource(` ou `new WebSocket(` apparaît dans vos pages ou dans `functions/`.
+- Seules vos propres pages atteignent votre serveur. Les autres services ne peuvent pas l'appeler : un webhook ou un callback de connexion qui pointe vers `/api/` ne passe pas. Faites plutôt pointer le callback de connexion vers une page de votre site, puis laissez cette page transmettre à votre serveur, avec `fetch`, ce qu'elle a reçu. Une requête qui modifie quelque chose, comme un `POST`, doit aussi venir d'une page de votre site.
+- Utilisez le client de données de la plateforme. Votre propre client de base de données, comme `createClient` de `@supabase/supabase-js` ou une adresse `supabase.co`, fait que Publish refuse l'App, tout comme un élément `<base>` dans `index.html`. Utilisez plutôt `supabase` de `src/lib/supabase` (voir [Données](#données)).
+
+`openstep dev` traite `/api` selon ces règles pour une App avec un serveur : vous en rencontrez donc la plupart d'abord sur votre ordinateur. La première fois que chaque type de requête échoue, la CLI affiche un avertissement qui commence par `openstep:` et dit quoi changer :
+
+- Une URL `/api` nue que le navigateur charge autrement qu'avec `fetch`, `XMLHttpRequest` ou `sendBeacon` reçoit une erreur 404. Si le `src/lib/runtime.ts` de votre App date d'avant cette règle, le chargement passe quand même, avec un avertissement. Exécutez `openstep pull` : la commande remet dans votre dossier la version actuelle des fichiers de la plateforme.
+- Une URL `/api` écrite dans un fichier HTML ou CSS reçoit aussi une erreur 404. Ici `openstep dev` est plus strict que le site en ligne, qui réécrit de telles URL : définissez plutôt l'URL depuis un script avec `releaseRuntimePath()`.
+- Toute requête `/api` qui demande `text/event-stream` reçoit une erreur 404, même un `fetch` auquel le site en ligne répondrait une fois que votre serveur a terminé la réponse. Il en va de même pour une connexion WebSocket vers `/api`.
+- Seuls les en-têtes que le site en ligne laisse passer circulent entre le navigateur et votre serveur. La CLI avertit quand elle retire `Cookie`, `Set-Cookie`, `Location` ou `Content-Disposition`.
+- Un corps de requête de plus de 10 Mio reçoit une erreur 413.
+- `curl` et les autres programmes n'envoient pas d'en-tête `Sec-Fetch-Dest` ; leurs requêtes ne sont donc jamais refusées comme des chargements.
 
 ## 5. Utiliser OpenStep depuis votre code
 
@@ -144,7 +219,7 @@ function Account() {
 
 `signIn()` demande au visiteur d'approuver une signature gratuite sur Base. Les boutons de wallet viennent des providers de `src/main.tsx`.
 
-Sur votre serveur, chaque requête `/api/` d'un visiteur connecté porte l'adresse de son wallet dans l'en-tête `x-steps-user-address`. Utilisez-la pour savoir qui appelle.
+Sur le site en ligne, chaque requête `/api/` d'un visiteur qui s'est connecté porte l'adresse de son wallet dans l'en-tête `x-steps-user-address` ; avant sa connexion, elle n'en porte pas. Utilisez cette adresse pour savoir qui appelle. Sous `openstep dev`, la page utilise le wallet que vous connectez, sans signature, et votre serveur voit le wallet avec lequel vous vous êtes connecté à la CLI. Connectez ce même wallet dans le navigateur.
 
 ### E-mail
 
@@ -169,13 +244,15 @@ Sur votre serveur, chaque requête `/api/` d'un visiteur connecté porte l'adres
    }
    ```
 
-   Un ID de modèle utilise des lettres minuscules, des chiffres et `-`. Une valeur est de type `text` (jusqu'à 200 caractères) ou `url`, et une valeur `url` se place dans un lien sous la forme `href="{{link}}"`. Une App peut avoir jusqu'à 20 modèles.
+   Un ID de modèle commence par une lettre minuscule et utilise des lettres minuscules, des chiffres et `-`. Une valeur est de type `text` (jusqu'à 200 caractères) ou `url`. Une valeur `url` se place dans un lien sous la forme `href="{{link}}"`, et doit être une URL `https` sur l'adresse en ligne de l'App ou sur son domaine personnalisé. Toute autre URL de lien ou d'image du modèle doit en être une aussi, ou être un lien `mailto:`. Une App peut avoir jusqu'à 20 modèles.
 
 2. Enregistrez-les :
 
    ```sh
    openstep email templates register emails.json --app app
    ```
+
+   Le chemin du fichier est relatif au dossier de l'agent. L'enregistrement remplace tous les modèles de l'App par ceux du fichier.
 
 3. Envoyez depuis le navigateur (`src/lib/platform`) ou le serveur (`functions/platform.js`) :
 
@@ -267,12 +344,12 @@ openstep publish --note "First release"
 openstep status <operation-id>
 ```
 
-Avant la première publication, définissez, en tant que propriétaire de l'agent, les valeurs de production que lit votre code. Publish construit vos pages avec `npm ci` et `npm run build`, démarre `functions/server.js`, vérifie `/health`, puis met l'App en ligne. Voir [Push et publication](/fr/cli/push-publish/).
+Avant la première publication, définissez, en tant que propriétaire de l'agent, les valeurs de production que lit votre code. Publish construit vos pages avec `npm ci` et `npm run build`, démarre `functions/server.js`, vérifie que `GET /health` répond avec un statut 2xx ou 3xx dans les 30 secondes, puis met l'App en ligne. Voir [Push et publication](/fr/cli/push-publish/).
 
 ## À savoir
 
 - Les appels d'IA, les e-mails, les actions on-chain et le temps pendant lequel votre App publiée tourne sont facturés en SSU au propriétaire de l'agent. Voir [Vérifier votre solde](/fr/account/balance/).
-- `openstep pull` restaure les fichiers de la plateforme. Modifiez vos propres fichiers et importez depuis ceux de la plateforme.
+- `openstep pull` et chaque push remettent dans votre dossier la version actuelle des fichiers de la plateforme. Modifiez vos propres fichiers et importez depuis ceux de la plateforme.
 - Une fois votre site dans l'App, vous pouvez aussi le modifier depuis la discussion de la page de travail ou avec `openstep agent chat`. Le builder travaille sur le même code.
 
 Suite : [Qu'est-ce que le SSU](/fr/account/what-is-ssu/).

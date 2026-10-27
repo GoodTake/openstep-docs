@@ -52,7 +52,7 @@ openstep env delete BOOKING_EMAIL --app admin
 ```
 
 - `env list` montre le nom de chaque valeur, son type et si elle est fournie. Il ne montre pas un secret.
-- `env define` crée une valeur. Les noms utilisent des majuscules, des chiffres et des tirets bas.
+- `env define` crée une valeur et la définit pour un seul environnement, `development` sauf si vous donnez `--environment`. Donnez la valeur d'une variable avec `--value` ; pour un secret, et pour une variable sans `--value`, la CLI la demande. Les noms utilisent des majuscules, des chiffres et des tirets bas.
 - `env set` donne une nouvelle valeur à une valeur déjà définie. `env clear` la supprime.
 - `env targets` change les endroits où une valeur peut être lue. `env delete` supprime une définition que plus personne n'utilise.
 - Les cibles suivent deux règles. Une cible `frontend` exige le type `variable` et un nom qui commence par `VITE_`, et un nom qui commence par `VITE_` doit cibler `frontend`. Un secret ne cible jamais `builder`, et une variable ne peut cibler `builder` que si elle contient une adresse de chaîne, ou s'il s'agit de `BASE_RPC_URL` contenant l'URL RPC de la chaîne.

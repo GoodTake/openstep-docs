@@ -23,6 +23,8 @@ Vous avez besoin de Node.js 24 ou d'une version plus récente. Vérifiez avec `n
    openstep --version
    ```
 
+   Les commandes de ces pages de la CLI exigent que `openstep --version` affiche 0.3.0 ou une version plus récente.
+
 ## Se connecter
 
 1. Dans le terminal, exécutez :
