@@ -11,7 +11,7 @@ Cette page va d'un dossier vide à un site en ligne. Elle suppose que vous avez 
 
 ## Un agent contient une ou plusieurs Apps
 
-Un agent n'est pas un seul site. Il contient une ou plusieurs **Apps**, et chaque App est un site distinct, avec son propre code, son propre aperçu, ses propres données, ses propres réglages et sa propre adresse en ligne. **Publish** met toutes les Apps de l'agent en ligne ensemble. Le schéma est dans [Comment les éléments s'articulent](/fr/start/what-is/#comment-les-éléments-sarticulent).
+Un agent n'est pas un seul site. Il contient une ou plusieurs **Apps**, et chaque App est un site distinct, avec son propre code, son propre aperçu, ses propres données, ses propres réglages et sa propre adresse en ligne. **Publish** met toutes les Apps de l'agent en ligne ensemble. Le schéma est dans [Fonctionnement](/fr/start/what-is/#fonctionnement).
 
 Dans le dossier de l'agent, chaque App a son propre dossier sous `apps/`, nommé d'après sa clé d'App :
 
@@ -84,7 +84,7 @@ Gardez les fichiers de la plateforme fournis avec l'App. Votre code s'appuie des
 
 Laissez ceci hors du dossier :
 
-- Les fichiers dont le nom commence par `.env` (`.env.example` compris), les fichiers `.npmrc` et `.yarnrc`, les fichiers de clés comme `*.pem`, `*.key`, `*.p12` et `*.pfx`, et les dossiers nommés `key`, `keys`, `secret`, `secrets`, `credential` ou `credentials`. Tant que l'un d'eux est dans le dossier de l'App, `openstep diff`, `pull` et `push` s'arrêtent avec `Local source path refused`, même si le `.gitignore` de l'App le liste. Mettez plutôt leurs valeurs dans les valeurs d'environnement.
+- Les fichiers dont le nom commence par `.env` (`.env.example` compris), les fichiers `.npmrc` et `.yarnrc`, les fichiers de clés comme `*.pem`, `*.key`, `*.p12` et `*.pfx`, et les dossiers nommés `key`, `keys`, `secret`, `secrets`, `credential` ou `credentials`. Mettez plutôt leurs valeurs dans les valeurs d'environnement. Tant que l'un d'eux est dans le dossier de l'App, `openstep diff`, `pull` et `push` s'arrêtent, même si le `.gitignore` de l'App le liste, avec un message qui indique le chemin et la raison, par exemple `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`.
 - `node_modules` et `.git`. Push les ignore de toute façon.
 - Les sorties de construction comme `dist/`. Publish construit le site lui-même.
 
@@ -131,7 +131,7 @@ Publish exécute `functions/` exactement comme vous l'avez poussé, sans `npm in
    const { express } = require('./vendor.cjs');
    ```
 
-Regroupez de nouveau avant de pousser chaque fois que vous ajoutez ou mettez à jour un paquet. L'ensemble de `functions/`, `vendor.cjs` compris, peut faire au plus 128 Mio.
+Regroupez de nouveau avant de pousser chaque fois que vous ajoutez ou mettez à jour un paquet. L'ensemble de `functions/`, `vendor.cjs` compris, peut faire au plus 128 Mio. Vérifiez que le `.gitignore` de l'App n'ignore pas `functions/vendor.cjs`, par exemple avec une ligne `*.cjs` : push laisse de côté les fichiers qu'il ignore, et le fichier regroupé n'atteindrait donc jamais la plateforme.
 
 ## 4. L'exécuter sur votre ordinateur
 
@@ -195,7 +195,7 @@ Sur le site en ligne, votre App tourne derrière la passerelle de la plateforme.
 - Une URL `/api` nue que le navigateur charge autrement qu'avec `fetch`, `XMLHttpRequest` ou `sendBeacon` reçoit une erreur 404. Si le `src/lib/runtime.ts` de votre App date d'avant cette règle, le chargement passe quand même, avec un avertissement. Exécutez `openstep pull` : la commande remet dans votre dossier la version actuelle des fichiers de la plateforme.
 - Une URL `/api` écrite dans un fichier HTML ou CSS reçoit aussi une erreur 404. Ici `openstep dev` est plus strict que le site en ligne, qui réécrit de telles URL : définissez plutôt l'URL depuis un script avec `releaseRuntimePath()`.
 - Toute requête `/api` qui demande `text/event-stream` reçoit une erreur 404, même un `fetch` auquel le site en ligne répondrait une fois que votre serveur a terminé la réponse. Il en va de même pour une connexion WebSocket vers `/api`.
-- Seuls les en-têtes que le site en ligne laisse passer circulent entre le navigateur et votre serveur. La CLI avertit quand elle retire `Cookie`, `Set-Cookie`, `Location` ou `Content-Disposition`.
+- Seuls les en-têtes que le site en ligne laisse passer circulent entre le navigateur et votre serveur, ainsi que `Content-Length`, `Transfer-Encoding` et `Content-Encoding`, qui transportent le corps tel qu'il a été envoyé. La CLI avertit quand elle retire `Cookie`, `Set-Cookie`, `Location` ou `Content-Disposition`.
 - Un corps de requête de plus de 10 Mio reçoit une erreur 413.
 - `curl` et les autres programmes n'envoient pas d'en-tête `Sec-Fetch-Dest` ; leurs requêtes ne sont donc jamais refusées comme des chargements.
 

@@ -70,7 +70,7 @@ sidebar:
 - HTML や CSS のファイルに書かれた `/api` の URL も 404 になります。この場合、`openstep dev` は、そうした URL を書き換える公開中のサイトより厳格です。代わりに、スクリプトで `releaseRuntimePath()` を使って URL を設定してください。
 - App の `src/lib/runtime.ts` がこのチェックより前のバージョンの場合、それらの読み込みは警告付きでサーバーに届きます。`openstep pull` を実行してください。プラットフォームのファイルの現在のバージョンが、フォルダーに戻ります。push のたびにも同じことが行われます。
 - `text/event-stream` を求める `/api` リクエストは、すべて 404 になります。サーバーがレスポンスを終えれば公開中のサイトが応答するはずの `fetch` でも同じです。`/api` への WebSocket も 404 になります。
-- ブラウザーとサーバーの間を通るのは、公開中のサイトが通すヘッダーだけです。CLI は、`Cookie`、`Set-Cookie`、`Location`、`Content-Disposition` を取り除いたときに警告します。
+- ブラウザーとサーバーの間を通るのは、公開中のサイトが通すヘッダーと、ボディを送られたとおりに運ぶ `Content-Length`、`Transfer-Encoding`、`Content-Encoding` だけです。CLI は、`Cookie`、`Set-Cookie`、`Location`、`Content-Disposition` を取り除いたときに警告します。
 - 10 MiB を超えるリクエストボディは 413 になります。
 - `curl` などのプログラムは `Sec-Fetch-Dest` ヘッダーを送らないので、読み込みに対する 404 は、それらには当てはまりません。
 

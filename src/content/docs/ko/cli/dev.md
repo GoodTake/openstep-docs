@@ -70,7 +70,7 @@ sidebar:
 - HTML이나 CSS 파일에 적힌 `/api` URL도 404가 돌아옵니다. 이 경우 `openstep dev`는 이런 URL을 다시 써 주는 라이브 사이트보다 엄격합니다. 대신 스크립트에서 `releaseRuntimePath()`로 URL을 설정하세요.
 - 앱의 `src/lib/runtime.ts`가 이 검사가 생기기 전의 버전이면, 이런 불러오기는 경고와 함께 여전히 서버에 도달합니다. `openstep pull`을 실행하세요. 플랫폼 파일을 플랫폼의 현재 버전으로 내 폴더에 되돌려 놓으며, 푸시할 때마다 마찬가지로 되돌려 놓습니다.
 - `text/event-stream`을 요청하는 `/api` 요청은 모두 404가 돌아옵니다. 서버가 응답을 끝내면 라이브 사이트가 답해 줄 `fetch`도 마찬가지입니다. `/api`로 가는 WebSocket도 404가 돌아옵니다.
-- 라이브 사이트가 통과시키는 헤더만 브라우저와 서버 사이를 오갑니다. CLI는 `Cookie`, `Set-Cookie`, `Location`, `Content-Disposition`을 제거할 때 경고합니다.
+- 라이브 사이트가 통과시키는 헤더와, 본문을 보낸 그대로 전달하는 데 필요한 `Content-Length`, `Transfer-Encoding`, `Content-Encoding`만 브라우저와 서버 사이를 오갑니다. CLI는 `Cookie`, `Set-Cookie`, `Location`, `Content-Disposition`을 제거할 때 경고합니다.
 - 10 MiB를 넘는 요청 본문에는 413이 돌아옵니다.
 - `curl` 같은 프로그램은 `Sec-Fetch-Dest` 헤더를 보내지 않으므로, 불러오기에 대한 404는 이런 프로그램에 적용되지 않습니다.
 

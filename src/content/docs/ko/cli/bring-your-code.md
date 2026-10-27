@@ -11,7 +11,7 @@ sidebar:
 
 ## Agent는 앱을 하나 이상 가집니다
 
-Agent는 사이트 하나가 아닙니다. **Apps**를 하나 이상 가지며, 각 앱은 자체 코드, Preview, 데이터, 설정, 라이브 주소를 가진 별도의 사이트입니다. **Publish**는 Agent의 모든 앱을 함께 라이브로 올립니다. 그림은 [구성 요소의 관계](/ko/start/what-is/#구성-요소의-관계)에 있습니다.
+Agent는 사이트 하나가 아닙니다. **Apps**를 하나 이상 가지며, 각 앱은 자체 코드, Preview, 데이터, 설정, 라이브 주소를 가진 별도의 사이트입니다. **Publish**는 Agent의 모든 앱을 함께 라이브로 올립니다. 그림은 [작동 방식](/ko/start/what-is/#작동-방식)에 있습니다.
 
 Agent 폴더에서 각 앱은 `apps/` 아래에 앱 키 이름의 자체 폴더를 가집니다.
 
@@ -84,7 +84,7 @@ openstep capabilities enable server --app app
 
 다음은 폴더에 넣지 마세요.
 
-- 이름이 `.env`로 시작하는 파일(`.env.example` 포함), `.npmrc`, `.yarnrc`, 키 파일(`*.pem`, `*.key`, `*.p12`, `*.pfx` 등), 그리고 이름이 `key`, `keys`, `secret`, `secrets`, `credential`, `credentials` 중 하나인 폴더. 이 중 하나라도 앱 폴더에 있으면 앱의 `.gitignore`에 적혀 있어도 `openstep diff`, `pull`, `push`가 `Local source path refused` 오류와 함께 멈춥니다. 그 값은 환경 값에 넣으세요.
+- 이름이 `.env`로 시작하는 파일(`.env.example` 포함), `.npmrc`, `.yarnrc`, 키 파일(`*.pem`, `*.key`, `*.p12`, `*.pfx` 등), 그리고 이름이 `key`, `keys`, `secret`, `secrets`, `credential`, `credentials` 중 하나인 폴더. 그 값은 환경 값에 넣으세요. 이 중 하나라도 앱 폴더에 있으면 앱의 `.gitignore`에 적혀 있어도 `openstep diff`, `pull`, `push`가 멈추고, 그 경로와 이유를 알려 주는 메시지가 나옵니다. 예를 들면 `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`입니다.
 - `node_modules`와 `.git`. 푸시는 어차피 건너뜁니다.
 - `dist/` 같은 빌드 결과물. Publish가 사이트를 직접 빌드합니다.
 
@@ -131,7 +131,7 @@ Publish는 `functions/`를 푸시한 그대로 실행하며 `npm install`을 하
    const { express } = require('./vendor.cjs');
    ```
 
-패키지를 추가하거나 업데이트할 때마다 푸시하기 전에 다시 번들로 묶으세요. `vendor.cjs`를 포함한 `functions/` 전체는 최대 128 MiB입니다.
+패키지를 추가하거나 업데이트할 때마다 푸시하기 전에 다시 번들로 묶으세요. `vendor.cjs`를 포함한 `functions/` 전체는 최대 128 MiB입니다. 앱의 `.gitignore`가 `*.cjs` 같은 줄로 `functions/vendor.cjs`를 무시하고 있지 않은지 확인하세요. 푸시는 무시되는 파일을 빼고 올리므로, 그러면 번들이 플랫폼에 닿지 않습니다.
 
 ## 4. 내 컴퓨터에서 실행하기
 
@@ -195,7 +195,7 @@ openstep dev
 - 브라우저가 `fetch`, `XMLHttpRequest`, `sendBeacon`이 아닌 다른 방식으로 불러오는 접두사 없는 `/api` URL에는 404가 돌아옵니다. 앱의 `src/lib/runtime.ts`가 이 규칙이 생기기 전의 버전이면, 그 불러오기는 경고와 함께 그대로 통과합니다. `openstep pull`을 실행하세요. 플랫폼 파일을 플랫폼의 현재 버전으로 내 폴더에 되돌려 놓습니다.
 - HTML이나 CSS 파일에 적힌 `/api` URL도 404가 돌아옵니다. 이 경우 `openstep dev`는 이런 URL을 다시 써 주는 라이브 사이트보다 엄격합니다. 대신 스크립트에서 `releaseRuntimePath()`로 URL을 설정하세요.
 - `text/event-stream`을 요청하는 `/api` 요청은 모두 404가 돌아옵니다. 서버가 응답을 끝내면 라이브 사이트가 답해 줄 `fetch`도 마찬가지입니다. `/api`로 가는 WebSocket에도 404가 돌아옵니다.
-- 라이브 사이트가 통과시키는 헤더만 브라우저와 서버 사이를 오갑니다. CLI는 `Cookie`, `Set-Cookie`, `Location`, `Content-Disposition`을 제거할 때 경고합니다.
+- 라이브 사이트가 통과시키는 헤더와, 본문을 보낸 그대로 전달하는 데 필요한 `Content-Length`, `Transfer-Encoding`, `Content-Encoding`만 브라우저와 서버 사이를 오갑니다. CLI는 `Cookie`, `Set-Cookie`, `Location`, `Content-Disposition`을 제거할 때 경고합니다.
 - 10 MiB를 넘는 요청 본문에는 413이 돌아옵니다.
 - `curl` 같은 프로그램은 `Sec-Fetch-Dest` 헤더를 보내지 않으므로, 그 요청이 불러오기로 간주되어 거부되는 일은 없습니다.
 

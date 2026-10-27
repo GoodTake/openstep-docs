@@ -11,7 +11,7 @@ sidebar:
 
 ## agent は 1 つ以上の App を持つ
 
-agent は 1 つのサイトではありません。1 つ以上の **Apps** を持ち、各 App は、独自のコード、プレビュー、データ、設定、公開アドレスを持つ別々のサイトです。**Publish** は、agent のすべての App をまとめて公開します。図は [全体の仕組み](/ja/start/what-is/#全体の仕組み) にあります。
+agent は 1 つのサイトではありません。1 つ以上の **Apps** を持ち、各 App は、独自のコード、プレビュー、データ、設定、公開アドレスを持つ別々のサイトです。**Publish** は、agent のすべての App をまとめて公開します。図は [しくみ](/ja/start/what-is/#しくみ) にあります。
 
 agent フォルダーでは、各 App が `apps/` の下に、App キーを名前とした専用のフォルダーを持ちます。
 
@@ -84,7 +84,7 @@ App に付いてきたプラットフォームのファイルは残してくだ�
 
 次のものはフォルダーに入れないでください。
 
-- 名前が `.env` で始まるファイル（`.env.example` も含みます）、`.npmrc`、`.yarnrc`、`*.pem`、`*.key`、`*.p12`、`*.pfx` などのキーファイル、そして `key`、`keys`、`secret`、`secrets`、`credential`、`credentials` という名前のフォルダー。これらのどれかが App のフォルダーにある間は、App の `.gitignore` に書かれていても、`openstep diff`、`pull`、`push` は `Local source path refused` で停止します。値は環境値に入れてください。
+- 名前が `.env` で始まるファイル（`.env.example` も含みます）、`.npmrc`、`.yarnrc`、`*.pem`、`*.key`、`*.p12`、`*.pfx` などのキーファイル、そして `key`、`keys`、`secret`、`secrets`、`credential`、`credentials` という名前のフォルダー。値は環境値に入れてください。これらのどれかが App のフォルダーにある間は、App の `.gitignore` に書かれていても、`openstep diff`、`pull`、`push` は停止し、パスと理由を示すメッセージを出します。たとえば `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)` です。
 - `node_modules` と `.git`。push はもともとこれらを除外します。
 - `dist/` などのビルド出力。Publish が自分でサイトをビルドします。
 
@@ -131,7 +131,7 @@ Publish は `functions/` を、push したとおりに、`npm install` なしで
    const { express } = require('./vendor.cjs');
    ```
 
-パッケージを追加または更新したときは、push の前にもう一度バンドルしてください。`functions/` 全体は、`vendor.cjs` を含めて、最大 128 MiB です。
+パッケージを追加または更新したときは、push の前にもう一度バンドルしてください。`functions/` 全体は、`vendor.cjs` を含めて、最大 128 MiB です。App の `.gitignore` が、`*.cjs` という行などで `functions/vendor.cjs` を無視していないか確認してください。push は無視されたファイルを送らないので、バンドルがプラットフォームに届かなくなります。
 
 ## 4. 自分のコンピューターで実行する
 
@@ -195,7 +195,7 @@ openstep dev
 - ブラウザーが `fetch`、`XMLHttpRequest`、`sendBeacon` 以外の方法で読み込む素の `/api` URL は、404 になります。App の `src/lib/runtime.ts` がこのルールより前のバージョンの場合、読み込みは警告付きで通ります。`openstep pull` を実行してください。プラットフォームのファイルの現在のバージョンが、フォルダーに戻されます。
 - HTML や CSS のファイルに書かれた `/api` の URL も 404 になります。この場合、`openstep dev` は、そうした URL を書き換える公開中のサイトより厳格です。代わりに、スクリプトで `releaseRuntimePath()` を使って URL を設定してください。
 - `text/event-stream` を求める `/api` リクエストは、すべて 404 になります。サーバーがレスポンスを終えれば公開中のサイトが応答するはずの `fetch` でも同じです。`/api` への WebSocket も同様です。
-- ブラウザーとサーバーの間を通るのは、公開中のサイトが通すヘッダーだけです。CLI は、`Cookie`、`Set-Cookie`、`Location`、`Content-Disposition` を取り除いたときに警告します。
+- ブラウザーとサーバーの間を通るのは、公開中のサイトが通すヘッダーと、ボディを送られたとおりに運ぶ `Content-Length`、`Transfer-Encoding`、`Content-Encoding` だけです。CLI は、`Cookie`、`Set-Cookie`、`Location`、`Content-Disposition` を取り除いたときに警告します。
 - 10 MiB を超えるリクエストボディは 413 になります。
 - `curl` などのプログラムは `Sec-Fetch-Dest` ヘッダーを送らないので、それらのリクエストが読み込みとして拒否されることはありません。
 

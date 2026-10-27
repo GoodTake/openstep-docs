@@ -91,6 +91,6 @@ openstep republish --note "Bring back the last live version"
 - push はオーナーとエディター向けです。公開、ロールバック、unpublish、republish はオーナー向けです。
 - builder が計画された構築を実行している間、agent は読み取り専用です。終わるのを待ってから `pull` し、そのあと push してください。
 - `diff`、`push`、`pull` は、App のフォルダーにある `.gitignore` ファイルが無視するファイル（たとえば `dist/`）を対象にしません。ただし、agent の承認済みのソースにすでにあるファイルは別で、Git が追跡済みのファイルを扱うのと同じです。公開するときも、これらは push していない編集には数えられません。そうしたファイルを承認済みのソースから取り除くには、自分のフォルダーで削除して push してください。
-- 名前が `.env` で始まるファイル、`.npmrc`、キーファイルなどがあると、`.gitignore` に書かれていても、`diff`、`pull`、`push` は停止します。[コードを App に移す](/ja/cli/bring-your-code/#3-コードを-app-に移す) を参照してください。
+- 名前が `.env` で始まるファイル、`.npmrc`、キーファイルなどがあると、`.gitignore` に書かれていても、`diff`、`pull`、`push` は停止します。メッセージはパスと理由を示し、`Local source path refused:` で始まります。[コードを App に移す](/ja/cli/bring-your-code/#3-コードを-app-に移す) を参照してください。
 
 次へ：[App、データ、コントラクト](/ja/cli/apps-data-contracts/)。

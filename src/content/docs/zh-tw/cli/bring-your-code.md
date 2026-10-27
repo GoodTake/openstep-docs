@@ -11,7 +11,7 @@ sidebar:
 
 ## 一個 Agent 包含一個或多個 App
 
-Agent 不是單一網站。它包含一個或多個 **Apps**，每個 App 都是獨立的網站，有自己的程式碼、預覽、資料、設定和上線網址。**Publish** 會讓 Agent 的每個 App 一起上線。圖示見 [各部分如何組合](/zh-tw/start/what-is/#各部分如何組合)。
+Agent 不是單一網站。它包含一個或多個 **Apps**，每個 App 都是獨立的網站，有自己的程式碼、預覽、資料、設定和上線網址。**Publish** 會讓 Agent 的每個 App 一起上線。圖示見 [運作原理](/zh-tw/start/what-is/#運作原理)。
 
 在 Agent 資料夾中，每個 App 在 `apps/` 底下都有自己的資料夾，以 App key 命名：
 
@@ -84,7 +84,7 @@ openstep capabilities enable server --app app
 
 以下這些請不要放進資料夾：
 
-- 名稱以 `.env` 開頭的檔案（包括 `.env.example`）、`.npmrc`、`.yarnrc`、金鑰檔案（例如 `*.pem`、`*.key`、`*.p12` 和 `*.pfx`），以及名為 `key`、`keys`、`secret`、`secrets`、`credential` 或 `credentials` 的資料夾。只要其中任何一個還在 App 的資料夾裡，`openstep diff`、`pull` 和 `push` 就會以 `Local source path refused` 停止，即使 App 的 `.gitignore` 列出了它也一樣。請把它們的值放進環境值。
+- 名稱以 `.env` 開頭的檔案（包括 `.env.example`）、`.npmrc`、`.yarnrc`、金鑰檔案（例如 `*.pem`、`*.key`、`*.p12` 和 `*.pfx`），以及名為 `key`、`keys`、`secret`、`secrets`、`credential` 或 `credentials` 的資料夾。請把它們的值放進環境值。只要其中任何一個還在 App 的資料夾裡，`openstep diff`、`pull` 和 `push` 就會停止，即使 App 的 `.gitignore` 列出了它也一樣，並在訊息裡指出路徑和原因，例如 `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`。
 - `node_modules` 和 `.git`。push 本來就會略過它們。
 - `dist/` 之類的建置輸出。Publish 會自己建置網站。
 
@@ -131,7 +131,7 @@ Publish 會照你推送的原樣執行 `functions/`，不會跑 `npm install`。
    const { express } = require('./vendor.cjs');
    ```
 
-每當你新增或更新套件，請在推送之前再打包一次。整個 `functions/`（包括 `vendor.cjs`）大小最多 128 MiB。
+每當你新增或更新套件，請在推送之前再打包一次。整個 `functions/`（包括 `vendor.cjs`）大小最多 128 MiB。請確認 App 的 `.gitignore` 沒有忽略 `functions/vendor.cjs`（例如寫了一行 `*.cjs`）：push 會略過它忽略的檔案，打包檔就永遠到不了平台。
 
 ## 4. 在你的電腦上執行
 
@@ -195,7 +195,7 @@ openstep dev
 - 瀏覽器用 `fetch`、`XMLHttpRequest` 或 `sendBeacon` 以外的方式載入單純的 `/api` 網址，會得到 404。如果你的 App 的 `src/lib/runtime.ts` 是這條規則出現之前的舊版，載入仍會通過，但會有警告。請執行 `openstep pull`：它會把平台檔案的目前版本放回你的資料夾。
 - 寫在 HTML 或 CSS 檔案裡的 `/api` 網址也會得到 404。這裡 `openstep dev` 比線上網站更嚴格，因為線上網站會改寫這樣的網址；請改在指令碼裡用 `releaseRuntimePath()` 設定網址。
 - 任何要求 `text/event-stream` 的 `/api` 請求都會得到 404，即使是線上網站會等你的伺服器結束回應後才回覆的 `fetch` 也一樣。連到 `/api` 的 WebSocket 也會得到 404。
-- 只有線上網站會放行的標頭，才會在瀏覽器和你的伺服器之間傳遞。CLI 在捨棄 `Cookie`、`Set-Cookie`、`Location` 或 `Content-Disposition` 時，會發出警告。
+- 只有線上網站會放行的標頭，以及照原樣傳送本文所需的 `Content-Length`、`Transfer-Encoding` 和 `Content-Encoding`，才會在瀏覽器和你的伺服器之間傳遞。CLI 在捨棄 `Cookie`、`Set-Cookie`、`Location` 或 `Content-Disposition` 時，會發出警告。
 - 超過 10 MiB 的請求本文會得到 413。
 - `curl` 和其他程式不會送出 `Sec-Fetch-Dest` 標頭，所以它們的請求絕不會被當成載入而遭拒絕。
 

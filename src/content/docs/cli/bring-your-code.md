@@ -11,7 +11,7 @@ This page goes from an empty folder to a live site. It assumes you have [install
 
 ## An agent holds one or more Apps
 
-An agent is not a single site. It holds one or more **Apps**, and each App is a separate site with its own code, preview, data, settings and live address. **Publish** puts every App of the agent live together. The picture is in [How the pieces fit](/start/what-is/#how-the-pieces-fit).
+An agent is not a single site. It holds one or more **Apps**, and each App is a separate site with its own code, preview, data, settings and live address. **Publish** puts every App of the agent live together. The picture is in [How it works](/start/what-is/#how-it-works).
 
 In the agent folder, each App has its own folder under `apps/`, named by its App key:
 
@@ -84,7 +84,7 @@ Keep the platform files that came with the App. Your code relies on them:
 
 Leave these out of the folder:
 
-- Files whose names start with `.env` (`.env.example` included), `.npmrc`, `.yarnrc`, key files such as `*.pem`, `*.key`, `*.p12` and `*.pfx`, and folders named `key`, `keys`, `secret`, `secrets`, `credential` or `credentials`. While one of them is in the App's folder, `openstep diff`, `pull` and `push` stop with `Local source path refused`, even when the App's `.gitignore` lists it. Put their values in environment values instead.
+- Files whose names start with `.env` (`.env.example` included), `.npmrc`, `.yarnrc`, key files such as `*.pem`, `*.key`, `*.p12` and `*.pfx`, and folders named `key`, `keys`, `secret`, `secrets`, `credential` or `credentials`. Put their values in environment values instead. While one of them is in the App's folder, `openstep diff`, `pull` and `push` stop, even when the App's `.gitignore` lists it, with a message that names the path and why, for example `Local source path refused: apps/app/.env.example (a secret-looking file; remove it and put its values in environment values)`.
 - `node_modules` and `.git`. Push skips them anyway.
 - Build output such as `dist/`. Publish builds the site itself.
 
@@ -131,7 +131,7 @@ Publish runs `functions/` exactly as you pushed it, without `npm install`. So pu
    const { express } = require('./vendor.cjs');
    ```
 
-Bundle again before you push whenever you add or update a package. All of `functions/`, `vendor.cjs` included, can be at most 128 MiB.
+Bundle again before you push whenever you add or update a package. All of `functions/`, `vendor.cjs` included, can be at most 128 MiB. Check that the App's `.gitignore` does not ignore `functions/vendor.cjs`, for example with a `*.cjs` line: push leaves out the files it ignores, so the bundle would never reach the platform.
 
 ## 4. Run it on your computer
 
@@ -195,7 +195,7 @@ On the live site, your App runs behind the platform's gateway. A few things work
 - A bare `/api` URL that the browser loads any other way than with `fetch`, `XMLHttpRequest` or `sendBeacon` gets 404. If your App's `src/lib/runtime.ts` predates this rule, the load still goes through, with a warning. Run `openstep pull`: it puts the platform's current version of the platform files back into your folder.
 - A `/api` URL written in an HTML or CSS file gets 404 too. Here `openstep dev` is stricter than the live site, which rewrites such URLs: set the URL from script with `releaseRuntimePath()` instead.
 - Any `/api` request that asks for `text/event-stream` gets 404, even a `fetch` the live site would answer once your server ends the response. So does a WebSocket to `/api`.
-- Only the headers the live site passes go between the browser and your server. The CLI warns when it drops `Cookie`, `Set-Cookie`, `Location` or `Content-Disposition`.
+- Only the headers the live site passes go between the browser and your server, plus `Content-Length`, `Transfer-Encoding` and `Content-Encoding`, which carry the body as it was sent. The CLI warns when it drops `Cookie`, `Set-Cookie`, `Location` or `Content-Disposition`.
 - A request body over 10 MiB gets 413.
 - `curl` and other programs send no `Sec-Fetch-Dest` header, so their requests are never refused as loads.
 

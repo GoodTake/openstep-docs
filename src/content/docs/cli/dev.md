@@ -70,7 +70,7 @@ For an App with a backend, `openstep dev` handles `/api` by the live site's rule
 - A `/api` URL written in an HTML or CSS file gets 404 too. Here `openstep dev` is stricter than the live site, which rewrites such URLs: set the URL from script with `releaseRuntimePath()` instead.
 - If your App's `src/lib/runtime.ts` predates this check, those loads still reach your server, with a warning. Run `openstep pull`: it puts the platform's current version of the platform files back into your folder, and so does every push.
 - Any `/api` request that asks for `text/event-stream` gets 404, even a `fetch` the live site would answer once your server ends the response. A WebSocket to `/api` gets 404 too.
-- Only the headers the live site passes go between the browser and your server. The CLI warns when it drops `Cookie`, `Set-Cookie`, `Location` or `Content-Disposition`.
+- Only the headers the live site passes go between the browser and your server, plus `Content-Length`, `Transfer-Encoding` and `Content-Encoding`, which carry the body as it was sent. The CLI warns when it drops `Cookie`, `Set-Cookie`, `Location` or `Content-Disposition`.
 - A request body over 10 MiB gets 413.
 - `curl` and other programs send no `Sec-Fetch-Dest` header, so the 404 for loads does not apply to them.
 

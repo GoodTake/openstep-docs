@@ -70,7 +70,7 @@ Pour une App avec un backend, `openstep dev` traite `/api` selon les règles du 
 - Une URL `/api` écrite dans un fichier HTML ou CSS reçoit aussi une erreur 404. Ici `openstep dev` est plus strict que le site en ligne, qui réécrit de telles URL : définissez plutôt l'URL depuis un script avec `releaseRuntimePath()`.
 - Si le `src/lib/runtime.ts` de votre App date d'avant cette vérification, ces chargements atteignent quand même votre serveur, avec un avertissement. Exécutez `openstep pull` : la commande remet dans votre dossier la version actuelle des fichiers de la plateforme, et chaque push le fait aussi.
 - Toute requête `/api` qui demande `text/event-stream` reçoit une erreur 404, même un `fetch` auquel le site en ligne répondrait une fois que votre serveur a terminé la réponse. Une connexion WebSocket vers `/api` reçoit aussi une erreur 404.
-- Seuls les en-têtes que le site en ligne laisse passer circulent entre le navigateur et votre serveur. La CLI avertit quand elle retire `Cookie`, `Set-Cookie`, `Location` ou `Content-Disposition`.
+- Seuls les en-têtes que le site en ligne laisse passer circulent entre le navigateur et votre serveur, ainsi que `Content-Length`, `Transfer-Encoding` et `Content-Encoding`, qui transportent le corps tel qu'il a été envoyé. La CLI avertit quand elle retire `Cookie`, `Set-Cookie`, `Location` ou `Content-Disposition`.
 - Un corps de requête de plus de 10 Mio reçoit une erreur 413.
 - `curl` et les autres programmes n'envoient pas d'en-tête `Sec-Fetch-Dest` ; l'erreur 404 pour les chargements ne s'applique donc pas à eux.
 

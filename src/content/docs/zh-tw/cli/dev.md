@@ -70,7 +70,7 @@ sidebar:
 - 寫在 HTML 或 CSS 檔案裡的 `/api` 網址也會得到 404。這裡 `openstep dev` 比線上網站更嚴格，因為線上網站會改寫這樣的網址；請改在指令碼裡用 `releaseRuntimePath()` 設定網址。
 - 如果你的 App 的 `src/lib/runtime.ts` 是這項檢查出現之前的舊版，這些載入仍會送到你的伺服器，但會有警告。請執行 `openstep pull`：它會把平台檔案的目前版本放回你的資料夾，每次 push 也一樣。
 - 任何要求 `text/event-stream` 的 `/api` 請求都會得到 404，即使是線上網站會等你的伺服器結束回應後才回覆的 `fetch` 也一樣。連到 `/api` 的 WebSocket 也會得到 404。
-- 只有線上網站會放行的標頭，才會在瀏覽器和你的伺服器之間傳遞。CLI 在捨棄 `Cookie`、`Set-Cookie`、`Location` 或 `Content-Disposition` 時，會發出警告。
+- 只有線上網站會放行的標頭，以及照原樣傳送本文所需的 `Content-Length`、`Transfer-Encoding` 和 `Content-Encoding`，才會在瀏覽器和你的伺服器之間傳遞。CLI 在捨棄 `Cookie`、`Set-Cookie`、`Location` 或 `Content-Disposition` 時，會發出警告。
 - 超過 10 MiB 的請求本文會得到 413。
 - `curl` 和其他程式不會送出 `Sec-Fetch-Dest` 標頭，所以針對載入的 404 不適用於它們。
 
