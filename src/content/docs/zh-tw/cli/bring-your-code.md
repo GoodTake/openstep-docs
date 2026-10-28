@@ -79,7 +79,7 @@ App 需要具備以下結構：
 | 伺服器 | `functions/server.js`，以 `node server.js` 啟動。它監聽 `PORT` 環境變數指定的連接埠，回應 `GET /health`，並在 `/api/` 底下提供你的路由。`functions/package.json` 不列任何相依套件，所以請把你的伺服器用到的 npm 套件打包進 `functions/vendor.cjs`，並在你自己寫在 `server.js` 和 `functions/` 其餘檔案裡的程式碼中 `require('./vendor.cjs')`。見 [打包你的伺服器用到的 npm 套件](#打包你的伺服器用到的-npm-套件)。 |
 | 伺服器設定和金鑰 | 用 `functions/runtime-config.js` 裡的 `getVariable('NAME')` 和 `getSecret('NAME')` 讀取，並用 `openstep env` 設定。除了 `process.env.PORT` 和 `process.env.NODE_ENV`，你在 `functions/` 裡自己寫的程式碼不可以讀取 `process.env`：線上的伺服器不在那裡保存任何設定，而且 Publish 會拒絕這個 App。 |
 | 呼叫其他服務 | 在伺服器裡呼叫 `functions/platform.js` 的 `externalRequest(url)`，並把每個主機列在 App 值 `BACKEND_EGRESS_HOSTS` 裡（見下方）。 |
-| 資料庫資料表 | 用 `openstep data migrate <id> <file> --app app` 建立，例如 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`。名稱不要加 schema（寫 `bookings`，不寫 `public.bookings`），而且只能用 [migration 可以包含什麼](/zh-tw/cli/apps-data-contracts/#migration-可以包含什麼) 列出的陳述式。請保留 `migrations/0001_platform_baseline.sql`，它存放平台自己的資料表。你複製進 `migrations/` 的 SQL 檔案也要這樣套用：開發資料從未套用過的檔案會被 push 拒絕，並告訴你要執行的指令。 |
+| 資料庫資料表 | 用 `openstep data migrate <id> <file> --app app` 建立，例如 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`。名稱不要加 schema（寫 `bookings`，不寫 `public.bookings`），而且只能用 [migration 可以包含什麼](/zh-tw/cli/apps-data-contracts/#migration-可以包含什麼) 列出的陳述式。請保留 `migrations/0001_platform_baseline.sql`，它存放平台自己的資料表。你複製進 `migrations/` 的 SQL 檔案也要這樣套用：開發資料從未套用過的檔案會被 push 拒絕，並告訴你要執行的指令。你的頁面用 `supabase` 讀寫這些資料表，你的伺服器用 `dataRequest`，並受你寫的資料列層級安全（row-level security）policy 約束。見 [資料](#資料)。 |
 
 這些路徑屬於平台，所以不要把你自己的頁面放在這些路徑上：`/api/`（送到你的伺服器）、`/auth/`、`/data/`、`/_platform/`、`/__steps/` 和 `/_releases/`。
 
@@ -89,6 +89,8 @@ App 需要具備以下結構：
 - 在 `functions/` 裡：`platform.js`、`runtime-config.js`、`viem.cjs`、`openapi.json` 和 `check-openapi.js`。
 
 `openstep pull` 和每一次 `openstep push`，都會把平台目前版本的 `src/lib/runtime.ts`、`src/lib/live-auth.ts`、`src/lib/supabase.ts`、`src/lib/useUser.ts`、`functions/platform.js`、`functions/runtime-config.js`、`functions/viem.cjs` 和 `functions/check-openapi.js` 放回你的資料夾，所以請用匯入的方式使用它們，不要編輯它們。`src/lib/platform.ts`、`src/lib/wagmi.ts` 和 `src/main.tsx` 在 App 建立之後就屬於你：可以依需要修改，但請保留其中屬於平台的部分。
+
+`functions/openapi.json` 也屬於你：它描述你的伺服器的路由。它一開始有起始檔的 `GET /health` 和 `GET /api/info`，所以請把 `/api/info` 換成你自己的路由。請讓它保持為有效的 OpenAPI 3.1 文件：`openapi.json` 無效時，工作頁上該 App 的預覽不會啟動伺服器，並顯示 `invalid_openapi_contract`。要檢查它，請在 `functions/` 裡執行 `npm run api:check`。
 
 以下這些請不要放進資料夾：
 
@@ -215,18 +217,19 @@ openstep dev
 在瀏覽器裡，`src/lib/useUser` 的 `useUser()` 會給你訪客的錢包：
 
 ```tsx
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useUser } from './lib/useUser';
 
 function Account() {
   const { wallet, needsSignIn, signIn, loading } = useUser();
   if (loading) return null;
-  if (!wallet) return <p>Connect a wallet to continue.</p>;
+  if (!wallet) return <ConnectButton />;
   if (needsSignIn) return <button onClick={signIn}>Sign in</button>;
   return <p>Signed in as {wallet}</p>;
 }
 ```
 
-`signIn()` 會請訪客在 Base 上核准一次免費簽署。錢包按鈕來自 `src/main.tsx` 裡的 provider。
+`<ConnectButton />` 會開啟錢包清單，這些錢包由 `src/main.tsx` 裡的 provider 設定。如果想用自己的方式畫出按鈕，請使用同一個套件的 `<ConnectButton.Custom>`。之後 `signIn()` 會請訪客在 Base 上核准一次免費簽署。
 
 在線上網站上，每個來自已登入訪客的 `/api/` 請求，都會在 `x-steps-user-address` 標頭中帶著他們的錢包位址；訪客登入之前，請求沒有這個標頭。用它來判斷是誰在呼叫。在 `openstep dev` 下，頁面使用你連接的錢包，不需要簽署，而你的伺服器看到的是你登入 CLI 時使用的錢包。請在瀏覽器裡連接同一個錢包。
 
@@ -283,10 +286,21 @@ function Account() {
 import { invokeAI } from './lib/platform';
 
 const text = await invokeAI({ prompt: 'Write a one-line welcome for a coffee shop.' });
-const menu = await invokeAI({ prompt: 'Suggest three drinks.', schema: { type: 'object' } });
+const menu = await invokeAI({
+  prompt: 'Suggest three drinks.',
+  schema: {
+    type: 'object',
+    properties: {
+      drinks: { type: 'array', items: { type: 'string' } },
+    },
+    required: ['drinks'],
+  },
+});
 ```
 
 `invokeAI` 會回傳文字。傳入 JSON Schema 作為 `schema`，就能拿回解析好的 JSON。它可以在瀏覽器（`src/lib/platform`）和伺服器（`functions/platform.js`）使用。
+
+schema 只能使用 `type`、`properties`、`required`、`items`、`enum` 和 `description`。`object` 需要 `properties`，`array` 需要 `items`，`enum` 列出字串或數字。它最多可以巢狀 4 層，總共最多 64 個屬性。其他任何關鍵字，例如 `additionalProperties`、`minLength` 或 `format`，都會以 `invalid_schema` 被拒絕。
 
 ### 鏈上操作
 
@@ -334,6 +348,8 @@ try {
 
 ### 資料
 
+用 `openstep data migrate` 建立和修改資料表。在本機和預覽中，你使用的是開發資料；上線的網站有它自己的資料。
+
 在瀏覽器裡，`src/lib/supabase` 的 `supabase` 可以讀寫 App 的資料表：
 
 ```ts
@@ -342,7 +358,53 @@ import { supabase } from './lib/supabase';
 const { data } = await supabase.from('bookings').select('*');
 ```
 
-用 `openstep data migrate` 建立和修改資料表。在本機和預覽中，你使用的是開發資料；上線的網站有它自己的資料。
+從你的伺服器，用 `functions/platform.js` 的 `dataRequest` 做同樣的事，查詢使用 PostgREST 語法：
+
+```js
+const { dataRequest } = require('./platform');
+
+const DESK = '0x000000000000000000000000000000000000c0ff';
+
+const rows = await dataRequest('bookings', {
+  as: DESK,
+  query: 'select=name,party_size&booking_date=eq.2026-11-01&order=booking_time.asc',
+});
+
+const [booking] = await dataRequest('bookings', {
+  as: DESK,
+  method: 'POST',
+  body: { name: 'Alex', booking_date: '2026-11-01', booking_time: '19:00', party_size: 2 },
+  returnRows: true,
+});
+```
+
+- `as` 是必填：請求以哪個錢包位址讀取或寫入。見下方。
+- `method` 不設定時是 `GET`。`POST` 新增資料列，`PATCH` 和 `DELETE` 修改或移除 `query` 符合的資料列。除非傳入 `returnRows: true`，這三個都會回傳 `[]`。
+- 被拒絕的請求會丟出帶有 `status` 和 `code` 的錯誤。
+
+你的 migration 裡的資料列層級安全 policy，決定誰能讀寫哪些資料列。policy 只認得一個身分，`steps_request_wallet_address()`，也就是請求所代表的位址：
+
+- 來自你的頁面的請求，代表訪客的錢包。在線上網站上，那就是他們透過 `useUser()` 登入所用的錢包。登入之前沒有錢包，所以 policy 限定給某個錢包的資料列會回傳空的，插入也會被拒絕。在 `openstep dev` 下，那是你在瀏覽器裡連接的錢包。
+- 來自你的伺服器的請求，代表它以 `as` 傳入的位址。
+
+一個每位訪客只能讀寫自己資料列的資料表：
+
+```sql
+CREATE TABLE notes (
+  id bigserial PRIMARY KEY,
+  wallet_address text NOT NULL,
+  body text NOT NULL
+);
+ALTER TABLE notes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY notes_read_own ON notes FOR SELECT
+  USING (wallet_address = steps_request_wallet_address());
+CREATE POLICY notes_insert_own ON notes FOR INSERT
+  WITH CHECK (wallet_address = steps_request_wallet_address());
+```
+
+- 任何人都可以讀的資料表，例如菜單，使用 `USING (true)`。
+- 只有你的伺服器能碰的記錄，例如存有客人電子郵件的訂位，讓 policy 只接受你的伺服器以 `as` 傳入的那個位址。請選一個沒有任何錢包能用來登入的位址，像上面的 `DESK`。沒有任何頁面能以該位址行事，所以你的頁面要透過你的 `/api/` 路由取得這些記錄，並由你的伺服器決定回傳哪些欄位。policy 以整個資料列為單位運作，所以想讓某個欄位保持私密，也是這樣做。
+- 平台會在每個 `0x` 位址進入 App 的資料時把它轉成小寫，所以位址取回時都是小寫。請在你的程式碼裡用小寫比較。
 
 ## 6. 推送與發布
 
@@ -354,6 +416,8 @@ openstep status <operation-id>
 ```
 
 第一次 Publish 之前，請以 Agent 擁有者的身分，設定你的程式碼會讀取的上線值。Publish 會用 `npm ci` 和 `npm run build` 建置你的頁面，啟動 `functions/server.js`，檢查 `GET /health` 是否在 30 秒內回應 2xx 或 3xx 狀態，然後讓 App 上線。見 [推送與發布](/zh-tw/cli/push-publish/)。
+
+App 的上線網址是 `https://app-<id>.openstep.academy`，其中 `<id>` 是 `openstep apps list` 為這個 App 顯示的 `projectId`。第一次 Publish 完成後它才會回應；在那之前，它會顯示 App 尚未發布。在工作頁上，**Console** → **Domains** 顯示的是同一個網址。見 [網域](/zh-tw/build/domains/)。
 
 ## 注意事項
 
