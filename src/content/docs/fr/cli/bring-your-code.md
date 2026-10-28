@@ -79,7 +79,7 @@ L'App doit avoir cette forme :
 | Serveur | `functions/server.js`, démarré avec `node server.js`. Il écoute sur le port de la variable d'environnement `PORT`, répond à `GET /health` et sert vos routes sous `/api/`. `functions/package.json` ne liste aucune dépendance : regroupez donc les paquets npm que votre serveur utilise dans `functions/vendor.cjs`, et utilisez `require('./vendor.cjs')` dans votre propre code de `server.js` et du reste de `functions/`. Voir [Regrouper les paquets npm de votre serveur](#regrouper-les-paquets-npm-de-votre-serveur). |
 | Réglages et clés du serveur | Lisez-les avec `getVariable('NAME')` et `getSecret('NAME')` de `functions/runtime-config.js`, et définissez-les avec `openstep env`. En dehors de `process.env.PORT` et `process.env.NODE_ENV`, votre propre code dans `functions/` ne doit pas lire `process.env` : le serveur en ligne n'y garde aucun réglage, et Publish refuse l'App. |
 | Appels à d'autres services | Depuis le serveur, appelez `externalRequest(url)` de `functions/platform.js`, et listez chaque hôte dans la valeur d'App `BACKEND_EGRESS_HOSTS` (voir ci-dessous). |
-| Tables de la base de données | Créées avec `openstep data migrate <id> <file> --app app`, par exemple `openstep data migrate 0002_add_bookings ./bookings.sql --app app`. Écrivez les noms sans schéma (`bookings`, pas `public.bookings`), et seulement les instructions de [Ce qu'une migration peut contenir](/fr/cli/apps-data-contracts/#ce-quune-migration-peut-contenir). Gardez `migrations/0001_platform_baseline.sql`, qui contient les tables propres à la plateforme. Appliquez de la même façon un fichier SQL que vous copiez dans `migrations/` : push refuse un fichier que les données de développement n'ont jamais appliqué, et vous indique la commande à exécuter. |
+| Tables de la base de données | Créées avec `openstep data migrate <id> <file> --app app`, par exemple `openstep data migrate 0002_add_bookings ./bookings.sql --app app`. Écrivez les noms sans schéma (`bookings`, pas `public.bookings`), et seulement les instructions de [Ce qu'une migration peut contenir](/fr/cli/apps-data-contracts/#ce-quune-migration-peut-contenir). Gardez `migrations/0001_platform_baseline.sql`, qui contient les tables propres à la plateforme. Appliquez de la même façon un fichier SQL que vous copiez dans `migrations/` : push refuse un fichier que les données de développement n'ont jamais appliqué, et vous indique la commande à exécuter. Vos pages lisent et écrivent les tables avec `supabase`, votre serveur avec `dataRequest`, sous les politiques de sécurité au niveau des lignes que vous écrivez. Voir [Données](#données). |
 
 Ces chemins appartiennent à la plateforme, donc n'y mettez pas vos propres pages : `/api/` (envoyé à votre serveur), `/auth/`, `/data/`, `/_platform/`, `/__steps/` et `/_releases/`.
 
@@ -89,6 +89,8 @@ Gardez les fichiers de la plateforme fournis avec l'App. Votre code s'appuie des
 - Dans `functions/` : `platform.js`, `runtime-config.js`, `viem.cjs`, `openapi.json` et `check-openapi.js`.
 
 `openstep pull`, et chaque `openstep push`, remettent dans votre dossier la version actuelle de la plateforme pour `src/lib/runtime.ts`, `src/lib/live-auth.ts`, `src/lib/supabase.ts`, `src/lib/useUser.ts`, `functions/platform.js`, `functions/runtime-config.js`, `functions/viem.cjs` et `functions/check-openapi.js` : importez-les donc au lieu de les modifier. `src/lib/platform.ts`, `src/lib/wagmi.ts` et `src/main.tsx` sont à vous une fois l'App créée : modifiez-les selon vos besoins, et gardez-y les parties qui viennent de la plateforme.
+
+`functions/openapi.json` est à vous aussi : il décrit les routes de votre serveur. Il commence avec les routes `GET /health` et `GET /api/info` du site de départ ; remplacez donc `/api/info` par vos propres routes. Gardez-le conforme à OpenAPI 3.1 : l'aperçu de l'App sur la page de travail ne démarre pas un serveur dont l'`openapi.json` est invalide, et affiche `invalid_openapi_contract`. Pour le vérifier, exécutez `npm run api:check` dans `functions/`.
 
 Laissez ceci hors du dossier :
 
@@ -215,18 +217,19 @@ Sur le site en ligne, votre App tourne derrière la passerelle de la plateforme.
 Dans le navigateur, `useUser()` de `src/lib/useUser` vous donne le wallet du visiteur :
 
 ```tsx
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useUser } from './lib/useUser';
 
 function Account() {
   const { wallet, needsSignIn, signIn, loading } = useUser();
   if (loading) return null;
-  if (!wallet) return <p>Connect a wallet to continue.</p>;
+  if (!wallet) return <ConnectButton />;
   if (needsSignIn) return <button onClick={signIn}>Sign in</button>;
   return <p>Signed in as {wallet}</p>;
 }
 ```
 
-`signIn()` demande au visiteur d'approuver une signature gratuite sur Base. Les boutons de wallet viennent des providers de `src/main.tsx`.
+`<ConnectButton />` ouvre la liste des wallets que les providers de `src/main.tsx` mettent en place. Pour dessiner le bouton à votre façon, utilisez `<ConnectButton.Custom>` du même paquet. `signIn()` demande ensuite au visiteur d'approuver une signature gratuite sur Base.
 
 Sur le site en ligne, chaque requête `/api/` d'un visiteur qui s'est connecté porte l'adresse de son wallet dans l'en-tête `x-steps-user-address` ; avant sa connexion, elle n'en porte pas. Utilisez cette adresse pour savoir qui appelle. Sous `openstep dev`, la page utilise le wallet que vous connectez, sans signature, et votre serveur voit le wallet avec lequel vous vous êtes connecté à la CLI. Connectez ce même wallet dans le navigateur.
 
@@ -283,10 +286,21 @@ Sur le site en ligne, chaque requête `/api/` d'un visiteur qui s'est connecté 
 import { invokeAI } from './lib/platform';
 
 const text = await invokeAI({ prompt: 'Write a one-line welcome for a coffee shop.' });
-const menu = await invokeAI({ prompt: 'Suggest three drinks.', schema: { type: 'object' } });
+const menu = await invokeAI({
+  prompt: 'Suggest three drinks.',
+  schema: {
+    type: 'object',
+    properties: {
+      drinks: { type: 'array', items: { type: 'string' } },
+    },
+    required: ['drinks'],
+  },
+});
 ```
 
 `invokeAI` renvoie du texte. Passez un JSON Schema comme `schema` pour récupérer du JSON déjà analysé. Cela fonctionne depuis le navigateur (`src/lib/platform`) et depuis le serveur (`functions/platform.js`).
+
+Un schéma ne peut utiliser que `type`, `properties`, `required`, `items`, `enum` et `description`. Un `object` a besoin de `properties`, un `array` a besoin de `items`, et `enum` liste des chaînes ou des nombres. Il peut être imbriqué sur 4 niveaux et compter jusqu'à 64 propriétés au total. Tout autre mot-clé, comme `additionalProperties`, `minLength` ou `format`, est refusé avec `invalid_schema`.
 
 ### Actions on-chain
 
@@ -334,6 +348,8 @@ try {
 
 ### Données
 
+Créez et modifiez les tables avec `openstep data migrate`. En local et dans Preview, vous travaillez avec les données de développement ; le site en ligne a les siennes.
+
 Dans le navigateur, `supabase` de `src/lib/supabase` lit et écrit les tables de l'App :
 
 ```ts
@@ -342,7 +358,53 @@ import { supabase } from './lib/supabase';
 const { data } = await supabase.from('bookings').select('*');
 ```
 
-Créez et modifiez les tables avec `openstep data migrate`. En local et dans Preview, vous travaillez avec les données de développement ; le site en ligne a les siennes.
+Depuis votre serveur, `dataRequest` de `functions/platform.js` fait la même chose, avec la requête en syntaxe PostgREST :
+
+```js
+const { dataRequest } = require('./platform');
+
+const DESK = '0x000000000000000000000000000000000000c0ff';
+
+const rows = await dataRequest('bookings', {
+  as: DESK,
+  query: 'select=name,party_size&booking_date=eq.2026-11-01&order=booking_time.asc',
+});
+
+const [booking] = await dataRequest('bookings', {
+  as: DESK,
+  method: 'POST',
+  body: { name: 'Alex', booking_date: '2026-11-01', booking_time: '19:00', party_size: 2 },
+  returnRows: true,
+});
+```
+
+- `as` est obligatoire : l'adresse du wallet au nom duquel la requête lit ou écrit. Voir ci-dessous.
+- `method` vaut `GET` sauf si vous le définissez. `POST` insère des lignes, et `PATCH` et `DELETE` modifient ou suppriment les lignes que `query` sélectionne. Ces trois méthodes renvoient `[]` sauf si vous passez `returnRows: true`.
+- Une requête refusée lève une erreur avec `status` et `code`.
+
+Les politiques de sécurité au niveau des lignes de vos migrations décident qui lit et écrit quelles lignes. Une politique ne connaît qu'une seule identité, `steps_request_wallet_address()`, l'adresse au nom de laquelle la requête agit :
+
+- Une requête venant de vos pages agit au nom du wallet du visiteur. Sur le site en ligne, c'est le wallet avec lequel il s'est connecté via `useUser()`. Avant sa connexion, il n'y en a pas : les lignes qu'une politique réserve à un wallet reviennent vides et les insertions sont refusées. Sous `openstep dev`, c'est le wallet que vous connectez dans le navigateur.
+- Une requête venant de votre serveur agit au nom de l'adresse qu'il passe dans `as`.
+
+Une table où chaque visiteur lit et écrit uniquement ses propres lignes :
+
+```sql
+CREATE TABLE notes (
+  id bigserial PRIMARY KEY,
+  wallet_address text NOT NULL,
+  body text NOT NULL
+);
+ALTER TABLE notes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY notes_read_own ON notes FOR SELECT
+  USING (wallet_address = steps_request_wallet_address());
+CREATE POLICY notes_insert_own ON notes FOR INSERT
+  WITH CHECK (wallet_address = steps_request_wallet_address());
+```
+
+- Pour une table que tout le monde peut lire, comme un menu, utilisez `USING (true)`.
+- Pour des enregistrements que seul votre serveur peut toucher, comme des réservations qui contiennent les e-mails des clients, faites en sorte que les politiques n'admettent que l'adresse que votre serveur passe dans `as`. Choisissez-en une avec laquelle aucun wallet ne peut se connecter, comme `DESK` ci-dessus. Aucune page ne peut agir au nom de cette adresse : vos pages obtiennent donc ces enregistrements par vos routes `/api/`, et votre serveur décide quelles colonnes renvoyer. Une politique porte sur des lignes entières ; c'est donc aussi ainsi que vous gardez une colonne privée.
+- La plateforme met en minuscules toute adresse `0x` à son entrée dans les données de l'App : les adresses reviennent donc en minuscules. Comparez-les en minuscules dans votre code.
 
 ## 6. Pousser et publier
 
@@ -354,6 +416,8 @@ openstep status <operation-id>
 ```
 
 Avant la première publication, définissez, en tant que propriétaire de l'agent, les valeurs de production que lit votre code. Publish construit vos pages avec `npm ci` et `npm run build`, démarre `functions/server.js`, vérifie que `GET /health` répond avec un statut 2xx ou 3xx dans les 30 secondes, puis met l'App en ligne. Voir [Push et publication](/fr/cli/push-publish/).
+
+L'adresse en ligne de l'App est `https://app-<id>.openstep.academy`, où `<id>` est le `projectId` que `openstep apps list` affiche pour l'App. Elle répond une fois la première publication terminée ; avant cela, elle indique que l'App n'est pas publiée. Sur la page de travail, **Console** → **Domains** affiche la même adresse. Voir [Domaines](/fr/build/domains/).
 
 ## À savoir
 
