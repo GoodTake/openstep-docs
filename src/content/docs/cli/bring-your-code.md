@@ -79,7 +79,7 @@ The App needs this shape:
 | Server | `functions/server.js`, started with `node server.js`. It listens on the port in the `PORT` environment variable, answers `GET /health`, and serves your routes under `/api/`. `functions/package.json` lists no dependencies, so bundle the npm packages your server uses into `functions/vendor.cjs`, and `require('./vendor.cjs')` from your own code in `server.js` and the rest of `functions/`. See [Bundle your server's npm packages](#bundle-your-servers-npm-packages). |
 | Server settings and keys | Read them with `getVariable('NAME')` and `getSecret('NAME')` from `functions/runtime-config.js`, and set them with `openstep env`. Apart from `process.env.PORT` and `process.env.NODE_ENV`, your own code in `functions/` must not read `process.env`: the live server keeps no settings there, and Publish refuses the App. |
 | Calls to other services | From the server, call `externalRequest(url)` from `functions/platform.js`, and list each host in the App value `BACKEND_EGRESS_HOSTS` (see below). |
-| Database tables | Created with `openstep data migrate <id> <file> --app app`, for example `openstep data migrate 0002_add_bookings ./bookings.sql --app app`. Write names without a schema (`bookings`, not `public.bookings`), and only the statements in [What a migration can contain](/cli/apps-data-contracts/#what-a-migration-can-contain). Keep `migrations/0001_platform_baseline.sql`, which holds the platform's own tables. Apply a SQL file you copy into `migrations/` the same way: push refuses one that development data never applied, and tells you the command to run. |
+| Database tables | Created with `openstep data migrate <id> <file> --app app`, for example `openstep data migrate 0002_add_bookings ./bookings.sql --app app`. Write names without a schema (`bookings`, not `public.bookings`), and only the statements in [What a migration can contain](/cli/apps-data-contracts/#what-a-migration-can-contain). Keep `migrations/0001_platform_baseline.sql`, which holds the platform's own tables. Apply a SQL file you copy into `migrations/` the same way: push refuses one that development data never applied, and tells you the command to run. Your pages read and write the tables with `supabase`, your server with `dataRequest`, under the row-level security policies you write. See [Data](#data). |
 
 These paths belong to the platform, so keep your own pages off them: `/api/` (sent to your server), `/auth/`, `/data/`, `/_platform/`, `/__steps/` and `/_releases/`.
 
@@ -89,6 +89,8 @@ Keep the platform files that came with the App. Your code relies on them:
 - In `functions/`: `platform.js`, `runtime-config.js`, `viem.cjs`, `openapi.json` and `check-openapi.js`.
 
 `openstep pull`, and every `openstep push`, put the platform's current version of `src/lib/runtime.ts`, `src/lib/live-auth.ts`, `src/lib/supabase.ts`, `src/lib/useUser.ts`, `functions/platform.js`, `functions/runtime-config.js`, `functions/viem.cjs` and `functions/check-openapi.js` back into your folder, so import them instead of editing them. `src/lib/platform.ts`, `src/lib/wagmi.ts` and `src/main.tsx` are yours once the App is created: change them as you need, and keep their platform parts.
+
+`functions/openapi.json` is yours too: it describes your server's routes. It starts with the starter's `GET /health` and `GET /api/info`, so replace `/api/info` with your own routes. Keep it a valid OpenAPI 3.1 document: the App's preview on the work page does not start a server whose `openapi.json` is invalid, and says `invalid_openapi_contract`. To check it, run `npm run api:check` in `functions/`.
 
 Leave these out of the folder:
 
@@ -215,18 +217,19 @@ On the live site, your App runs behind the platform's gateway. A few things work
 In the browser, `useUser()` from `src/lib/useUser` gives you the visitor's wallet:
 
 ```tsx
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useUser } from './lib/useUser';
 
 function Account() {
   const { wallet, needsSignIn, signIn, loading } = useUser();
   if (loading) return null;
-  if (!wallet) return <p>Connect a wallet to continue.</p>;
+  if (!wallet) return <ConnectButton />;
   if (needsSignIn) return <button onClick={signIn}>Sign in</button>;
   return <p>Signed in as {wallet}</p>;
 }
 ```
 
-`signIn()` asks the visitor to approve one free signature on Base. The wallet buttons come from the providers in `src/main.tsx`.
+`<ConnectButton />` opens the list of wallets that the providers in `src/main.tsx` set up. To draw the button your own way, use `<ConnectButton.Custom>` from the same package. `signIn()` then asks the visitor to approve one free signature on Base.
 
 On the live site, every `/api/` request from a visitor who signed in carries their wallet address in the `x-steps-user-address` header; before they sign in, it has none. Use it to tell who is calling. Under `openstep dev`, the page uses the wallet you connect, with no signature, and your server sees the wallet you signed in to the CLI with. Connect that same wallet in the browser.
 
@@ -283,10 +286,21 @@ On the live site, every `/api/` request from a visitor who signed in carries the
 import { invokeAI } from './lib/platform';
 
 const text = await invokeAI({ prompt: 'Write a one-line welcome for a coffee shop.' });
-const menu = await invokeAI({ prompt: 'Suggest three drinks.', schema: { type: 'object' } });
+const menu = await invokeAI({
+  prompt: 'Suggest three drinks.',
+  schema: {
+    type: 'object',
+    properties: {
+      drinks: { type: 'array', items: { type: 'string' } },
+    },
+    required: ['drinks'],
+  },
+});
 ```
 
 `invokeAI` returns text. Pass a JSON Schema as `schema` to get parsed JSON back. It works from the browser (`src/lib/platform`) and the server (`functions/platform.js`).
+
+A schema can use only `type`, `properties`, `required`, `items`, `enum` and `description`. An `object` needs `properties`, an `array` needs `items`, and `enum` lists strings or numbers. It can nest 4 levels deep and have up to 64 properties in all. Any other keyword, such as `additionalProperties`, `minLength` or `format`, is refused with `invalid_schema`.
 
 ### On-chain actions
 
@@ -334,6 +348,8 @@ try {
 
 ### Data
 
+Create and change tables with `openstep data migrate`. Locally and in Preview you work with development data; the live site has its own.
+
 In the browser, `supabase` from `src/lib/supabase` reads and writes the App's tables:
 
 ```ts
@@ -342,7 +358,53 @@ import { supabase } from './lib/supabase';
 const { data } = await supabase.from('bookings').select('*');
 ```
 
-Create and change tables with `openstep data migrate`. Locally and in Preview you work with development data; the live site has its own.
+From your server, `dataRequest` from `functions/platform.js` does the same, with the query in PostgREST syntax:
+
+```js
+const { dataRequest } = require('./platform');
+
+const DESK = '0x000000000000000000000000000000000000c0ff';
+
+const rows = await dataRequest('bookings', {
+  as: DESK,
+  query: 'select=name,party_size&booking_date=eq.2026-11-01&order=booking_time.asc',
+});
+
+const [booking] = await dataRequest('bookings', {
+  as: DESK,
+  method: 'POST',
+  body: { name: 'Alex', booking_date: '2026-11-01', booking_time: '19:00', party_size: 2 },
+  returnRows: true,
+});
+```
+
+- `as` is required: the wallet address the request reads or writes as. See below.
+- `method` is `GET` unless you set it. `POST` inserts rows, and `PATCH` and `DELETE` change or remove the rows that `query` matches. These three return `[]` unless you pass `returnRows: true`.
+- A refused request throws an error with `status` and `code`.
+
+The row-level security policies in your migrations decide who reads and writes which rows. A policy knows one identity, `steps_request_wallet_address()`, the address the request acts as:
+
+- A request from your pages acts as the visitor's wallet. On the live site, that is the wallet they signed in with through `useUser()`. Before they sign in there is none, so rows a policy keeps to a wallet come back empty and inserts are refused. Under `openstep dev`, it is the wallet you connect in the browser.
+- A request from your server acts as the address it passes as `as`.
+
+A table where each visitor reads and writes only their own rows:
+
+```sql
+CREATE TABLE notes (
+  id bigserial PRIMARY KEY,
+  wallet_address text NOT NULL,
+  body text NOT NULL
+);
+ALTER TABLE notes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY notes_read_own ON notes FOR SELECT
+  USING (wallet_address = steps_request_wallet_address());
+CREATE POLICY notes_insert_own ON notes FOR INSERT
+  WITH CHECK (wallet_address = steps_request_wallet_address());
+```
+
+- For a table anyone may read, such as a menu, use `USING (true)`.
+- For records only your server may touch, such as bookings that hold guests' emails, let the policies admit only the address your server passes as `as`. Pick one no wallet can sign in as, like `DESK` above. No page can act as that address, so your pages get those records through your `/api/` routes, and your server decides which columns to send back. A policy works on whole rows, so this is also how you keep a column private.
+- The platform lowercases every `0x` address on its way into the App's data, so addresses come back in lowercase. Compare them in lowercase in your code.
 
 ## 6. Push and publish
 
@@ -354,6 +416,8 @@ openstep status <operation-id>
 ```
 
 Before the first Publish, set the Production values your code reads, as the agent's owner. Publish builds your pages with `npm ci` and `npm run build`, starts `functions/server.js`, checks that `GET /health` answers with a 2xx or 3xx status within 30 seconds, and then puts the App live. See [Push and publish](/cli/push-publish/).
+
+The App's live address is `https://app-<id>.openstep.academy`, where `<id>` is the `projectId` that `openstep apps list` shows for the App. It answers once the first Publish finishes; before that, it says the App is not published. On the work page, **Console** → **Domains** shows the same address. See [Domains](/build/domains/).
 
 ## Good to know
 
