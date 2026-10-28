@@ -79,7 +79,7 @@ App には次の形が必要です。
 | サーバー | `functions/server.js`。`node server.js` で起動します。環境変数 `PORT` のポートで待ち受け、`GET /health` に応答し、`/api/` の下にルートを提供します。`functions/package.json` には依存関係が書かれていません。サーバーが使う npm パッケージは `functions/vendor.cjs` にバンドルし、`server.js` と `functions/` のほかの自分のコードから `require('./vendor.cjs')` で読み込んでください。[サーバーの npm パッケージをバンドルする](#サーバーの-npm-パッケージをバンドルする) を参照してください。 |
 | サーバーの設定とキー | `functions/runtime-config.js` の `getVariable('NAME')` と `getSecret('NAME')` で読み、`openstep env` で設定します。`process.env.PORT` と `process.env.NODE_ENV` を除き、`functions/` にある自分のコードは `process.env` を読んではいけません。公開中のサーバーはそこに設定を持たず、Publish は App を拒否します。 |
 | ほかのサービスの呼び出し | サーバーから、`functions/platform.js` の `externalRequest(url)` を呼びます。各ホストは App の値 `BACKEND_EGRESS_HOSTS` に列挙します（下記参照）。 |
-| データベースのテーブル | `openstep data migrate <id> <file> --app app` で作成します。たとえば `openstep data migrate 0002_add_bookings ./bookings.sql --app app` です。名前にはスキーマを付けず（`public.bookings` ではなく `bookings`）、[マイグレーションに書けるもの](/ja/cli/apps-data-contracts/#マイグレーションに書けるもの) にある文だけを使ってください。プラットフォーム自身のテーブルを含む `migrations/0001_platform_baseline.sql` は残してください。`migrations/` にコピーした SQL ファイルも同じ方法で適用してください。開発用データに一度も適用されていないファイルは push で拒否され、実行するコマンドが示されます。 |
+| データベースのテーブル | `openstep data migrate <id> <file> --app app` で作成します。たとえば `openstep data migrate 0002_add_bookings ./bookings.sql --app app` です。名前にはスキーマを付けず（`public.bookings` ではなく `bookings`）、[マイグレーションに書けるもの](/ja/cli/apps-data-contracts/#マイグレーションに書けるもの) にある文だけを使ってください。プラットフォーム自身のテーブルを含む `migrations/0001_platform_baseline.sql` は残してください。`migrations/` にコピーした SQL ファイルも同じ方法で適用してください。開発用データに一度も適用されていないファイルは push で拒否され、実行するコマンドが示されます。ページは `supabase`、サーバーは `dataRequest` でテーブルを読み書きし、アクセスは自分で書く行レベルセキュリティのポリシーで決まります。[データ](#データ) を参照してください。 |
 
 これらのパスはプラットフォームのものなので、自分のページはここに置かないでください。`/api/`（サーバーに送られます）、`/auth/`、`/data/`、`/_platform/`、`/__steps/`、`/_releases/` です。
 
@@ -89,6 +89,8 @@ App に付いてきたプラットフォームのファイルは残してくだ�
 - `functions/` 内：`platform.js`、`runtime-config.js`、`viem.cjs`、`openapi.json`、`check-openapi.js`。
 
 `openstep pull` を実行したときと、`openstep push` のたびに、`src/lib/runtime.ts`、`src/lib/live-auth.ts`、`src/lib/supabase.ts`、`src/lib/useUser.ts`、`functions/platform.js`、`functions/runtime-config.js`、`functions/viem.cjs`、`functions/check-openapi.js` のプラットフォーム側の現在のバージョンが、フォルダーに戻されます。編集せず、インポートして使ってください。`src/lib/platform.ts`、`src/lib/wagmi.ts`、`src/main.tsx` は、App を作成したあとはあなたのものです。必要に応じて変更し、プラットフォームの部分は残してください。
+
+`functions/openapi.json` もあなたのものです。サーバーのルートを記述するファイルです。最初はひな形の `GET /health` と `GET /api/info` が入っているので、`/api/info` を自分のルートに置き換えてください。有効な OpenAPI 3.1 ドキュメントのままにしてください。`openapi.json` が無効だと、作業ページでの App のプレビューはサーバーを起動せず、`invalid_openapi_contract` と表示します。確認するには、`functions/` で `npm run api:check` を実行します。
 
 次のものはフォルダーに入れないでください。
 
@@ -215,18 +217,19 @@ openstep dev
 ブラウザーでは、`src/lib/useUser` の `useUser()` が訪問者のウォレットを返します。
 
 ```tsx
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useUser } from './lib/useUser';
 
 function Account() {
   const { wallet, needsSignIn, signIn, loading } = useUser();
   if (loading) return null;
-  if (!wallet) return <p>Connect a wallet to continue.</p>;
+  if (!wallet) return <ConnectButton />;
   if (needsSignIn) return <button onClick={signIn}>Sign in</button>;
   return <p>Signed in as {wallet}</p>;
 }
 ```
 
-`signIn()` は、訪問者に Base で無料の署名を 1 回承認してもらいます。ウォレットのボタンは、`src/main.tsx` のプロバイダーから提供されます。
+`<ConnectButton />` は、`src/main.tsx` のプロバイダーが設定したウォレットの一覧を開きます。ボタンを独自のデザインにしたいときは、同じパッケージの `<ConnectButton.Custom>` を使ってください。そのあと `signIn()` が、訪問者に Base で無料の署名を 1 回承認してもらいます。
 
 公開中のサイトでは、サインインした訪問者からの `/api/` リクエストすべてに、そのウォレットアドレスが `x-steps-user-address` ヘッダーで付きます。サインインする前は、このヘッダーはありません。誰が呼んでいるかは、これで判断します。`openstep dev` では、ページは接続したウォレットを署名なしで使い、サーバーには、CLI にサインインしたウォレットが見えます。ブラウザーでも同じウォレットを接続してください。
 
@@ -283,10 +286,21 @@ function Account() {
 import { invokeAI } from './lib/platform';
 
 const text = await invokeAI({ prompt: 'Write a one-line welcome for a coffee shop.' });
-const menu = await invokeAI({ prompt: 'Suggest three drinks.', schema: { type: 'object' } });
+const menu = await invokeAI({
+  prompt: 'Suggest three drinks.',
+  schema: {
+    type: 'object',
+    properties: {
+      drinks: { type: 'array', items: { type: 'string' } },
+    },
+    required: ['drinks'],
+  },
+});
 ```
 
 `invokeAI` はテキストを返します。`schema` に JSON Schema を渡すと、パース済みの JSON が返ります。ブラウザー（`src/lib/platform`）とサーバー（`functions/platform.js`）のどちらからでも使えます。
+
+スキーマで使えるのは `type`、`properties`、`required`、`items`、`enum`、`description` だけです。`object` には `properties`、`array` には `items` が必要で、`enum` には文字列か数値を並べます。ネストは 4 階層まで、プロパティは合計で 64 個までです。`additionalProperties`、`minLength`、`format` など、それ以外のキーワードは `invalid_schema` で拒否されます。
 
 ### オンチェーン操作
 
@@ -334,6 +348,8 @@ try {
 
 ### データ
 
+テーブルの作成と変更は `openstep data migrate` で行います。ローカルとプレビューでは開発用データを使います。公開したサイトには、専用のデータがあります。
+
 ブラウザーでは、`src/lib/supabase` の `supabase` で App のテーブルを読み書きします。
 
 ```ts
@@ -342,7 +358,53 @@ import { supabase } from './lib/supabase';
 const { data } = await supabase.from('bookings').select('*');
 ```
 
-テーブルの作成と変更は `openstep data migrate` で行います。ローカルとプレビューでは開発用データを使います。公開したサイトには、専用のデータがあります。
+サーバーからは、`functions/platform.js` の `dataRequest` で同じことができます。クエリは PostgREST の構文で書きます。
+
+```js
+const { dataRequest } = require('./platform');
+
+const DESK = '0x000000000000000000000000000000000000c0ff';
+
+const rows = await dataRequest('bookings', {
+  as: DESK,
+  query: 'select=name,party_size&booking_date=eq.2026-11-01&order=booking_time.asc',
+});
+
+const [booking] = await dataRequest('bookings', {
+  as: DESK,
+  method: 'POST',
+  body: { name: 'Alex', booking_date: '2026-11-01', booking_time: '19:00', party_size: 2 },
+  returnRows: true,
+});
+```
+
+- `as` は必須です。リクエストがどのウォレットアドレスとして読み書きするかを指定します。詳しくは下記を参照してください。
+- `method` は、指定しなければ `GET` です。`POST` は行を挿入し、`PATCH` と `DELETE` は `query` に一致する行を変更または削除します。この 3 つは、`returnRows: true` を渡さない限り `[]` を返します。
+- 拒否されたリクエストは、`status` と `code` を持つエラーを投げます。
+
+どの行を誰が読み書きできるかは、マイグレーションに書いた行レベルセキュリティのポリシーが決めます。ポリシーが知っているのは `steps_request_wallet_address()` という 1 つの ID、つまりそのリクエストが誰として動いているかを示すアドレスだけです。
+
+- ページからのリクエストは、訪問者のウォレットとして動きます。公開中のサイトでは、`useUser()` でサインインしたウォレットです。サインインする前は何もないので、ポリシーがウォレットごとに絞っている行は空で返り、挿入は拒否されます。`openstep dev` では、ブラウザーで接続したウォレットです。
+- サーバーからのリクエストは、`as` で渡したアドレスとして動きます。
+
+訪問者が自分の行だけを読み書きできるテーブルの例です。
+
+```sql
+CREATE TABLE notes (
+  id bigserial PRIMARY KEY,
+  wallet_address text NOT NULL,
+  body text NOT NULL
+);
+ALTER TABLE notes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY notes_read_own ON notes FOR SELECT
+  USING (wallet_address = steps_request_wallet_address());
+CREATE POLICY notes_insert_own ON notes FOR INSERT
+  WITH CHECK (wallet_address = steps_request_wallet_address());
+```
+
+- メニューのように誰でも読めるテーブルには、`USING (true)` を使います。
+- お客様のメールアドレスを含む予約のように、サーバーだけが扱えるレコードでは、サーバーが `as` で渡すアドレスだけをポリシーで許可します。上の `DESK` のように、どのウォレットもサインインできないアドレスを選んでください。どのページもそのアドレスとして動けないので、ページは `/api/` のルート経由でそのレコードを受け取り、返す列はサーバーが決めます。ポリシーは行全体に対して働くので、列を非公開にしたいときもこの方法を使います。
+- プラットフォームは、App のデータに入る `0x` アドレスをすべて小文字に変換します。そのため、アドレスは小文字で返ります。コードでは小文字で比較してください。
 
 ## 6. push して公開する
 
@@ -354,6 +416,8 @@ openstep status <operation-id>
 ```
 
 最初の Publish の前に、agent のオーナーとして、コードが読む本番の値を設定してください。Publish は `npm ci` と `npm run build` でページをビルドし、`functions/server.js` を起動し、`GET /health` が 30 秒以内に 2xx か 3xx のステータスで応答することを確認してから、App を公開します。[push と公開](/ja/cli/push-publish/) を参照してください。
+
+App の公開アドレスは `https://app-<id>.openstep.academy` です。`<id>` は、`openstep apps list` に表示されるその App の `projectId` です。最初の Publish が終わると応答するようになります。それまでは、App が未公開であることを示す表示になります。作業ページでは、**Console** → **Domains** に同じアドレスが表示されます。[ドメイン](/ja/build/domains/) を参照してください。
 
 ## 知っておくこと
 
