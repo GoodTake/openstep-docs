@@ -79,7 +79,7 @@ App には次の形が必要です。
 | サーバー | `functions/server.js`。`node server.js` で起動します。環境変数 `PORT` のポートで待ち受け、`GET /health` に応答し、`/api/` の下にルートを提供します。`functions/package.json` には依存関係が書かれていません。サーバーが使う npm パッケージは `functions/vendor.cjs` にバンドルし、`server.js` と `functions/` のほかの自分のコードから `require('./vendor.cjs')` で読み込んでください。[サーバーの npm パッケージをバンドルする](#サーバーの-npm-パッケージをバンドルする) を参照してください。 |
 | サーバーの設定とキー | `functions/runtime-config.js` の `getVariable('NAME')` と `getSecret('NAME')` で読み、`openstep env` で設定します。`process.env.PORT` と `process.env.NODE_ENV` を除き、`functions/` にある自分のコードは `process.env` を読んではいけません。公開中のサーバーはそこに設定を持たず、Publish は App を拒否します。 |
 | ほかのサービスの呼び出し | サーバーから、`functions/platform.js` の `externalRequest(url)` を呼びます。各ホストは App の値 `BACKEND_EGRESS_HOSTS` に列挙します（下記参照）。 |
-| データベースのテーブル | `openstep data migrate <id> <file> --app app` で作成します。たとえば `openstep data migrate 0002_add_bookings ./bookings.sql --app app` です。名前にはスキーマを付けず（`public.bookings` ではなく `bookings`）、[マイグレーションに書けるもの](/ja/cli/apps-data-contracts/#マイグレーションに書けるもの) にある文だけを使ってください。プラットフォーム自身のテーブルを含む `migrations/0001_platform_baseline.sql` は残してください。 |
+| データベースのテーブル | `openstep data migrate <id> <file> --app app` で作成します。たとえば `openstep data migrate 0002_add_bookings ./bookings.sql --app app` です。名前にはスキーマを付けず（`public.bookings` ではなく `bookings`）、[マイグレーションに書けるもの](/ja/cli/apps-data-contracts/#マイグレーションに書けるもの) にある文だけを使ってください。プラットフォーム自身のテーブルを含む `migrations/0001_platform_baseline.sql` は残してください。`migrations/` にコピーした SQL ファイルも同じ方法で適用してください。開発用データに一度も適用されていないファイルは push で拒否され、実行するコマンドが示されます。 |
 
 これらのパスはプラットフォームのものなので、自分のページはここに置かないでください。`/api/`（サーバーに送られます）、`/auth/`、`/data/`、`/_platform/`、`/__steps/`、`/_releases/` です。
 

@@ -79,7 +79,7 @@ App 需要具備以下結構：
 | 伺服器 | `functions/server.js`，以 `node server.js` 啟動。它監聽 `PORT` 環境變數指定的連接埠，回應 `GET /health`，並在 `/api/` 底下提供你的路由。`functions/package.json` 不列任何相依套件，所以請把你的伺服器用到的 npm 套件打包進 `functions/vendor.cjs`，並在你自己寫在 `server.js` 和 `functions/` 其餘檔案裡的程式碼中 `require('./vendor.cjs')`。見 [打包你的伺服器用到的 npm 套件](#打包你的伺服器用到的-npm-套件)。 |
 | 伺服器設定和金鑰 | 用 `functions/runtime-config.js` 裡的 `getVariable('NAME')` 和 `getSecret('NAME')` 讀取，並用 `openstep env` 設定。除了 `process.env.PORT` 和 `process.env.NODE_ENV`，你在 `functions/` 裡自己寫的程式碼不可以讀取 `process.env`：線上的伺服器不在那裡保存任何設定，而且 Publish 會拒絕這個 App。 |
 | 呼叫其他服務 | 在伺服器裡呼叫 `functions/platform.js` 的 `externalRequest(url)`，並把每個主機列在 App 值 `BACKEND_EGRESS_HOSTS` 裡（見下方）。 |
-| 資料庫資料表 | 用 `openstep data migrate <id> <file> --app app` 建立，例如 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`。名稱不要加 schema（寫 `bookings`，不寫 `public.bookings`），而且只能用 [migration 可以包含什麼](/zh-tw/cli/apps-data-contracts/#migration-可以包含什麼) 列出的陳述式。請保留 `migrations/0001_platform_baseline.sql`，它存放平台自己的資料表。 |
+| 資料庫資料表 | 用 `openstep data migrate <id> <file> --app app` 建立，例如 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`。名稱不要加 schema（寫 `bookings`，不寫 `public.bookings`），而且只能用 [migration 可以包含什麼](/zh-tw/cli/apps-data-contracts/#migration-可以包含什麼) 列出的陳述式。請保留 `migrations/0001_platform_baseline.sql`，它存放平台自己的資料表。你複製進 `migrations/` 的 SQL 檔案也要這樣套用：開發資料從未套用過的檔案會被 push 拒絕，並告訴你要執行的指令。 |
 
 這些路徑屬於平台，所以不要把你自己的頁面放在這些路徑上：`/api/`（送到你的伺服器）、`/auth/`、`/data/`、`/_platform/`、`/__steps/` 和 `/_releases/`。
 

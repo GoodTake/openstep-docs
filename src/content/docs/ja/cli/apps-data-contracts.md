@@ -103,7 +103,9 @@ openstep data migrate 0002_add_bookings ./migration.sql --app admin
 - `GRANT`、ロール、ほかのスキーマ、`CREATE EXTENSION`、プラットフォーム自身の `steps_` オブジェクトの変更
 - `nextval()`、`setval()`、`current_setting()` などの呼び出し。連番には `serial` か `GENERATED ALWAYS AS IDENTITY` を使ってください。
 
-マイグレーションが変えるのはテーブルで、行ではありません。決まった選択肢の一覧のように、App が最初から必要とする行は、App 自身のコードに書くか、App のコードで作成してください。公開中のサイトは、開発用データを何も持たずに始まります。SQL ファイルを自分で `migrations/` にコピーすることもしないでください。開発用データに一度も適用されていないマイグレーションは Publish で拒否されるので、どれも `openstep data migrate` で適用してください。
+マイグレーションが変えるのはテーブルで、行ではありません。決まった選択肢の一覧のように、App が最初から必要とする行は、App 自身のコードに書くか、App のコードで作成してください。公開中のサイトは、開発用データを何も持たずに始まります。
+
+マイグレーションはすべて `openstep data migrate` で適用してください。`migrations/` にコピーした SQL ファイルも同じです。`openstep push` は、`migrations/` の直下にあって開発用データに一度も適用されていない `.sql` ファイルを拒否します。そのメッセージは、App、ファイル、そしてそのファイルをその場で適用するコマンドを示します。たとえば `openstep data migrate 0004_add_tags migrations/0004_add_tags.sql --app app` です。そのコマンドを実行してから、もう一度 push してください。`migrations/schema.sql` のように名前がマイグレーション ID でないファイルの場合は、ID を決めて、そのあと元のファイルを削除するようメッセージが求めます。適用済みのマイグレーションは変わりません。編集したものも push で拒否されるので、変更は新しいマイグレーションにしてください。
 
 エディターとオーナーは、どちらも実行できます。開発用データと公開中のデータがどのように分かれているかは、[サイトのデータ](/ja/build/data/) を参照してください。
 

@@ -103,7 +103,9 @@ Tout le reste est refusé, par exemple :
 - `GRANT`, les rôles, les autres schémas, `CREATE EXTENSION` et les changements des objets `steps_` de la plateforme ;
 - les appels comme `nextval()`, `setval()` et `current_setting()`. Pour un compteur, utilisez `serial` ou `GENERATED ALWAYS AS IDENTITY`.
 
-Une migration change des tables, pas des lignes. Les lignes dont votre App a besoin dès le départ, comme une liste fixe d'options, ont leur place dans son propre code, ou son code les crée : le site en ligne démarre sans aucune de vos données de développement. Ne copiez pas non plus vous-même de fichiers SQL dans `migrations/`. Publish refuse une migration qui n'a jamais été appliquée aux données de développement : appliquez donc chacune avec `openstep data migrate`.
+Une migration change des tables, pas des lignes. Les lignes dont votre App a besoin dès le départ, comme une liste fixe d'options, ont leur place dans son propre code, ou son code les crée : le site en ligne démarre sans aucune de vos données de développement.
+
+Appliquez chaque migration avec `openstep data migrate`, y compris un fichier SQL que vous avez copié dans `migrations/`. `openstep push` refuse un fichier `.sql` placé directement dans `migrations/` que les données de développement n'ont jamais appliqué, et son message indique l'App, le fichier et la commande qui applique ce fichier là où il est, par exemple `openstep data migrate 0004_add_tags migrations/0004_add_tags.sql --app app`. Exécutez cette commande, puis poussez de nouveau. Pour un fichier dont le nom n'est pas un ID de migration, comme `migrations/schema.sql`, le message vous demande de choisir un ID, puis de supprimer le fichier d'origine. Une migration appliquée ne change jamais : push refuse aussi une migration modifiée, faites donc du changement une nouvelle migration.
 
 Les éditeurs et les propriétaires peuvent exécuter les deux. Voir [Données du site](/fr/build/data/) pour la façon dont les données de développement et les données en ligne restent séparées.
 

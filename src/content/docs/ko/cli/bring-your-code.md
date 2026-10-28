@@ -79,7 +79,7 @@ openstep capabilities enable server --app app
 | 서버 | `functions/server.js`이며 `node server.js`로 시작합니다. 환경 변수 `PORT`의 포트에서 요청을 받고, `GET /health`에 응답하며, `/api/` 아래에서 내 라우트를 제공합니다. `functions/package.json`에는 의존성이 적혀 있지 않으므로, 서버가 쓰는 npm 패키지는 `functions/vendor.cjs`에 번들로 묶고, `server.js`와 `functions/`의 나머지에 있는 내 코드에서는 `require('./vendor.cjs')`로 가져오세요. [서버의 npm 패키지를 번들로 묶기](#서버의-npm-패키지를-번들로-묶기)를 참고하세요. |
 | 서버 설정과 키 | `functions/runtime-config.js`의 `getVariable('NAME')`과 `getSecret('NAME')`으로 읽고, `openstep env`로 설정합니다. `process.env.PORT`와 `process.env.NODE_ENV`를 제외하면, `functions/`에 있는 내 코드는 `process.env`를 읽으면 안 됩니다. 라이브 서버는 거기에 설정을 두지 않으며, Publish가 그런 앱을 거부합니다. |
 | 다른 서비스 호출 | 서버에서 `functions/platform.js`의 `externalRequest(url)`을 호출하고, 각 호스트를 앱 값 `BACKEND_EGRESS_HOSTS`에 적습니다(아래 참고). |
-| 데이터베이스 테이블 | `openstep data migrate <id> <file> --app app`으로 만듭니다. 예를 들면 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`입니다. 이름에는 스키마를 붙이지 말고(`public.bookings`가 아니라 `bookings`), [마이그레이션에 쓸 수 있는 문](/ko/cli/apps-data-contracts/#마이그레이션에-쓸-수-있는-문)에 나온 문만 쓰세요. 플랫폼 자체의 테이블이 들어 있는 `migrations/0001_platform_baseline.sql`은 그대로 두세요. |
+| 데이터베이스 테이블 | `openstep data migrate <id> <file> --app app`으로 만듭니다. 예를 들면 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`입니다. 이름에는 스키마를 붙이지 말고(`public.bookings`가 아니라 `bookings`), [마이그레이션에 쓸 수 있는 문](/ko/cli/apps-data-contracts/#마이그레이션에-쓸-수-있는-문)에 나온 문만 쓰세요. 플랫폼 자체의 테이블이 들어 있는 `migrations/0001_platform_baseline.sql`은 그대로 두세요. `migrations/`에 복사한 SQL 파일도 같은 방법으로 적용하세요. 개발 데이터에 한 번도 적용되지 않은 파일은 푸시가 거부하고, 실행할 명령을 알려 줍니다. |
 
 이 경로들은 플랫폼의 것이므로 내 페이지를 여기에 두지 마세요. `/api/`(내 서버로 전달됨), `/auth/`, `/data/`, `/_platform/`, `/__steps/`, `/_releases/`입니다.
 

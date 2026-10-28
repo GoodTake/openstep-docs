@@ -103,7 +103,9 @@ Everything else is refused, for example:
 - `GRANT`, roles, other schemas, `CREATE EXTENSION`, and changes to the platform's own `steps_` objects;
 - calls such as `nextval()`, `setval()` and `current_setting()`. For a counter, use `serial` or `GENERATED ALWAYS AS IDENTITY`.
 
-A migration changes tables, not rows. Rows your App needs from the start, such as a fixed list of options, belong in its own code, or its code creates them: the live site starts with none of your development data. Do not copy SQL files into `migrations/` yourself either. Publish refuses a migration that was never applied to development data, so apply each one with `openstep data migrate`.
+A migration changes tables, not rows. Rows your App needs from the start, such as a fixed list of options, belong in its own code, or its code creates them: the live site starts with none of your development data.
+
+Apply every migration with `openstep data migrate`, a SQL file you copied into `migrations/` too. `openstep push` refuses a `.sql` file directly in `migrations/` that development data never applied, and its message names the App, the file and the command that applies the file where it is, for example `openstep data migrate 0004_add_tags migrations/0004_add_tags.sql --app app`. Run that command, then push again. For a file whose name is not a migration ID, such as `migrations/schema.sql`, the message asks you to pick an ID and then delete the original. An applied migration never changes: push refuses an edited one too, so make the change a new migration.
 
 Editors and owners can run both. See [Site data](/build/data/) for how development data and live data stay apart.
 

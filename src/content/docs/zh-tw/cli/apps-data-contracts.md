@@ -103,7 +103,9 @@ migration 可以包含：
 - `GRANT`、角色、其他 schema、`CREATE EXTENSION`，以及對平台自己的 `steps_` 物件所做的變更；
 - `nextval()`、`setval()` 和 `current_setting()` 之類的呼叫。要做計數器，請用 `serial` 或 `GENERATED ALWAYS AS IDENTITY`。
 
-migration 改的是資料表，不是資料列。App 一開始就需要的資料列，例如一份固定的選項清單，應該寫在它自己的程式碼裡，或由它的程式碼建立：線上網站不會帶著你的任何開發資料開始。也不要自己把 SQL 檔案複製進 `migrations/`。Publish 會拒絕從未套用到開發資料的 migration，所以每一個都請用 `openstep data migrate` 套用。
+migration 改的是資料表，不是資料列。App 一開始就需要的資料列，例如一份固定的選項清單，應該寫在它自己的程式碼裡，或由它的程式碼建立：線上網站不會帶著你的任何開發資料開始。
+
+每個 migration 都請用 `openstep data migrate` 套用，你複製進 `migrations/` 的 SQL 檔案也一樣。`openstep push` 會拒絕直接放在 `migrations/` 裡、開發資料從未套用過的 `.sql` 檔案，訊息會指出 App、檔案，以及就地套用該檔案的指令，例如 `openstep data migrate 0004_add_tags migrations/0004_add_tags.sql --app app`。執行那個指令，然後再推送一次。如果檔名不是 migration ID，例如 `migrations/schema.sql`，訊息會請你挑一個 ID，之後再刪除原本的檔案。已套用的 migration 永遠不會改變：被修改過的也會被 push 拒絕，所以請把變更寫成新的 migration。
 
 編輯者和擁有者都能執行這兩者。開發資料與上線資料如何保持分開，見 [網站資料](/zh-tw/build/data/)。
 

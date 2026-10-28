@@ -103,7 +103,9 @@ openstep data migrate 0002_add_bookings ./migration.sql --app admin
 - `GRANT`, 역할, 다른 스키마, `CREATE EXTENSION`, 플랫폼 자체의 `steps_` 객체 변경
 - `nextval()`, `setval()`, `current_setting()` 같은 호출. 일련번호에는 `serial`이나 `GENERATED ALWAYS AS IDENTITY`를 쓰세요.
 
-마이그레이션이 바꾸는 것은 테이블이지 행이 아닙니다. 고정된 선택지 목록처럼 앱이 처음부터 필요한 행은 앱 자체의 코드에 두거나 앱의 코드가 만들게 하세요. 라이브 사이트는 개발 데이터를 하나도 가지지 않은 채 시작합니다. SQL 파일을 직접 `migrations/`에 복사하지도 마세요. 개발 데이터에 한 번도 적용되지 않은 마이그레이션은 Publish가 거부하므로, 하나하나 `openstep data migrate`로 적용하세요.
+마이그레이션이 바꾸는 것은 테이블이지 행이 아닙니다. 고정된 선택지 목록처럼 앱이 처음부터 필요한 행은 앱 자체의 코드에 두거나 앱의 코드가 만들게 하세요. 라이브 사이트는 개발 데이터를 하나도 가지지 않은 채 시작합니다.
+
+마이그레이션은 모두 `openstep data migrate`로 적용하세요. `migrations/`에 복사한 SQL 파일도 마찬가지입니다. `openstep push`는 `migrations/` 바로 아래에 있으면서 개발 데이터에 한 번도 적용되지 않은 `.sql` 파일을 거부하고, 메시지로 앱, 파일, 그리고 그 파일을 그 자리에서 적용하는 명령을 알려 줍니다. 예를 들면 `openstep data migrate 0004_add_tags migrations/0004_add_tags.sql --app app`입니다. 그 명령을 실행한 뒤 다시 푸시하세요. `migrations/schema.sql`처럼 이름이 마이그레이션 ID가 아닌 파일이면, 메시지가 ID를 정하고 그다음 원래 파일을 지우라고 안내합니다. 적용된 마이그레이션은 바뀌지 않습니다. 수정한 마이그레이션도 푸시가 거부하므로, 변경은 새 마이그레이션으로 만드세요.
 
 편집자와 소유자는 둘 다 실행할 수 있습니다. 개발 데이터와 라이브 데이터가 어떻게 분리되는지는 [사이트 데이터](/ko/build/data/)를 참고하세요.
 
