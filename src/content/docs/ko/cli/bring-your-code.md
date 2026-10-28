@@ -79,7 +79,7 @@ openstep capabilities enable server --app app
 | 서버 | `functions/server.js`이며 `node server.js`로 시작합니다. 환경 변수 `PORT`의 포트에서 요청을 받고, `GET /health`에 응답하며, `/api/` 아래에서 내 라우트를 제공합니다. `functions/package.json`에는 의존성이 적혀 있지 않으므로, 서버가 쓰는 npm 패키지는 `functions/vendor.cjs`에 번들로 묶고, `server.js`와 `functions/`의 나머지에 있는 내 코드에서는 `require('./vendor.cjs')`로 가져오세요. [서버의 npm 패키지를 번들로 묶기](#서버의-npm-패키지를-번들로-묶기)를 참고하세요. |
 | 서버 설정과 키 | `functions/runtime-config.js`의 `getVariable('NAME')`과 `getSecret('NAME')`으로 읽고, `openstep env`로 설정합니다. `process.env.PORT`와 `process.env.NODE_ENV`를 제외하면, `functions/`에 있는 내 코드는 `process.env`를 읽으면 안 됩니다. 라이브 서버는 거기에 설정을 두지 않으며, Publish가 그런 앱을 거부합니다. |
 | 다른 서비스 호출 | 서버에서 `functions/platform.js`의 `externalRequest(url)`을 호출하고, 각 호스트를 앱 값 `BACKEND_EGRESS_HOSTS`에 적습니다(아래 참고). |
-| 데이터베이스 테이블 | `openstep data migrate <id> <file> --app app`으로 만듭니다. 예를 들면 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`입니다. 이름에는 스키마를 붙이지 말고(`public.bookings`가 아니라 `bookings`), [마이그레이션에 쓸 수 있는 문](/ko/cli/apps-data-contracts/#마이그레이션에-쓸-수-있는-문)에 나온 문만 쓰세요. 플랫폼 자체의 테이블이 들어 있는 `migrations/0001_platform_baseline.sql`은 그대로 두세요. `migrations/`에 복사한 SQL 파일도 같은 방법으로 적용하세요. 개발 데이터에 한 번도 적용되지 않은 파일은 푸시가 거부하고, 실행할 명령을 알려 줍니다. |
+| 데이터베이스 테이블 | `openstep data migrate <id> <file> --app app`으로 만듭니다. 예를 들면 `openstep data migrate 0002_add_bookings ./bookings.sql --app app`입니다. 이름에는 스키마를 붙이지 말고(`public.bookings`가 아니라 `bookings`), [마이그레이션에 쓸 수 있는 문](/ko/cli/apps-data-contracts/#마이그레이션에-쓸-수-있는-문)에 나온 문만 쓰세요. 플랫폼 자체의 테이블이 들어 있는 `migrations/0001_platform_baseline.sql`은 그대로 두세요. `migrations/`에 복사한 SQL 파일도 같은 방법으로 적용하세요. 개발 데이터에 한 번도 적용되지 않은 파일은 푸시가 거부하고, 실행할 명령을 알려 줍니다. 페이지는 `supabase`로, 서버는 `dataRequest`로 테이블을 읽고 쓰며, 이때 내가 작성한 행 수준 보안 정책이 적용됩니다. [데이터](#데이터)를 참고하세요. |
 
 이 경로들은 플랫폼의 것이므로 내 페이지를 여기에 두지 마세요. `/api/`(내 서버로 전달됨), `/auth/`, `/data/`, `/_platform/`, `/__steps/`, `/_releases/`입니다.
 
@@ -89,6 +89,8 @@ openstep capabilities enable server --app app
 - `functions/` 안에서: `platform.js`, `runtime-config.js`, `viem.cjs`, `openapi.json`, `check-openapi.js`.
 
 `openstep pull`과 모든 `openstep push`는 `src/lib/runtime.ts`, `src/lib/live-auth.ts`, `src/lib/supabase.ts`, `src/lib/useUser.ts`, `functions/platform.js`, `functions/runtime-config.js`, `functions/viem.cjs`, `functions/check-openapi.js`를 플랫폼의 현재 버전으로 내 폴더에 되돌려 놓습니다. 그러니 편집하지 말고 가져와서 쓰세요. `src/lib/platform.ts`, `src/lib/wagmi.ts`, `src/main.tsx`는 앱이 만들어진 뒤에는 내 것입니다. 필요한 대로 바꾸되, 그 안의 플랫폼 부분은 그대로 두세요.
+
+`functions/openapi.json`도 내 것입니다. 서버의 라우트를 설명하는 파일입니다. 처음에는 시작용 `GET /health`와 `GET /api/info`가 들어 있으니, `/api/info`는 내 라우트로 바꾸세요. 유효한 OpenAPI 3.1 문서로 유지하세요. `openapi.json`이 유효하지 않으면 작업 페이지의 앱 Preview가 서버를 시작하지 않고 `invalid_openapi_contract`라고 알려 줍니다. 확인하려면 `functions/`에서 `npm run api:check`를 실행하세요.
 
 다음은 폴더에 넣지 마세요.
 
@@ -215,18 +217,19 @@ openstep dev
 브라우저에서는 `src/lib/useUser`의 `useUser()`가 방문자의 지갑을 알려 줍니다.
 
 ```tsx
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useUser } from './lib/useUser';
 
 function Account() {
   const { wallet, needsSignIn, signIn, loading } = useUser();
   if (loading) return null;
-  if (!wallet) return <p>Connect a wallet to continue.</p>;
+  if (!wallet) return <ConnectButton />;
   if (needsSignIn) return <button onClick={signIn}>Sign in</button>;
   return <p>Signed in as {wallet}</p>;
 }
 ```
 
-`signIn()`은 방문자에게 Base에서 무료 서명 한 번을 승인해 달라고 요청합니다. 지갑 버튼은 `src/main.tsx`의 provider에서 제공됩니다.
+`<ConnectButton />`은 `src/main.tsx`의 provider가 설정한 지갑 목록을 엽니다. 버튼을 직접 꾸미려면 같은 패키지의 `<ConnectButton.Custom>`을 사용하세요. 그다음 `signIn()`은 방문자에게 Base에서 무료 서명 한 번을 승인해 달라고 요청합니다.
 
 라이브 사이트에서는 로그인한 방문자가 보낸 모든 `/api/` 요청에 그 지갑 주소가 `x-steps-user-address` 헤더로 실립니다. 로그인하기 전에는 이 헤더가 없습니다. 누가 호출하는지 구분할 때 이 값을 사용하세요. `openstep dev`에서는 페이지가 내가 연결한 지갑을 서명 없이 사용하고, 서버는 내가 CLI에 로그인한 지갑을 봅니다. 브라우저에서도 같은 지갑을 연결하세요.
 
@@ -283,10 +286,21 @@ function Account() {
 import { invokeAI } from './lib/platform';
 
 const text = await invokeAI({ prompt: 'Write a one-line welcome for a coffee shop.' });
-const menu = await invokeAI({ prompt: 'Suggest three drinks.', schema: { type: 'object' } });
+const menu = await invokeAI({
+  prompt: 'Suggest three drinks.',
+  schema: {
+    type: 'object',
+    properties: {
+      drinks: { type: 'array', items: { type: 'string' } },
+    },
+    required: ['drinks'],
+  },
+});
 ```
 
 `invokeAI`는 텍스트를 돌려줍니다. `schema`로 JSON Schema를 넘기면 파싱된 JSON이 돌아옵니다. 브라우저(`src/lib/platform`)와 서버(`functions/platform.js`) 모두에서 쓸 수 있습니다.
+
+스키마에는 `type`, `properties`, `required`, `items`, `enum`, `description`만 쓸 수 있습니다. `object`에는 `properties`가, `array`에는 `items`가 필요하고, `enum`은 문자열이나 숫자의 목록입니다. 중첩은 4단계까지, 속성은 모두 합쳐 최대 64개까지 가능합니다. `additionalProperties`, `minLength`, `format` 같은 다른 키워드는 `invalid_schema`로 거부됩니다.
 
 ### 온체인 동작
 
@@ -334,6 +348,8 @@ try {
 
 ### 데이터
 
+테이블은 `openstep data migrate`로 만들고 바꿉니다. 로컬과 Preview에서는 개발 데이터로 작업하고, 라이브 사이트에는 별도의 데이터가 있습니다.
+
 브라우저에서는 `src/lib/supabase`의 `supabase`로 앱의 테이블을 읽고 씁니다.
 
 ```ts
@@ -342,7 +358,53 @@ import { supabase } from './lib/supabase';
 const { data } = await supabase.from('bookings').select('*');
 ```
 
-테이블은 `openstep data migrate`로 만들고 바꿉니다. 로컬과 Preview에서는 개발 데이터로 작업하고, 라이브 사이트에는 별도의 데이터가 있습니다.
+서버에서는 `functions/platform.js`의 `dataRequest`가 같은 일을 하며, 쿼리는 PostgREST 문법으로 씁니다.
+
+```js
+const { dataRequest } = require('./platform');
+
+const DESK = '0x000000000000000000000000000000000000c0ff';
+
+const rows = await dataRequest('bookings', {
+  as: DESK,
+  query: 'select=name,party_size&booking_date=eq.2026-11-01&order=booking_time.asc',
+});
+
+const [booking] = await dataRequest('bookings', {
+  as: DESK,
+  method: 'POST',
+  body: { name: 'Alex', booking_date: '2026-11-01', booking_time: '19:00', party_size: 2 },
+  returnRows: true,
+});
+```
+
+- `as`는 필수입니다. 요청이 어느 지갑으로서 읽고 쓰는지를 나타내는 지갑 주소입니다. 아래를 참고하세요.
+- `method`는 지정하지 않으면 `GET`입니다. `POST`는 행을 삽입하고, `PATCH`와 `DELETE`는 `query`와 일치하는 행을 변경하거나 삭제합니다. 이 세 가지는 `returnRows: true`를 넘기지 않으면 `[]`를 돌려줍니다.
+- 거부된 요청은 `status`와 `code`가 있는 오류를 던집니다.
+
+마이그레이션에 작성한 행 수준 보안 정책이 누가 어떤 행을 읽고 쓸 수 있는지 결정합니다. 정책이 아는 신원은 하나, 요청이 대신하는 주소인 `steps_request_wallet_address()`입니다.
+
+- 페이지에서 보낸 요청은 방문자의 지갑으로서 동작합니다. 라이브 사이트에서는 방문자가 `useUser()`로 로그인한 지갑입니다. 로그인하기 전에는 지갑이 없으므로, 정책이 지갑 하나에 한정한 행은 비어서 돌아오고 삽입은 거부됩니다. `openstep dev`에서는 브라우저에서 연결한 지갑입니다.
+- 서버에서 보낸 요청은 `as`로 넘긴 주소로서 동작합니다.
+
+각 방문자가 자기 행만 읽고 쓰는 테이블의 예입니다.
+
+```sql
+CREATE TABLE notes (
+  id bigserial PRIMARY KEY,
+  wallet_address text NOT NULL,
+  body text NOT NULL
+);
+ALTER TABLE notes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY notes_read_own ON notes FOR SELECT
+  USING (wallet_address = steps_request_wallet_address());
+CREATE POLICY notes_insert_own ON notes FOR INSERT
+  WITH CHECK (wallet_address = steps_request_wallet_address());
+```
+
+- 메뉴처럼 누구나 읽을 수 있는 테이블에는 `USING (true)`를 쓰세요.
+- 손님의 이메일이 담긴 예약처럼 서버만 다뤄야 하는 기록은, 정책이 서버가 `as`로 넘기는 주소만 허용하게 하세요. 위의 `DESK`처럼 어떤 지갑도 로그인할 수 없는 주소를 고르세요. 어떤 페이지도 그 주소로 동작할 수 없으므로, 페이지는 `/api/` 라우트를 통해 그 기록을 받고 어떤 열을 돌려줄지는 서버가 결정합니다. 정책은 행 전체 단위로 작동하므로, 열을 비공개로 유지하는 방법도 이것입니다.
+- 플랫폼은 앱의 데이터로 들어오는 모든 `0x` 주소를 소문자로 바꾸므로, 주소는 소문자로 돌아옵니다. 코드에서도 소문자로 비교하세요.
 
 ## 6. 푸시하고 게시하기
 
@@ -354,6 +416,8 @@ openstep status <operation-id>
 ```
 
 첫 Publish 전에, Agent의 소유자로서 내 코드가 읽는 프로덕션 값을 설정하세요. Publish는 `npm ci`와 `npm run build`로 페이지를 빌드하고, `functions/server.js`를 시작하고, `GET /health`가 30초 안에 2xx 또는 3xx 상태로 응답하는지 확인한 다음 앱을 라이브로 올립니다. [푸시와 게시](/ko/cli/push-publish/)를 참고하세요.
+
+앱의 라이브 주소는 `https://app-<id>.openstep.academy`이며, `<id>`는 `openstep apps list`가 앱에 대해 보여 주는 `projectId`입니다. 첫 Publish가 끝나면 응답하며, 그 전에는 앱이 게시되지 않았다고 표시됩니다. 작업 페이지에서 **Console** → **Domains**에도 같은 주소가 표시됩니다. [도메인](/ko/build/domains/)을 참고하세요.
 
 ## 알아 두기
 
