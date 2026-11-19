@@ -5,15 +5,15 @@ sidebar:
   order: 2
 ---
 
-開啟 [builder.openstep.academy](https://builder.openstep.academy)。這裡沒有使用者名稱或密碼：你的錢包就是你的帳號。如果還沒登入，你會進入 **Sign in** 頁面。
+開啟 [builder.openstep.academy](https://builder.openstep.academy)。這裡沒有使用者名稱或密碼：你的錢包就是你的帳號。如果還沒登入，你會進入標題為 **Welcome to OpenStep** 的登入頁面。
 
-1. 選擇一個錢包。**Base**（Base Account）和 **Coinbase Wallet** 列在 **BASE APP** 底下；**OKX Wallet**、**WalletConnect**、**Rainbow** 和 **MetaMask** 在 **OTHER WALLETS** 底下。
+1. 選擇一個錢包。最前面列出 **Base**、**OKX Wallet**、**MetaMask** 和 **WalletConnect**。點選 **View all wallets** 還會看到 **Coinbase Wallet**（Legacy Base App wallet）和 **Rainbow**。如果瀏覽器已經裝了該錢包的擴充功能，那一列會標示 **Installed**。
 2. 在錢包裡核准連線。頁面會顯示 **Approve the connection in your wallet.**
 3. 在錢包裡核准簽署請求。頁面會顯示 **It's free — no transaction, no gas.** 如果請求沒有跳出來，請點選 **Send it again**。
 
 簽章驗證通過後，你會進入 **Home**。如果你是從其他頁面被帶到登入頁，則會回到那個頁面。
 
-![Sign in 頁面：錢包分列在 BASE APP 與 OTHER WALLETS 底下，另有一個兌換課程代碼的連結。](/images/start/sign-in-1.webp)
+![登入頁面：Welcome to OpenStep 底下列出四個錢包和 View all wallets，另有一個兌換課程代碼的連結。](/images/start/sign-in-1.webp)
 
 ## 注意事項
 

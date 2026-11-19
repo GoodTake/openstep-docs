@@ -5,15 +5,15 @@ sidebar:
   order: 2
 ---
 
-Ouvrez [builder.openstep.academy](https://builder.openstep.academy). Il n'y a ni identifiant ni mot de passe : votre wallet est votre compte. Si vous n'êtes pas connecté, vous arrivez sur la page **Sign in**.
+Ouvrez [builder.openstep.academy](https://builder.openstep.academy). Il n'y a ni identifiant ni mot de passe : votre wallet est votre compte. Si vous n'êtes pas connecté, vous arrivez sur la page de connexion, intitulée **Welcome to OpenStep**.
 
-1. Choisissez un wallet. **Base** (Base Account) et **Coinbase Wallet** sont listés sous **BASE APP** ; **OKX Wallet**, **WalletConnect**, **Rainbow** et **MetaMask** sont sous **OTHER WALLETS**.
+1. Choisissez un wallet. **Base**, **OKX Wallet**, **MetaMask** et **WalletConnect** sont listés en premier. Cliquez sur **View all wallets** pour voir aussi **Coinbase Wallet** (Legacy Base App wallet) et **Rainbow**. Si votre navigateur a déjà l'extension d'un wallet, la ligne de ce wallet porte la mention **Installed**.
 2. Approuvez la connexion dans votre wallet. La page affiche **Approve the connection in your wallet.**
 3. Approuvez la demande de signature dans votre wallet. La page affiche **It's free — no transaction, no gas.** Si la demande n'apparaît pas, cliquez sur **Send it again**.
 
 Une fois votre signature vérifiée, vous arrivez sur **Home**. Si vous aviez été envoyé vers la page de connexion depuis une autre page, vous revenez à cette page.
 
-![La page Sign in : des wallets listés sous BASE APP et OTHER WALLETS, et un lien pour utiliser un code de cours.](/images/start/sign-in-1.webp)
+![La page de connexion : Welcome to OpenStep, quatre wallets avec View all wallets en dessous, et un lien pour utiliser un code de cours.](/images/start/sign-in-1.webp)
 
 ## À savoir
 

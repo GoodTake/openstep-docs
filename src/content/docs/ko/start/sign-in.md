@@ -5,15 +5,15 @@ sidebar:
   order: 2
 ---
 
-[builder.openstep.academy](https://builder.openstep.academy)를 엽니다. 사용자 이름이나 비밀번호는 없습니다. 지갑이 곧 계정입니다. 로그인하지 않았다면 **Sign in** 페이지로 이동합니다.
+[builder.openstep.academy](https://builder.openstep.academy)를 엽니다. 사용자 이름이나 비밀번호는 없습니다. 지갑이 곧 계정입니다. 로그인하지 않았다면 **Welcome to OpenStep**이라고 표시된 로그인 페이지로 이동합니다.
 
-1. 지갑을 고릅니다. **BASE APP** 아래에 **Base**(Base Account)와 **Coinbase Wallet**이 있고, **OTHER WALLETS** 아래에 **OKX Wallet**, **WalletConnect**, **Rainbow**, **MetaMask**가 있습니다.
+1. 지갑을 고릅니다. 처음에는 **Base**, **OKX Wallet**, **MetaMask**, **WalletConnect**가 보입니다. **View all wallets**를 클릭하면 **Coinbase Wallet**(Legacy Base App wallet)과 **Rainbow**도 나타납니다. 브라우저에 그 지갑의 확장 프로그램이 이미 설치되어 있으면 해당 행에 **Installed** 표시가 붙습니다.
 2. 지갑에서 연결을 승인합니다. 페이지에 **Approve the connection in your wallet.** 문구가 나타납니다.
 3. 지갑에서 서명 요청을 승인합니다. 페이지에 **It's free — no transaction, no gas.** 문구가 나타납니다. 요청이 보이지 않으면 **Send it again**을 클릭합니다.
 
 서명이 확인되면 **Home**으로 이동합니다. 다른 페이지에서 로그인 페이지로 넘어왔다면 그 페이지로 돌아갑니다.
 
-![Sign in 페이지: BASE APP과 OTHER WALLETS 아래에 지갑이 나열되어 있고, 코스 코드를 사용하는 링크가 있습니다.](/images/start/sign-in-1.webp)
+![로그인 페이지: Welcome to OpenStep 아래에 지갑 네 개와 View all wallets가 있고, 코스 코드를 사용하는 링크가 있습니다.](/images/start/sign-in-1.webp)
 
 ## 알아 두기
 
