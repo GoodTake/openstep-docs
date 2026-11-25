@@ -1,33 +1,85 @@
-// Doc sections, shared by the sidebar (astro.config.mjs) and the home page (HomeSections.astro).
+// Doc sections, shared by the sidebar, top navbar (astro.config.mjs), and home page (HomeSections.astro).
 export const sections = [
   {
     label: 'Introduction',
     translations: { 'zh-TW': '簡介', ja: 'はじめに', ko: '소개', fr: 'Introduction' },
     dirs: ['start', 'how-it-works'],
+    entrySlug: 'start/what-is',
+    description: {
+      en: 'What OpenStep is, signing in, SSU basics, architecture, and your first agent.',
+      'zh-TW': '認識 OpenStep、登入方式、SSU 基礎、系統架構與建立第一個 Agent。',
+      ja: 'OpenStep の概要、サインイン、SSU の基本、しくみ、最初の Agent 作成。',
+      ko: 'OpenStep 소개, 로그인, SSU 기본, 작동 방식과 첫 Agent 만들기.',
+      fr: 'Découvrir OpenStep, se connecter, obtenir des SSU, architecture et premier Agent.',
+    },
   },
   {
     label: 'Agent',
     translations: { 'zh-TW': 'Agent', ja: 'Agent', ko: 'Agent', fr: 'Agent' },
     dirs: ['agent'],
+    entrySlug: 'agent/pick-agent',
+    description: {
+      en: 'Pick an agent, approve plans, publish, share, and collaborate.',
+      'zh-TW': '選擇 Agent、確認計畫、發布分享與多人協作。',
+      ja: 'Agent の選択、プラン承認、公開・共有、共同作業の方法。',
+      ko: 'Agent 선택, 계획 승인, 게시·공유 및 협업 방법.',
+      fr: 'Choisir un Agent, approuver un plan, publier, partager et collaborer.',
+    },
   },
   {
     label: 'Build',
     translations: { 'zh-TW': 'Build', ja: 'Build', ko: 'Build', fr: 'Build' },
     dirs: ['build'],
+    entrySlug: 'build/start-website',
+    description: {
+      en: 'Chat modes, live preview, data, environment values, and custom domains.',
+      'zh-TW': '對話模式、即時 Preview、資料管理、環境設定與自訂網域。',
+      ja: 'チャットモード、ライブ Preview、データ、環境設定と独自ドメイン。',
+      ko: '채팅 모드, 실시간 Preview, 데이터, 환경 설정과 커스텀 도메인.',
+      fr: 'Modes de chat, Preview en direct, données, variables et domaines.',
+    },
   },
   {
     label: 'OpenStep CLI',
     translations: { 'zh-TW': 'OpenStep CLI', ja: 'OpenStep CLI', ko: 'OpenStep CLI', fr: 'OpenStep CLI' },
+    navLabel: 'CLI',
+    navTranslations: { 'zh-TW': 'CLI', ja: 'CLI', ko: 'CLI', fr: 'CLI' },
     dirs: ['cli'],
+    entrySlug: 'cli/what-it-does',
+    description: {
+      en: 'Install the CLI, edit locally, bring your own code, and push live.',
+      'zh-TW': '安裝 CLI、本機開發、匯入既有程式碼並直接發布上線。',
+      ja: 'CLI の導入、ローカル開発、既存コードの取り込みと公開。',
+      ko: 'CLI 설치, 로컬 개발, 기존 코드 가져오기와 배포.',
+      fr: 'Installer la CLI, développer en local, importer votre code et publier.',
+    },
   },
   {
     label: 'SSU and account',
     translations: { 'zh-TW': 'SSU 與帳戶', ja: 'SSU とアカウント', ko: 'SSU와 계정', fr: 'SSU et compte' },
+    navLabel: 'SSU',
+    navTranslations: { 'zh-TW': 'SSU', ja: 'SSU', ko: 'SSU', fr: 'SSU' },
     dirs: ['account'],
+    entrySlug: 'account/what-is-ssu',
+    description: {
+      en: 'How SSU works, checking your balance, and redeeming codes.',
+      'zh-TW': '了解 SSU 用途、查看餘額與兌換碼操作。',
+      ja: 'SSU の仕組み、残高の確認、コードの引き換え方法。',
+      ko: 'SSU 작동 방식, 잔액 확인 및 코드 등록 방법.',
+      fr: 'Fonctionnement des SSU, suivi du solde et utilisation de codes.',
+    },
   },
   {
     label: 'Reference',
     translations: { 'zh-TW': '參考', ja: '参考', ko: '참고', fr: 'Référence' },
     dirs: ['reference'],
+    entrySlug: 'reference/faq',
+    description: {
+      en: 'Frequently asked questions and platform limits.',
+      'zh-TW': '常見問題解答與平台使用限制。',
+      ja: 'よくある質問とプラットフォームの制限事項。',
+      ko: '자주 묻는 질문과 플랫폼 제한 사항.',
+      fr: 'Questions fréquentes et limites de la plateforme.',
+    },
   },
 ];

@@ -22,7 +22,21 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'OpenStep',
-      plugins: [starlightThemeBlack({})],
+      plugins: [
+        starlightThemeBlack({
+          navLinks: sections.map(({ label, translations, navLabel, navTranslations, entrySlug }) => {
+            const tr = navTranslations ?? translations;
+            return {
+              slug: entrySlug,
+              translations: {
+                en: navLabel ?? label,
+                ...tr,
+                ...(tr['zh-TW'] ? { 'zh-tw': tr['zh-TW'] } : {}),
+              },
+            };
+          }),
+        }),
+      ],
       customCss: ['./src/styles/brand.css'],
       head: [
         { tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },

@@ -4,9 +4,11 @@ import { href, localeDocs } from './docs';
 interface Props {
   slugs: string[];
   numbered?: boolean;
+  compact?: boolean;
+  label?: string;
 }
 
-const { slugs, numbered = false } = Astro.props;
+const { slugs, numbered = false, compact = false, label } = Astro.props;
 const docs = await localeDocs(Astro.locals.starlightRoute.locale);
 const pages = slugs.map((slug) => {
   const doc = docs.get(slug);
@@ -15,14 +17,30 @@ const pages = slugs.map((slug) => {
 });
 ---
 
-<div class:list={['home-links not-content', { numbered }]}>
-  {
-    pages.map((doc, i) => (
-      <a href={href(doc)}>
-        {numbered && <span class="num">{i + 1}</span>}
-        <b>{doc.data.title}</b>
-        <span class="desc">{doc.data.description}</span>
-      </a>
-    ))
-  }
-</div>
+{
+  compact ? (
+    <div class="home-popular not-content">
+      {label && <span class="popular-label">{label}</span>}
+      <div class="popular-chips">
+        {pages.map((doc) => (
+          <a class="popular-chip" href={href(doc)}>
+            {doc.data.title}
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  ) : (
+    <div class:list={['home-links not-content', { numbered }]}>
+      {pages.map((doc, i) => (
+        <a href={href(doc)}>
+          {numbered && <span class="num">{i + 1}</span>}
+          <span class="link-body">
+            <b>{doc.data.title}</b>
+            <span class="desc">{doc.data.description}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  )
+}
