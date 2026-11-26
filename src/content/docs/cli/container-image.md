@@ -11,7 +11,7 @@ You need an authorized course partner account, credentials for a private registr
 
 ## Prepare your container
 
-- Build for `linux/amd64`. The compressed image must be at most 1 GB (1,000,000,000 bytes).
+- Build for `linux/amd64`. The compressed image must be at most 1 GB (1,000,000,000 bytes). Across all layers, decompressed tar data (including headers and padding) must stay within 4 GiB, and the total entry count must not exceed 200,000.
 - Serve a standard HTTP/HTTPS web application. Phase 1 does not support WebSocket upgrades or unauthenticated inbound webhooks.
 - Listen on `PORT`, which OpenStep sets to your configured port (8080 by default). Return an HTTP `2xx` response on your configured health path, such as `/health`.
 - Keep your database outside the container. Local disk is ephemeral and is cleared when the container sleeps or restarts. External image containers have direct outbound TCP and HTTPS internet access: connect directly to external Postgres, MySQL, Redis, MongoDB or third-party HTTPS APIs. No egress allowlist is needed.
@@ -61,14 +61,18 @@ async function chargeCourseUnlock(req, orderId) {
     }),
   });
   const result = await response.json();
-  if (!response.ok) throw new Error(result.error ?? 'Charge failed.');
+  if (!response.ok) throw new Error(String(result?.error?.code ?? result?.error?.message ?? response.status));
   return result;
 }
 ```
 
 OpenStep supplies `STEPS_API_URL` and `STEPS_RUNTIME_TOKEN`; keep the token on the backend. Show the SSU price before the learner takes the paid action, and grant access only after the charge succeeds. An `insufficient_balance` response means the learner needs to top up. Reuse the same `idempotencyKey` when retrying the same order: it returns the existing charge without charging twice. Use a different key for a different order, and never reuse a key with a different wallet, amount or action. Charges and the partner's share appear on **Partner earnings** (`/partner`).
 
+Requests have a **10 MiB body limit** and a **60-second timeout**. For `partner/charge`, `idempotencyKey` must contain **8–128 characters** and `action` must contain **1–64 characters**.
+
 ## Push and publish
+
+Use a Gitea access token with the **`write:package`** scope as the password for `docker login`; this scope is required for `docker push`.
 
 Replace `<slug>`, `<repo>` and `<tag>` with your registry organization, image name and version:
 
@@ -84,3 +88,5 @@ docker push git.openstep.academy/partner-<slug>/<repo>:<tag>
 4. Click **Publish**. OpenStep checks the image and its health endpoint before making it live. Learners can then enter through the Join Link or Campus Earth.
 
 To update, push a new image and publish again. You can keep the same tag: every **Publish** resolves its current digest and rolls out that version. **Rollback**, **Unpublish**, **Republish**, **Join Link**, **Learners** and **Partner earnings** work as they do for built-in Apps. Rollback and Republish restore their saved image version, even if its tag now points elsewhere.
+
+To return to code, the owner can choose **Switch back to Code** in the same Container Image section, including after partner authorization has been revoked. This removes the saved image source. Full Agent builds and planned Brainstorm builds require every App to use Code; a mixed Agent can still use CLI push to change its Code Apps while leaving image App snapshots unchanged.
