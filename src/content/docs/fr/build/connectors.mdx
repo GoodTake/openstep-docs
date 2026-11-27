@@ -55,7 +55,7 @@ Le builder peut aussi vous le demander dans le chat, avec une carte. Cliquez sur
 
 ## Connectors de trading
 
-Les connectors de trading permettent au builder et à votre site de travailler avec votre compte d'exchange : lire les soldes et les positions, passer et clôturer des ordres. Vous connectez votre propre compte d'exchange dans **Plugins & connections** : approuvez sur la page de l'exchange ou avec votre wallet, ou, pour OKX, collez une API key de votre compte dans le formulaire de connexion. Les clés n'entrent jamais dans le chat ou le code.
+Les connectors de trading permettent au builder et à votre site de travailler avec votre compte d'exchange : lire les soldes et les positions, passer et clôturer des ordres. Vous connectez votre propre compte d'exchange dans **Plugins & connections** : approuvez sur la page de l'exchange ou avec votre wallet, ou, pour OKX et Binance, collez une API key de votre compte dans le formulaire de connexion. Les clés n'entrent jamais dans le chat ou le code.
 
 <Flow
   numbered
@@ -71,7 +71,7 @@ Les connectors de trading permettent au builder et à votre site de travailler a
 |---|---|---|
 | Hyperliquid | Signez une fois avec votre wallet pour approuver une clé de trading. Cette clé ne peut pas retirer de fonds. | Perpétuels : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture |
 | OKX | Collez une API key, son secret et sa passphrase depuis votre compte OKX, créés avec Read et Trade seulement. Une clé qui peut retirer est refusée. Choisissez Demo ou Live. | Spot et swaps perpétuels : soldes, positions, ordres, données de marché |
-| Binance | Connectez-vous sur Binance et choisissez ce que vous autorisez. Les ordres passent dans un sous-compte Binance séparé que vous alimentez vous-même. Les retraits ne sont jamais autorisés. | Données de marché, soldes, ordres |
+| Binance | Collez une API key et son secret depuis votre compte Binance, créés avec lecture et trading seulement. Une clé qui peut retirer est refusée. Choisissez Testnet ou Live. | Spot et perpétuels USDⓈ-M : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture |
 
 :::caution[Les ordres sont réels]
 En Preview, votre site trade avec le compte connecté, et dans le chat le builder peut passer un ordre si vous le demandez. Pendant la construction, utilisez un compte démo ou testnet quand l'exchange en propose un.

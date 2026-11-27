@@ -55,7 +55,7 @@ builder 也可能在對話裡用一張卡片請你連線，點卡片上的 **Con
 
 ## 交易 Connector
 
-交易 Connector 讓 builder 和你的網站使用你的交易所帳戶：讀取餘額和持倉、下單、平倉。你在 **Plugins & connections** 連上自己的交易所帳戶：在交易所頁面上或用錢包授權；OKX 則是把你自己帳戶的 API key 貼進連線表單。金鑰不會進到對話或程式碼裡。
+交易 Connector 讓 builder 和你的網站使用你的交易所帳戶：讀取餘額和持倉、下單、平倉。你在 **Plugins & connections** 連上自己的交易所帳戶：在交易所頁面上或用錢包授權；OKX 和 Binance 則是把你自己帳戶的 API key 貼進連線表單。金鑰不會進到對話或程式碼裡。
 
 <Flow
   numbered
@@ -71,7 +71,7 @@ builder 也可能在對話裡用一張卡片請你連線，點卡片上的 **Con
 |---|---|---|
 | Hyperliquid | 用錢包簽一次名，批准一把交易用的金鑰。這把金鑰不能提領。 | 永續合約：餘額、持倉、市價與限價單、止盈止損、撤單、平倉 |
 | OKX | 貼上你 OKX 帳戶的 API key、secret 和 passphrase，建立時只開 Read 和 Trade。能提領的 key 會被拒絕。可選 Demo 或 Live。 | 現貨和永續合約：餘額、持倉、下單、行情 |
-| Binance | 在 Binance 登入，選擇要允許的權限。交易在一個獨立的 Binance 子帳戶裡進行，資金由你自己轉入。永遠不允許提領。 | 行情、餘額、下單 |
+| Binance | 貼上你 Binance 帳戶的 API key 和 secret，建立時只開讀取和交易。能提領的 key 會被拒絕。可選 Testnet 或 Live。 | 現貨和 U 本位永續：餘額、持倉、市價與限價單、止盈止損、撤單、平倉 |
 
 :::caution[下單是真的]
 在 Preview 裡，網站用你連線的帳戶交易；在對話裡，你一開口 builder 就可能下單。建造時，交易所有模擬盤或測試網的話盡量用它。
