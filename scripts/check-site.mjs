@@ -33,6 +33,7 @@ const ROOT_PAGES = [
   'build/preview.md',
   'build/code.md',
   'build/data.md',
+  'build/connectors.mdx',
   'build/what-your-site-can-do.md',
   'build/environment-values.md',
   'build/go-live.md',

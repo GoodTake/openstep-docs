@@ -31,6 +31,10 @@ sidebar:
 
 你的網站發布之後，可以在固定時間執行工作。例如咖啡店可以每天傍晚準備隔天的訂位清單。時間以 UTC 計。開啟 **Console**，然後開啟 **Scheduled tasks**，就能看到每個 App 在開發與上線環境各排了哪些工作。
 
+## 你在其他服務的帳號
+
+網站可以使用你在其他服務的帳號，例如 Google Sheet、Slack 頻道、GitHub 儲存庫，也可以在 Hyperliquid、OKX、Binance 交易。每個帳號在 **Console** → **Plugins & connections** 連一次就好，金鑰不會進到程式碼裡。見 [Connectors](/zh-tw/build/connectors/)。
+
 ## 儲存的資料
 
 你的網站可以保存自己的紀錄，例如咖啡店的訂位。你可以在 **Data** 分頁查看。見 [網站資料](/zh-tw/build/data/)。

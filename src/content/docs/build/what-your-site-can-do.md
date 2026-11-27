@@ -31,6 +31,10 @@ Your site can take payment from visitors in SSU, for products, orders, tips or m
 
 Your site can run jobs at set times, once it is published. The coffee shop could, for example, prepare tomorrow's list of bookings every evening. The times are in UTC. Open **Console** and then **Scheduled tasks** to see what each App has scheduled, in development and live.
 
+## Your other accounts
+
+Your site can use your accounts on other services, such as a Google Sheet, a Slack channel or a GitHub repository, and trade on Hyperliquid, OKX or Binance. You connect each account once in **Console** → **Plugins & connections**, and the key never goes into the code. See [Connectors](/build/connectors/).
+
 ## Stored data
 
 Your site can keep its own records, such as the bookings in the coffee shop. You can look at them in the **Data** tab. See [Site data](/build/data/).

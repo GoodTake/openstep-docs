@@ -1,0 +1,111 @@
+---
+title: Connectors
+description: Google、Slack、GitHub、Hyperliquid、OKX、Binance など、ほかのサービスや取引所のあなたのアカウントをサイトから使う。コードに鍵は入れません。
+sidebar:
+  order: 10.5
+---
+
+import Flow from '../../../../components/Flow.astro';
+
+Connector を使うと、サイトがほかのサービスのあなたのアカウントを使えます。予約を Google Sheet に保存する、Slack に投稿する、GitHub に issue を立てる、取引所で取引する、などです。アカウントの接続は一度だけ。鍵はプラットフォームが預かり、サイトの代わりに呼び出します。
+
+## しくみ
+
+<Flow
+  numbered
+  steps={[
+    { title: 'チャットで頼む', text: 'コーヒーショップなら：「予約を全部、私の Google Sheet に保存して」' },
+    { title: '一度だけ接続', text: 'Console → Plugins & connections。サインインするか、鍵を貼り付けます。' },
+    { title: '触れる範囲を選ぶ', text: 'ファイル、チャンネル、リポジトリを選びます。それ以外には届きません。' },
+    { title: 'サイトが使う', text: 'Preview でも公開後でも。コードに鍵はありません。' },
+  ]}
+/>
+
+builder がチャットのカードで接続を頼むこともあります。カードの **Connect** を押して始めます。
+
+## 鍵はどこにあるか
+
+<Flow
+  steps={[
+    { title: 'あなたのサイト', text: '操作を頼む：シートを読む、メッセージを送る。' },
+    { title: 'OpenStep', text: 'あなたの鍵を付け、許可した操作だけを通す。', highlight: true },
+    { title: '外部サービス', text: 'Google、Slack、GitHub…' },
+  ]}
+  caption="鍵はプラットフォームにだけ置かれ、サイトのコード、データ、チャットには入りません。"
+/>
+
+## 使える Connector
+
+| サービス | サイトができること | 接続のしかた |
+|---|---|---|
+| Google Drive | 選んだ Sheets と Docs を読み書き | サインイン |
+| Google Calendar | 選んだカレンダーの予定を読む、作る、編集する | 自分のアプリ、続けてサインイン |
+| Google Analytics 4 | 選んだプロパティのレポートを読む | 自分のアプリ、続けてサインイン |
+| Slack | 選んだ公開チャンネルに投稿 | サインイン |
+| Lark / Feishu | 選んだ Sheets、Docs、Bases を読み書き | 自分のアプリ、続けてサインイン |
+| HubSpot | コンタクトと取引を読む、管理する | 自分のアプリ、続けてサインイン |
+| Mailchimp | 選んだオーディエンスのメンバーとタグを管理 | API key |
+| LinkedIn | あなたのプロフィールでテキスト投稿 | 自分のアプリ、続けてサインイン |
+| Xero | 選んだ組織の会計データを読む | 自分のアプリ、続けてサインイン |
+| Zendesk | チケットを読む、作る、返信する | 自分のアプリ、続けてサインイン |
+| GitHub | 選んだリポジトリの issue と pull request を読み、issue を立てる | Personal access token |
+| Resend | 自分のドメインからサイトのメールを送る | API key |
+
+**自分のアプリ**：そのサービスの開発者設定でアプリ（OAuth クライアント）を作り、その ID と secret を接続フォームに貼り付けます。
+
+## 取引 Connector
+
+取引 Connector を使うと、builder とサイトが取引所のあなたのアカウントを使えます。残高とポジションを読む、注文を出す、決済する、などです。どの取引所も同じ流れです。取引所自身のページか、ウォレットでアクセスを承認すると、OpenStep がその結果で接続します。鍵をチャットやコードに貼る必要はありません。
+
+<Flow
+  numbered
+  steps={[
+    { title: 'Connect を押す', text: 'Console → Plugins & connections。' },
+    { title: '取引所で承認', text: 'そこでサインインするか、ウォレットで署名します。許可する範囲を選びます。' },
+    { title: 'OpenStep が接続', text: '承認の結果を暗号化して保存します。', highlight: true },
+    { title: 'builder とサイトが取引', text: '残高を読む、注文を出す、決済する。' },
+  ]}
+/>
+
+| 取引所 | 承認のしかた | できること |
+|---|---|---|
+| Hyperliquid | ウォレットで一度署名し、取引用の鍵を承認します。この鍵は出金できません。 | 無期限先物：残高、ポジション、成行・指値注文、利確・損切り、取消、決済 |
+| OKX | OKX でサインインし、アクセスを許可します。 | 現物と無期限スワップ：残高、ポジション、注文、相場 |
+| Binance | Binance でサインインし、許可する範囲を選びます。取引は別の Binance サブアカウントで行い、資金は自分で移します。出金は決して許可されません。 | 相場、残高、注文 |
+
+:::caution[注文は本物です]
+Preview ではサイトが接続したアカウントで取引し、チャットでは頼めば builder が注文を出せます。作っている間は、取引所にデモ口座やテストネットがあればそれを使ってください。
+:::
+
+接続が **Needs reconnect** と表示されたら、**Reconnect** を押してもう一度承認します。
+
+## プラグイン：MCP servers
+
+プラグインは、チャットで作業中の **builder** に道具を足します。たとえば提携サービスのデータを調べる、など。プラグインはプラットフォームが追加し、Agent の owner が **Plugins & connections → MCP servers** で有効にします。プラットフォームが提供しているときだけ、この欄が表示されます。
+
+<Flow
+  steps={[
+    { title: 'チャット中の builder', text: '必要なときにツールを呼ぶ。' },
+    { title: 'OpenStep', text: 'ツールが有効か確かめ、鍵を付ける。', highlight: true },
+    { title: 'MCP server', text: 'データを返す。' },
+  ]}
+  caption="公開済みのサイトはプラグインを呼びません。サイトから外部サービスを使うときは Connector を使います。"
+/>
+
+## 誰が何をできるか
+
+| | Owner | Editor | Viewer |
+|---|---|---|---|
+| アカウントの接続、再接続、削除 | ✓ | | |
+| 接続済みのアカウントで作る | ✓ | ✓ | |
+| 接続を見る | ✓ | ✓ | ✓ |
+
+## うまくいかないとき
+
+| 表示 | すること |
+|---|---|
+| Connections are not available for this agent yet. | Connector は Agent ごとに有効にします。OpenStep チームに連絡してください。 |
+| The connected account stopped working. Reconnect it to continue. | Plugins & connections で **Reconnect** を押します。 |
+| The app needs more access than the account allowed. | もう一度接続し、求められた権限を許可します。 |
+
+次へ：[環境値](/ja/build/environment-values/)。

@@ -31,6 +31,10 @@ Votre site peut encaisser des paiements de ses visiteurs en SSU, pour des produi
 
 Votre site peut exécuter des tâches à des heures fixes, une fois publié. Le café pourrait, par exemple, préparer chaque soir la liste des réservations du lendemain. Les heures sont en UTC. Ouvrez **Console** puis **Scheduled tasks** pour voir ce que chaque App a planifié, en développement et en ligne.
 
+## Vos autres comptes
+
+Votre site peut utiliser vos comptes sur d'autres services, comme une Google Sheet, un canal Slack ou un dépôt GitHub, et trader sur Hyperliquid, OKX ou Binance. Vous connectez chaque compte une fois dans **Console** → **Plugins & connections**, et la clé n'entre jamais dans le code. Voir [Connectors](/fr/build/connectors/).
+
 ## Données enregistrées
 
 Votre site peut conserver ses propres enregistrements, comme les réservations du café. Vous pouvez les consulter dans l'onglet **Data**. Voir [Données du site](/fr/build/data/).

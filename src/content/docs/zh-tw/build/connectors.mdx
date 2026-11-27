@@ -1,0 +1,111 @@
+---
+title: Connectors
+description: 讓你的網站使用你在其他服務和交易所的帳號，例如 Google、Slack、GitHub、Hyperliquid、OKX、Binance，程式碼裡不放金鑰。
+sidebar:
+  order: 10.5
+---
+
+import Flow from '../../../../components/Flow.astro';
+
+Connector 讓你的網站使用你在其他服務的帳號：把訂位寫進 Google Sheet、發訊息到 Slack、開一個 GitHub issue，或在交易所交易。帳號只要連一次，金鑰由平台保管，呼叫也由平台替網站發出。
+
+## 怎麼運作
+
+<Flow
+  numbered
+  steps={[
+    { title: '在對話裡說', text: '以咖啡店為例：「把每筆訂位存進我的 Google Sheet。」' },
+    { title: '連一次', text: 'Console → Plugins & connections。登入，或貼上金鑰。' },
+    { title: '選它能碰什麼', text: '挑檔案、頻道或儲存庫。其他的都碰不到。' },
+    { title: '網站開始使用', text: 'Preview 和發布後都能用，程式碼裡沒有金鑰。' },
+  ]}
+/>
+
+builder 也可能在對話裡用一張卡片請你連線，點卡片上的 **Connect** 即可。
+
+## 金鑰放在哪裡
+
+<Flow
+  steps={[
+    { title: '你的網站', text: '要做一件事：讀表格、發訊息。' },
+    { title: 'OpenStep', text: '加上你的金鑰，只放行你允許的事。', highlight: true },
+    { title: '外部服務', text: 'Google、Slack、GitHub…' },
+  ]}
+  caption="金鑰只留在平台，不會出現在網站的程式碼、資料或對話裡。"
+/>
+
+## 目前可用的 Connector
+
+| 服務 | 網站能做什麼 | 連線方式 |
+|---|---|---|
+| Google Drive | 讀寫你選的 Sheets 和 Docs | 登入 |
+| Google Calendar | 讀取、建立、修改你選的日曆裡的活動 | 自己的應用，再登入 |
+| Google Analytics 4 | 讀取你選的資源的報表 | 自己的應用，再登入 |
+| Slack | 發訊息到你選的公開頻道 | 登入 |
+| Lark / 飛書 | 讀寫你選的 Sheets、Docs 和 Bases | 自己的應用，再登入 |
+| HubSpot | 讀取和管理聯絡人與商機 | 自己的應用，再登入 |
+| Mailchimp | 維護你選的受眾的成員和標籤 | API key |
+| LinkedIn | 以你的個人檔案發純文字貼文 | 自己的應用，再登入 |
+| Xero | 讀取你選的組織的會計資料 | 自己的應用，再登入 |
+| Zendesk | 讀取、建立和回覆工單 | 自己的應用，再登入 |
+| GitHub | 讀取 issue 和 pull request，在你選的儲存庫開 issue | Personal access token |
+| Resend | 用你自己的網域寄出網站的信 | API key |
+
+**自己的應用**：在該服務的開發者設定裡建立一個應用（OAuth client），把它的 ID 和 secret 貼進連線表單。
+
+## 交易 Connector
+
+交易 Connector 讓 builder 和你的網站使用你的交易所帳戶：讀取餘額和持倉、下單、平倉。每家交易所的做法都一樣：你在交易所自己的頁面上、或用錢包授權，OpenStep 拿到授權結果後替你連線。你不用把金鑰貼進對話或程式碼。
+
+<Flow
+  numbered
+  steps={[
+    { title: '點 Connect', text: 'Console → Plugins & connections。' },
+    { title: '到交易所授權', text: '在那裡登入，或用錢包簽名。選擇要允許的權限。' },
+    { title: 'OpenStep 連線', text: '把授權結果加密保存。', highlight: true },
+    { title: 'builder 和網站交易', text: '讀餘額、下單、平倉。' },
+  ]}
+/>
+
+| 交易所 | 授權方式 | 能做什麼 |
+|---|---|---|
+| Hyperliquid | 用錢包簽一次名，批准一把交易用的金鑰。這把金鑰不能提領。 | 永續合約：餘額、持倉、市價與限價單、止盈止損、撤單、平倉 |
+| OKX | 在 OKX 登入並允許存取。 | 現貨和永續合約：餘額、持倉、下單、行情 |
+| Binance | 在 Binance 登入，選擇要允許的權限。交易在一個獨立的 Binance 子帳戶裡進行，資金由你自己轉入。永遠不允許提領。 | 行情、餘額、下單 |
+
+:::caution[下單是真的]
+在 Preview 裡，網站用你連線的帳戶交易；在對話裡，你一開口 builder 就可能下單。建造時，交易所有模擬盤或測試網的話盡量用它。
+:::
+
+連線顯示 **Needs reconnect** 時，點 **Reconnect** 重新授權。
+
+## 外掛：MCP servers
+
+外掛讓 **builder** 在對話中多一些工具可用，例如查詢合作方服務的資料。外掛由平台加入，Agent 的 owner 在 **Plugins & connections → MCP servers** 裡開啟。平台有提供外掛時才會出現這一區。
+
+<Flow
+  steps={[
+    { title: '對話中的 builder', text: '任務需要時呼叫工具。' },
+    { title: 'OpenStep', text: '確認工具已開啟，並加上金鑰。', highlight: true },
+    { title: 'MCP server', text: '回傳資料。' },
+  ]}
+  caption="已發布的網站不會呼叫外掛；網站要用外部服務，請用 Connector。"
+/>
+
+## 誰能做什麼
+
+| | Owner | Editor | Viewer |
+|---|---|---|---|
+| 連線、重新連線、移除帳號 | ✓ | | |
+| 用已連線的帳號建造 | ✓ | ✓ | |
+| 查看連線 | ✓ | ✓ | ✓ |
+
+## 出問題時
+
+| 你看到 | 怎麼辦 |
+|---|---|
+| Connections are not available for this agent yet. | Connector 是逐個 Agent 開啟的，請聯絡 OpenStep 團隊。 |
+| The connected account stopped working. Reconnect it to continue. | 在 Plugins & connections 點 **Reconnect**。 |
+| The app needs more access than the account allowed. | 重新連線，並允許它要求的權限。 |
+
+下一步：[環境值](/zh-tw/build/environment-values/)。

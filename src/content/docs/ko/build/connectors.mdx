@@ -1,0 +1,111 @@
+---
+title: Connectors
+description: Google, Slack, GitHub, Hyperliquid, OKX, Binance 같은 다른 서비스와 거래소의 내 계정을 사이트에서 사용합니다. 코드에 키를 넣지 않습니다.
+sidebar:
+  order: 10.5
+---
+
+import Flow from '../../../../components/Flow.astro';
+
+Connector를 쓰면 사이트가 다른 서비스의 내 계정으로 일할 수 있습니다. 예약을 Google Sheet에 저장하고, Slack에 글을 올리고, GitHub에 issue를 열고, 거래소에서 거래합니다. 계정은 한 번만 연결합니다. 키는 플랫폼이 보관하고, 호출도 플랫폼이 사이트를 대신해 보냅니다.
+
+## 작동 방식
+
+<Flow
+  numbered
+  steps={[
+    { title: '채팅으로 요청', text: '커피숍이라면: "모든 예약을 내 Google Sheet에 저장해 줘."' },
+    { title: '한 번 연결', text: 'Console → Plugins & connections. 로그인하거나 키를 붙여 넣습니다.' },
+    { title: '닿을 범위 선택', text: '파일, 채널, 저장소를 고릅니다. 그 밖에는 닿지 않습니다.' },
+    { title: '사이트가 사용', text: 'Preview에서도, 게시 후에도. 코드에 키가 없습니다.' },
+  ]}
+/>
+
+builder가 채팅에서 카드로 연결을 요청할 수도 있습니다. 카드의 **Connect**를 누르면 시작합니다.
+
+## 키는 어디에 있나
+
+<Flow
+  steps={[
+    { title: '내 사이트', text: '작업을 요청: 시트 읽기, 메시지 보내기.' },
+    { title: 'OpenStep', text: '내 키를 붙이고, 허락한 작업만 통과시킵니다.', highlight: true },
+    { title: '외부 서비스', text: 'Google, Slack, GitHub…' },
+  ]}
+  caption="키는 플랫폼에만 있습니다. 사이트의 코드, 데이터, 채팅에는 들어가지 않습니다."
+/>
+
+## 사용할 수 있는 Connector
+
+| 서비스 | 사이트가 할 수 있는 일 | 연결 방법 |
+|---|---|---|
+| Google Drive | 고른 Sheets와 Docs 읽기·편집 | 로그인 |
+| Google Calendar | 고른 캘린더의 일정 읽기·만들기·편집 | 내 앱을 만든 뒤 로그인 |
+| Google Analytics 4 | 고른 속성의 보고서 읽기 | 내 앱을 만든 뒤 로그인 |
+| Slack | 고른 공개 채널에 게시 | 로그인 |
+| Lark / Feishu | 고른 Sheets, Docs, Bases 읽기·편집 | 내 앱을 만든 뒤 로그인 |
+| HubSpot | 연락처와 거래 읽기·관리 | 내 앱을 만든 뒤 로그인 |
+| Mailchimp | 고른 오디언스의 멤버와 태그 관리 | API key |
+| LinkedIn | 내 프로필로 텍스트 게시물 올리기 | 내 앱을 만든 뒤 로그인 |
+| Xero | 고른 조직의 회계 데이터 읽기 | 내 앱을 만든 뒤 로그인 |
+| Zendesk | 티켓 읽기·만들기·답변 | 내 앱을 만든 뒤 로그인 |
+| GitHub | 고른 저장소의 issue와 pull request 읽기, issue 열기 | Personal access token |
+| Resend | 내 도메인으로 사이트의 이메일 보내기 | API key |
+
+**내 앱**: 그 서비스의 개발자 설정에서 앱(OAuth 클라이언트)을 만들고, 그 ID와 secret을 연결 양식에 붙여 넣습니다.
+
+## 거래 Connector
+
+거래 Connector를 쓰면 builder와 사이트가 거래소의 내 계정으로 일할 수 있습니다. 잔고와 포지션을 읽고, 주문을 내고, 청산합니다. 거래소마다 방식은 같습니다. 거래소 자체 페이지나 지갑으로 접근을 승인하면, OpenStep이 그 결과로 연결합니다. 키를 채팅이나 코드에 붙여 넣을 필요가 없습니다.
+
+<Flow
+  numbered
+  steps={[
+    { title: 'Connect 누르기', text: 'Console → Plugins & connections.' },
+    { title: '거래소에서 승인', text: '거기서 로그인하거나 지갑으로 서명합니다. 허용할 범위를 고릅니다.' },
+    { title: 'OpenStep이 연결', text: '승인 결과를 암호화해서 보관합니다.', highlight: true },
+    { title: 'builder와 사이트가 거래', text: '잔고 읽기, 주문, 청산.' },
+  ]}
+/>
+
+| 거래소 | 승인 방법 | 할 수 있는 일 |
+|---|---|---|
+| Hyperliquid | 지갑으로 한 번 서명해 거래용 키를 승인합니다. 이 키로는 출금할 수 없습니다. | 무기한 선물: 잔고, 포지션, 시장가·지정가 주문, 익절·손절, 취소, 청산 |
+| OKX | OKX에 로그인해 접근을 허용합니다. | 현물과 무기한 스왑: 잔고, 포지션, 주문, 시세 |
+| Binance | Binance에 로그인해 허용할 범위를 고릅니다. 거래는 별도의 Binance 하위 계정에서 이루어지고, 자금은 직접 옮깁니다. 출금은 절대 허용되지 않습니다. | 시세, 잔고, 주문 |
+
+:::caution[주문은 실제입니다]
+Preview에서도 사이트는 연결된 계정으로 거래하고, 채팅에서는 요청하면 builder가 주문을 낼 수 있습니다. 만드는 동안에는 거래소에 데모 계정이나 테스트넷이 있으면 그것을 쓰세요.
+:::
+
+연결에 **Needs reconnect**가 보이면 **Reconnect**를 눌러 다시 승인합니다.
+
+## 플러그인: MCP servers
+
+플러그인은 채팅 중인 **builder**에게 도구를 더해 줍니다. 예를 들어 파트너 서비스의 데이터를 조회합니다. 플러그인은 플랫폼이 추가하고, Agent의 owner가 **Plugins & connections → MCP servers**에서 켭니다. 플랫폼이 제공할 때만 이 항목이 보입니다.
+
+<Flow
+  steps={[
+    { title: '채팅 중인 builder', text: '작업에 필요할 때 도구를 호출합니다.' },
+    { title: 'OpenStep', text: '도구가 켜져 있는지 확인하고 키를 붙입니다.', highlight: true },
+    { title: 'MCP server', text: '데이터로 답합니다.' },
+  ]}
+  caption="게시된 사이트는 플러그인을 호출하지 않습니다. 사이트에서 외부 서비스를 쓰려면 Connector를 쓰세요."
+/>
+
+## 누가 무엇을 할 수 있나
+
+| | Owner | Editor | Viewer |
+|---|---|---|---|
+| 계정 연결, 다시 연결, 제거 | ✓ | | |
+| 연결된 계정으로 만들기 | ✓ | ✓ | |
+| 연결 보기 | ✓ | ✓ | ✓ |
+
+## 문제가 생기면
+
+| 보이는 메시지 | 할 일 |
+|---|---|
+| Connections are not available for this agent yet. | Connector는 Agent마다 켭니다. OpenStep 팀에 문의하세요. |
+| The connected account stopped working. Reconnect it to continue. | Plugins & connections에서 **Reconnect**를 누릅니다. |
+| The app needs more access than the account allowed. | 다시 연결하고, 요청한 권한을 허용합니다. |
+
+다음: [환경 값](/ko/build/environment-values/).

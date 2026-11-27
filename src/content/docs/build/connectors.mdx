@@ -1,0 +1,111 @@
+---
+title: Connectors
+description: Let your site use your accounts on other services and exchanges, such as Google, Slack, GitHub, Hyperliquid, OKX and Binance, with no key in the code.
+sidebar:
+  order: 10.5
+---
+
+import Flow from '../../../components/Flow.astro';
+
+A connector lets your site work with one of your accounts on another service: save bookings to a Google Sheet, post to Slack, open a GitHub issue, or trade on an exchange. You connect the account once. The platform keeps the key and makes the calls for your site.
+
+## How it works
+
+<Flow
+  numbered
+  steps={[
+    { title: 'Ask in chat', text: 'For the coffee shop: "Save every booking to my Google Sheet."' },
+    { title: 'Connect once', text: 'Console → Plugins & connections. Sign in, or paste a key.' },
+    { title: 'Choose what it can reach', text: 'Pick the files, channels or repositories. Nothing else is reachable.' },
+    { title: 'Your site uses it', text: 'In Preview and once published. No key in the code.' },
+  ]}
+/>
+
+The builder can also ask you in the chat, with a card. Click **Connect** on the card to start.
+
+## Where your key lives
+
+<Flow
+  steps={[
+    { title: 'Your site', text: 'Asks for an action: read a sheet, post a message.' },
+    { title: 'OpenStep', text: 'Adds your key and lets through only what you allowed.', highlight: true },
+    { title: 'The service', text: 'Google, Slack, GitHub…' },
+  ]}
+  caption="The key stays with the platform. It is never in your site's code, its data or the chat."
+/>
+
+## Available connectors
+
+| Service | What your site can do | How you connect |
+|---|---|---|
+| Google Drive | Read and edit the Sheets and Docs you choose | Sign in |
+| Google Calendar | Read, create and edit events in the calendars you choose | Your own app, then sign in |
+| Google Analytics 4 | Read reports of the properties you choose | Your own app, then sign in |
+| Slack | Post to the public channels you choose | Sign in |
+| Lark / Feishu | Read and edit the Sheets, Docs and Bases you choose | Your own app, then sign in |
+| HubSpot | Read and manage contacts and deals | Your own app, then sign in |
+| Mailchimp | Keep members and tags in the audiences you choose | API key |
+| LinkedIn | Publish text posts as your profile | Your own app, then sign in |
+| Xero | Read the accounting data of the organisations you choose | Your own app, then sign in |
+| Zendesk | Read, create and answer tickets | Your own app, then sign in |
+| GitHub | Read issues and pull requests, open issues in the repositories you choose | Personal access token |
+| Resend | Send your site's email from your own domain | API key |
+
+**Your own app** means you create an app (an OAuth client) in that service's developer settings, then paste its ID and secret into the connect form.
+
+## Trading connectors
+
+Trading connectors let the builder and your site work with your exchange account: read balances and positions, place and close orders. Every exchange works the same way: you approve access on the exchange's own page, or with your wallet, and OpenStep connects with what comes back. You never paste a key into the chat or the code.
+
+<Flow
+  numbered
+  steps={[
+    { title: 'Click Connect', text: 'Console → Plugins & connections.' },
+    { title: 'Approve on the exchange', text: 'Sign in there, or sign with your wallet. Choose what to allow.' },
+    { title: 'OpenStep connects', text: 'It keeps the approval, encrypted.', highlight: true },
+    { title: 'Builder and site trade', text: 'Read balances, place and close orders.' },
+  ]}
+/>
+
+| Exchange | How you approve | What it can do |
+|---|---|---|
+| Hyperliquid | Sign once with your wallet to approve a trading key. That key cannot withdraw. | Perpetuals: balances, positions, market and limit orders, take-profit and stop-loss, cancel, close |
+| OKX | Sign in on OKX and approve access. | Spot and perpetual swaps: balances, positions, orders, market data |
+| Binance | Sign in on Binance and choose what to allow. Trades run in a separate Binance sub-account that you fund. Withdrawals are never allowed. | Market data, balances, orders |
+
+:::caution[Orders are real]
+In Preview your site trades with your connected account, and in the chat the builder can place an order when you ask. Build with a demo or testnet account where the exchange offers one.
+:::
+
+When a connection shows **Needs reconnect**, click **Reconnect** and approve again.
+
+## Plugins: MCP servers
+
+Plugins give the **builder** extra tools while it works in the chat, for example to look up data from a partner service. The platform adds them. The agent owner turns them on under **Plugins & connections → MCP servers**. This section shows only when the platform offers some.
+
+<Flow
+  steps={[
+    { title: 'The builder, in chat', text: 'Calls a tool when the task needs it.' },
+    { title: 'OpenStep', text: 'Checks the tool is turned on and adds the key.', highlight: true },
+    { title: 'The MCP server', text: 'Answers with the data.' },
+  ]}
+  caption="Your published site does not call plugins. Use a connector for that."
+/>
+
+## Who can do what
+
+| | Owner | Editor | Viewer |
+|---|---|---|---|
+| Connect, reconnect or remove an account | ✓ | | |
+| Build with a connected account | ✓ | ✓ | |
+| See the connections | ✓ | ✓ | ✓ |
+
+## If something goes wrong
+
+| You see | What to do |
+|---|---|
+| Connections are not available for this agent yet. | Connectors are turned on agent by agent. Ask the OpenStep team. |
+| The connected account stopped working. Reconnect it to continue. | Click **Reconnect** in Plugins & connections. |
+| The app needs more access than the account allowed. | Connect again and allow the access it asks for. |
+
+Next: [Environment values](/build/environment-values/).

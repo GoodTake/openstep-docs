@@ -1,0 +1,98 @@
+---
+/**
+ * A left-to-right flow of boxes joined by arrows; it stacks top to bottom on narrow screens. Each locale passes its
+ * own words, so one diagram serves every translation. `numbered` puts a step number on each box; `highlight` marks
+ * the box the reader should look at. Classes are `step-flow*` so they never meet brand.css's `.flow`.
+ */
+interface Step {
+  title: string;
+  text?: string;
+  highlight?: boolean;
+}
+
+interface Props {
+  steps: Step[];
+  numbered?: boolean;
+  caption?: string;
+}
+
+const { steps, numbered = false, caption } = Astro.props;
+---
+
+<figure class="step-flow not-content">
+  <div class="step-flow-row" style={`--step-flow-count: ${steps.length}`}>
+    {steps.map((step, index) => (
+      <div class:list={['step-flow-box', { 'step-flow-highlight': step.highlight }]}>
+        {numbered && <span class="step-flow-num">{index + 1}</span>}
+        <strong>{step.title}</strong>
+        {step.text && <span class="step-flow-text">{step.text}</span>}
+      </div>
+    ))}
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .step-flow {
+    display: block;
+    margin: 1.5rem 0;
+  }
+  .step-flow-row {
+    display: grid;
+    grid-template-columns: repeat(var(--step-flow-count), minmax(0, 1fr));
+    gap: 2rem;
+    width: 100%;
+  }
+  .step-flow-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--border, var(--sl-color-gray-5));
+    border-radius: var(--radius, 0.75rem);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .step-flow-highlight {
+    border-color: var(--brand, var(--sl-color-text-accent));
+    box-shadow: 0 0 0 1px var(--brand, var(--sl-color-text-accent));
+  }
+  .step-flow-box + .step-flow-box::before {
+    content: '→';
+    position: absolute;
+    top: 50%;
+    left: -1.45rem;
+    transform: translateY(-50%);
+    color: var(--brand-strong, var(--sl-color-text-accent));
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+  .step-flow-num {
+    color: var(--brand-strong, var(--sl-color-text-accent));
+    font-weight: 700;
+  }
+  .step-flow-box strong {
+    font-size: inherit;
+  }
+  .step-flow-text {
+    color: var(--sl-color-gray-2);
+  }
+  .step-flow figcaption {
+    margin-top: 0.5rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+  @media (max-width: 50rem) {
+    .step-flow-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.6rem;
+    }
+    .step-flow-box + .step-flow-box::before {
+      content: '↓';
+      top: -1.35rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+</style>

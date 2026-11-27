@@ -31,6 +31,10 @@ sidebar:
 
 사이트는 게시된 뒤 정해진 시간에 작업을 실행할 수 있습니다. 예를 들어 커피숍은 매일 저녁 내일의 예약 목록을 준비할 수 있습니다. 시간은 UTC 기준입니다. **Console**을 열고 **Scheduled tasks**를 클릭하면 각 앱에 예약된 작업을 개발용과 라이브용으로 볼 수 있습니다.
 
+## 다른 서비스의 내 계정
+
+사이트는 Google Sheet, Slack 채널, GitHub 저장소 같은 다른 서비스의 내 계정을 쓸 수 있고, Hyperliquid, OKX, Binance에서 거래할 수도 있습니다. 계정마다 **Console** → **Plugins & connections**에서 한 번만 연결하면 되고, 키는 코드에 들어가지 않습니다. [Connectors](/ko/build/connectors/) 참고.
+
 ## 저장된 데이터
 
 사이트는 커피숍의 예약처럼 자체 기록을 보관할 수 있습니다. **Data** 탭에서 볼 수 있습니다. [사이트 데이터](/ko/build/data/)를 참고하세요.

@@ -1,0 +1,111 @@
+---
+title: Connectors
+description: Laissez votre site utiliser vos comptes sur d'autres services et exchanges, comme Google, Slack, GitHub, Hyperliquid, OKX et Binance, sans clé dans le code.
+sidebar:
+  order: 10.5
+---
+
+import Flow from '../../../../components/Flow.astro';
+
+Un connector permet à votre site de travailler avec l'un de vos comptes sur un autre service : enregistrer les réservations dans une Google Sheet, publier sur Slack, ouvrir une issue GitHub, ou trader sur un exchange. Vous connectez le compte une seule fois. La plateforme garde la clé et fait les appels pour votre site.
+
+## Comment ça marche
+
+<Flow
+  numbered
+  steps={[
+    { title: 'Demandez dans le chat', text: 'Pour le café : « Enregistre chaque réservation dans ma Google Sheet. »' },
+    { title: 'Connectez une fois', text: 'Console → Plugins & connections. Connectez-vous, ou collez une clé.' },
+    { title: 'Choisissez ce qu\'il peut atteindre', text: 'Les fichiers, canaux ou dépôts. Rien d\'autre n\'est accessible.' },
+    { title: 'Votre site l\'utilise', text: 'En Preview et une fois publié. Aucune clé dans le code.' },
+  ]}
+/>
+
+Le builder peut aussi vous le demander dans le chat, avec une carte. Cliquez sur **Connect** sur la carte pour commencer.
+
+## Où est votre clé
+
+<Flow
+  steps={[
+    { title: 'Votre site', text: 'Demande une action : lire une feuille, envoyer un message.' },
+    { title: 'OpenStep', text: 'Ajoute votre clé et ne laisse passer que ce que vous avez autorisé.', highlight: true },
+    { title: 'Le service', text: 'Google, Slack, GitHub…' },
+  ]}
+  caption="La clé reste sur la plateforme. Elle n'est jamais dans le code du site, ses données ou le chat."
+/>
+
+## Connectors disponibles
+
+| Service | Ce que votre site peut faire | Comment se connecter |
+|---|---|---|
+| Google Drive | Lire et modifier les Sheets et Docs que vous choisissez | Connexion |
+| Google Calendar | Lire, créer et modifier les événements des agendas que vous choisissez | Votre propre app, puis connexion |
+| Google Analytics 4 | Lire les rapports des propriétés que vous choisissez | Votre propre app, puis connexion |
+| Slack | Publier dans les canaux publics que vous choisissez | Connexion |
+| Lark / Feishu | Lire et modifier les Sheets, Docs et Bases que vous choisissez | Votre propre app, puis connexion |
+| HubSpot | Lire et gérer les contacts et les transactions | Votre propre app, puis connexion |
+| Mailchimp | Tenir à jour les membres et tags des audiences que vous choisissez | API key |
+| LinkedIn | Publier des posts texte avec votre profil | Votre propre app, puis connexion |
+| Xero | Lire la comptabilité des organisations que vous choisissez | Votre propre app, puis connexion |
+| Zendesk | Lire, créer et répondre aux tickets | Votre propre app, puis connexion |
+| GitHub | Lire les issues et pull requests, ouvrir des issues dans les dépôts que vous choisissez | Personal access token |
+| Resend | Envoyer les e-mails du site depuis votre propre domaine | API key |
+
+**Votre propre app** : créez une app (un client OAuth) dans les paramètres développeur du service, puis collez son ID et son secret dans le formulaire de connexion.
+
+## Connectors de trading
+
+Les connectors de trading permettent au builder et à votre site de travailler avec votre compte d'exchange : lire les soldes et les positions, passer et clôturer des ordres. Chaque exchange fonctionne de la même façon : vous approuvez l'accès sur la page de l'exchange, ou avec votre wallet, et OpenStep se connecte avec ce qui en revient. Vous ne collez jamais de clé dans le chat ou le code.
+
+<Flow
+  numbered
+  steps={[
+    { title: 'Cliquez sur Connect', text: 'Console → Plugins & connections.' },
+    { title: 'Approuvez sur l\'exchange', text: 'Connectez-vous-y, ou signez avec votre wallet. Choisissez ce que vous autorisez.' },
+    { title: 'OpenStep se connecte', text: 'Il garde l\'approbation, chiffrée.', highlight: true },
+    { title: 'Le builder et le site tradent', text: 'Lire les soldes, passer et clôturer des ordres.' },
+  ]}
+/>
+
+| Exchange | Comment approuver | Ce qu'il peut faire |
+|---|---|---|
+| Hyperliquid | Signez une fois avec votre wallet pour approuver une clé de trading. Cette clé ne peut pas retirer de fonds. | Perpétuels : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture |
+| OKX | Connectez-vous sur OKX et autorisez l'accès. | Spot et swaps perpétuels : soldes, positions, ordres, données de marché |
+| Binance | Connectez-vous sur Binance et choisissez ce que vous autorisez. Les ordres passent dans un sous-compte Binance séparé que vous alimentez vous-même. Les retraits ne sont jamais autorisés. | Données de marché, soldes, ordres |
+
+:::caution[Les ordres sont réels]
+En Preview, votre site trade avec le compte connecté, et dans le chat le builder peut passer un ordre si vous le demandez. Pendant la construction, utilisez un compte démo ou testnet quand l'exchange en propose un.
+:::
+
+Quand une connexion affiche **Needs reconnect**, cliquez sur **Reconnect** et approuvez de nouveau.
+
+## Plugins : MCP servers
+
+Les plugins donnent des outils en plus au **builder** pendant qu'il travaille dans le chat, par exemple pour consulter les données d'un service partenaire. La plateforme les ajoute. Le owner de l'agent les active dans **Plugins & connections → MCP servers**. Cette section n'apparaît que si la plateforme en propose.
+
+<Flow
+  steps={[
+    { title: 'Le builder, dans le chat', text: 'Appelle un outil quand la tâche en a besoin.' },
+    { title: 'OpenStep', text: 'Vérifie que l\'outil est activé et ajoute la clé.', highlight: true },
+    { title: 'Le MCP server', text: 'Répond avec les données.' },
+  ]}
+  caption="Votre site publié n'appelle pas les plugins. Pour cela, utilisez un connector."
+/>
+
+## Qui peut faire quoi
+
+| | Owner | Editor | Viewer |
+|---|---|---|---|
+| Connecter, reconnecter ou retirer un compte | ✓ | | |
+| Construire avec un compte connecté | ✓ | ✓ | |
+| Voir les connexions | ✓ | ✓ | ✓ |
+
+## En cas de problème
+
+| Vous voyez | Que faire |
+|---|---|
+| Connections are not available for this agent yet. | Les connectors s'activent agent par agent. Contactez l'équipe OpenStep. |
+| The connected account stopped working. Reconnect it to continue. | Cliquez sur **Reconnect** dans Plugins & connections. |
+| The app needs more access than the account allowed. | Connectez-vous de nouveau et autorisez l'accès demandé. |
+
+Suite : [Valeurs d'environnement](/fr/build/environment-values/).
