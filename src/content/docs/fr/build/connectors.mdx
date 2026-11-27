@@ -36,23 +36,57 @@ Le builder peut aussi vous le demander dans le chat, avec une carte. Cliquez sur
 
 ## Connectors disponibles
 
+### Fichiers et documents
+
 | Service | Ce que votre site peut faire | Comment se connecter |
 |---|---|---|
 | Google Drive | Lire et modifier les Sheets et Docs que vous choisissez | Connexion |
-| Google Calendar | Lire, créer et modifier les événements des agendas que vous choisissez | Votre propre app, puis connexion |
-| Google Analytics 4 | Lire les rapports des propriétés que vous choisissez | Votre propre app, puis connexion |
-| Slack | Publier dans les canaux publics que vous choisissez | Connexion |
 | Lark / Feishu | Lire et modifier les Sheets, Docs et Bases que vous choisissez | Votre propre app, puis connexion |
-| HubSpot | Lire et gérer les contacts et les transactions | Votre propre app, puis connexion |
+
+### Agenda
+
+| Service | Ce que votre site peut faire | Comment se connecter |
+|---|---|---|
+| Google Calendar | Lire, créer et modifier les événements des agendas que vous choisissez | Votre propre app, puis connexion |
+
+### Messagerie, e-mail et réseaux sociaux
+
+| Service | Ce que votre site peut faire | Comment se connecter |
+|---|---|---|
+| Slack | Publier dans les canaux publics que vous choisissez | Connexion |
 | Mailchimp | Tenir à jour les membres et tags des audiences que vous choisissez | API key |
 | LinkedIn | Publier des posts texte avec votre profil | Votre propre app, puis connexion |
-| Xero | Lire la comptabilité des organisations que vous choisissez | Votre propre app, puis connexion |
-| Zendesk | Lire, créer et répondre aux tickets | Votre propre app, puis connexion |
-| GitHub | Lire les issues et pull requests, ouvrir des issues dans les dépôts que vous choisissez | Personal access token |
 | Resend | Envoyer les e-mails du site depuis votre propre domaine | API key |
+
+### Ventes et support
+
+| Service | Ce que votre site peut faire | Comment se connecter |
+|---|---|---|
+| HubSpot | Lire et gérer les contacts et les transactions | Votre propre app, puis connexion |
+| Zendesk | Lire, créer et répondre aux tickets | Votre propre app, puis connexion |
+
+### Analytique et comptabilité
+
+| Service | Ce que votre site peut faire | Comment se connecter |
+|---|---|---|
+| Google Analytics 4 | Lire les rapports des propriétés que vous choisissez | Votre propre app, puis connexion |
+| Xero | Lire la comptabilité des organisations que vous choisissez | Votre propre app, puis connexion |
+
+### Outils de développement
+
+| Service | Ce que votre site peut faire | Comment se connecter |
+|---|---|---|
+| GitHub | Lire les issues et pull requests, ouvrir des issues dans les dépôts que vous choisissez | Personal access token |
+
+### Trading
+
+| Service | Ce que votre site peut faire | Comment se connecter |
+|---|---|---|
 | Hyperliquid | Perpétuels : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture | Signez une fois avec votre wallet pour approuver une clé de trading. Cette clé ne peut pas retirer de fonds. |
 | OKX | Spot et swaps perpétuels : soldes, positions, ordres, données de marché | Collez une API key, son secret et sa passphrase depuis votre compte OKX, créés avec Read et Trade seulement. Une clé qui peut retirer est refusée. Choisissez Demo ou Live. |
 | Binance | Spot et perpétuels USDⓈ-M : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture | Collez une API key et son secret depuis votre compte Binance, créés avec lecture et trading seulement. Une clé qui peut retirer est refusée. Choisissez Testnet ou Live. |
+
+Le fonctionnement du trading : voir [Connectors de trading](#connectors-de-trading) plus bas.
 
 **Votre propre app** : créez une app (un client OAuth) dans les paramètres développeur du service, puis collez son ID et son secret dans le formulaire de connexion.
 

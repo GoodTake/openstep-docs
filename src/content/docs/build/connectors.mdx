@@ -36,23 +36,57 @@ The builder can also ask you in the chat, with a card. Click **Connect** on the 
 
 ## Available connectors
 
+### Files and documents
+
 | Service | What your site can do | How you connect |
 |---|---|---|
 | Google Drive | Read and edit the Sheets and Docs you choose | Sign in |
-| Google Calendar | Read, create and edit events in the calendars you choose | Your own app, then sign in |
-| Google Analytics 4 | Read reports of the properties you choose | Your own app, then sign in |
-| Slack | Post to the public channels you choose | Sign in |
 | Lark / Feishu | Read and edit the Sheets, Docs and Bases you choose | Your own app, then sign in |
-| HubSpot | Read and manage contacts and deals | Your own app, then sign in |
+
+### Calendar
+
+| Service | What your site can do | How you connect |
+|---|---|---|
+| Google Calendar | Read, create and edit events in the calendars you choose | Your own app, then sign in |
+
+### Messaging, email and social
+
+| Service | What your site can do | How you connect |
+|---|---|---|
+| Slack | Post to the public channels you choose | Sign in |
 | Mailchimp | Keep members and tags in the audiences you choose | API key |
 | LinkedIn | Publish text posts as your profile | Your own app, then sign in |
-| Xero | Read the accounting data of the organisations you choose | Your own app, then sign in |
-| Zendesk | Read, create and answer tickets | Your own app, then sign in |
-| GitHub | Read issues and pull requests, open issues in the repositories you choose | Personal access token |
 | Resend | Send your site's email from your own domain | API key |
+
+### Sales and support
+
+| Service | What your site can do | How you connect |
+|---|---|---|
+| HubSpot | Read and manage contacts and deals | Your own app, then sign in |
+| Zendesk | Read, create and answer tickets | Your own app, then sign in |
+
+### Analytics and accounting
+
+| Service | What your site can do | How you connect |
+|---|---|---|
+| Google Analytics 4 | Read reports of the properties you choose | Your own app, then sign in |
+| Xero | Read the accounting data of the organisations you choose | Your own app, then sign in |
+
+### Developer tools
+
+| Service | What your site can do | How you connect |
+|---|---|---|
+| GitHub | Read issues and pull requests, open issues in the repositories you choose | Personal access token |
+
+### Trading
+
+| Service | What your site can do | How you connect |
+|---|---|---|
 | Hyperliquid | Perpetuals: balances, positions, market and limit orders, take-profit and stop-loss, cancel, close | Sign once with your wallet to approve a trading key. That key cannot withdraw. |
 | OKX | Spot and perpetual swaps: balances, positions, orders, market data | Paste an API key, secret and passphrase from your OKX account, made with Read and Trade only. A key that can withdraw is refused. Choose Demo or Live. |
 | Binance | Spot and USDⓈ-M perpetuals: balances, positions, market and limit orders, take-profit and stop-loss, cancel, close | Paste an API key and secret from your Binance account, made with reading and trading only. A key that can withdraw is refused. Choose Testnet or Live. |
+
+How trading works: see [Trading connectors](#trading-connectors) below.
 
 **Your own app** means you create an app (an OAuth client) in that service's developer settings, then paste its ID and secret into the connect form.
 
