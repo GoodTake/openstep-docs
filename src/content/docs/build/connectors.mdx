@@ -50,6 +50,9 @@ The builder can also ask you in the chat, with a card. Click **Connect** on the 
 | Zendesk | Read, create and answer tickets | Your own app, then sign in |
 | GitHub | Read issues and pull requests, open issues in the repositories you choose | Personal access token |
 | Resend | Send your site's email from your own domain | API key |
+| Hyperliquid | Perpetuals: balances, positions, market and limit orders, take-profit and stop-loss, cancel, close | Sign once with your wallet to approve a trading key. That key cannot withdraw. |
+| OKX | Spot and perpetual swaps: balances, positions, orders, market data | Paste an API key, secret and passphrase from your OKX account, made with Read and Trade only. A key that can withdraw is refused. Choose Demo or Live. |
+| Binance | Spot and USDⓈ-M perpetuals: balances, positions, market and limit orders, take-profit and stop-loss, cancel, close | Paste an API key and secret from your Binance account, made with reading and trading only. A key that can withdraw is refused. Choose Testnet or Live. |
 
 **Your own app** means you create an app (an OAuth client) in that service's developer settings, then paste its ID and secret into the connect form.
 
@@ -66,12 +69,6 @@ Trading connectors let the builder and your site work with your exchange account
     { title: 'Builder and site trade', text: 'Read balances, place and close orders.' },
   ]}
 />
-
-| Exchange | How you approve | What it can do |
-|---|---|---|
-| Hyperliquid | Sign once with your wallet to approve a trading key. That key cannot withdraw. | Perpetuals: balances, positions, market and limit orders, take-profit and stop-loss, cancel, close |
-| OKX | Paste an API key, secret and passphrase from your OKX account, made with Read and Trade only. A key that can withdraw is refused. Choose Demo or Live. | Spot and perpetual swaps: balances, positions, orders, market data |
-| Binance | Paste an API key and secret from your Binance account, made with reading and trading only. A key that can withdraw is refused. Choose Testnet or Live. | Spot and USDⓈ-M perpetuals: balances, positions, market and limit orders, take-profit and stop-loss, cancel, close |
 
 :::caution[Orders are real]
 In Preview your site trades with your connected account, and in the chat the builder can place an order when you ask. Build with a demo or testnet account where the exchange offers one.

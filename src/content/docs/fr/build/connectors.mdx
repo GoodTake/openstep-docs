@@ -50,6 +50,9 @@ Le builder peut aussi vous le demander dans le chat, avec une carte. Cliquez sur
 | Zendesk | Lire, créer et répondre aux tickets | Votre propre app, puis connexion |
 | GitHub | Lire les issues et pull requests, ouvrir des issues dans les dépôts que vous choisissez | Personal access token |
 | Resend | Envoyer les e-mails du site depuis votre propre domaine | API key |
+| Hyperliquid | Perpétuels : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture | Signez une fois avec votre wallet pour approuver une clé de trading. Cette clé ne peut pas retirer de fonds. |
+| OKX | Spot et swaps perpétuels : soldes, positions, ordres, données de marché | Collez une API key, son secret et sa passphrase depuis votre compte OKX, créés avec Read et Trade seulement. Une clé qui peut retirer est refusée. Choisissez Demo ou Live. |
+| Binance | Spot et perpétuels USDⓈ-M : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture | Collez une API key et son secret depuis votre compte Binance, créés avec lecture et trading seulement. Une clé qui peut retirer est refusée. Choisissez Testnet ou Live. |
 
 **Votre propre app** : créez une app (un client OAuth) dans les paramètres développeur du service, puis collez son ID et son secret dans le formulaire de connexion.
 
@@ -66,12 +69,6 @@ Les connectors de trading permettent au builder et à votre site de travailler a
     { title: 'Le builder et le site tradent', text: 'Lire les soldes, passer et clôturer des ordres.' },
   ]}
 />
-
-| Exchange | Comment approuver | Ce qu'il peut faire |
-|---|---|---|
-| Hyperliquid | Signez une fois avec votre wallet pour approuver une clé de trading. Cette clé ne peut pas retirer de fonds. | Perpétuels : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture |
-| OKX | Collez une API key, son secret et sa passphrase depuis votre compte OKX, créés avec Read et Trade seulement. Une clé qui peut retirer est refusée. Choisissez Demo ou Live. | Spot et swaps perpétuels : soldes, positions, ordres, données de marché |
-| Binance | Collez une API key et son secret depuis votre compte Binance, créés avec lecture et trading seulement. Une clé qui peut retirer est refusée. Choisissez Testnet ou Live. | Spot et perpétuels USDⓈ-M : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture |
 
 :::caution[Les ordres sont réels]
 En Preview, votre site trade avec le compte connecté, et dans le chat le builder peut passer un ordre si vous le demandez. Pendant la construction, utilisez un compte démo ou testnet quand l'exchange en propose un.

@@ -50,6 +50,9 @@ builder 也可能在對話裡用一張卡片請你連線，點卡片上的 **Con
 | Zendesk | 讀取、建立和回覆工單 | 自己的應用，再登入 |
 | GitHub | 讀取 issue 和 pull request，在你選的儲存庫開 issue | Personal access token |
 | Resend | 用你自己的網域寄出網站的信 | API key |
+| Hyperliquid | 永續合約：餘額、持倉、市價與限價單、止盈止損、撤單、平倉 | 用錢包簽一次名，批准一把交易用的金鑰。這把金鑰不能提領。 |
+| OKX | 現貨和永續合約：餘額、持倉、下單、行情 | 貼上你 OKX 帳戶的 API key、secret 和 passphrase，建立時只開 Read 和 Trade。能提領的 key 會被拒絕。可選 Demo 或 Live。 |
+| Binance | 現貨和 U 本位永續：餘額、持倉、市價與限價單、止盈止損、撤單、平倉 | 貼上你 Binance 帳戶的 API key 和 secret，建立時只開讀取和交易。能提領的 key 會被拒絕。可選 Testnet 或 Live。 |
 
 **自己的應用**：在該服務的開發者設定裡建立一個應用（OAuth client），把它的 ID 和 secret 貼進連線表單。
 
@@ -66,12 +69,6 @@ builder 也可能在對話裡用一張卡片請你連線，點卡片上的 **Con
     { title: 'builder 和網站交易', text: '讀餘額、下單、平倉。' },
   ]}
 />
-
-| 交易所 | 授權方式 | 能做什麼 |
-|---|---|---|
-| Hyperliquid | 用錢包簽一次名，批准一把交易用的金鑰。這把金鑰不能提領。 | 永續合約：餘額、持倉、市價與限價單、止盈止損、撤單、平倉 |
-| OKX | 貼上你 OKX 帳戶的 API key、secret 和 passphrase，建立時只開 Read 和 Trade。能提領的 key 會被拒絕。可選 Demo 或 Live。 | 現貨和永續合約：餘額、持倉、下單、行情 |
-| Binance | 貼上你 Binance 帳戶的 API key 和 secret，建立時只開讀取和交易。能提領的 key 會被拒絕。可選 Testnet 或 Live。 | 現貨和 U 本位永續：餘額、持倉、市價與限價單、止盈止損、撤單、平倉 |
 
 :::caution[下單是真的]
 在 Preview 裡，網站用你連線的帳戶交易；在對話裡，你一開口 builder 就可能下單。建造時，交易所有模擬盤或測試網的話盡量用它。
