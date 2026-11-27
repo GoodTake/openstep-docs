@@ -1,13 +1,15 @@
 ---
 title: Publish a container image
 description: Run your course App from a private container image and charge learners in SSU.
+sidebar:
+  order: 14
 ---
 
-Use your own container image for a course App while keeping OpenStep's Publish, learner access and earnings workflow.
+Use your own container image for a course App while keeping OpenStep's Publish, learner access and earnings workflow. You don't need the OpenStep CLI for this: build and push the image with Docker, then set it up and publish it on the Agent's page.
 
 ## Before you start
 
-You need an authorized course partner account, credentials for a private registry organization such as `git.openstep.academy/partner-<slug>`, and an Agent created through the normal OpenStep workflow. The Agent must be a course Agent or have **Learners only** access. Ask OpenStep to authorize the Agent for your registry organization. Only its owner can save image settings and publish.
+You need an authorized course partner account, credentials for a private registry organization such as `git.openstep.academy/partner-<slug>`, and an Agent created through the normal OpenStep workflow. The Agent must be a course Agent, or its access must be **Private** (**Console → People → Access**: only its collaborators and people who joined with its join link can open it). Ask OpenStep to authorize the Agent for your registry organization. Only its owner can save image settings and publish.
 
 ## Prepare your container
 
@@ -87,6 +89,6 @@ docker push git.openstep.academy/partner-<slug>/<repo>:<tag>
 3. Add the required Production backend Variables & Secrets in **Console → Environment**.
 4. Click **Publish**. OpenStep checks the image and its health endpoint before making it live. Learners can then enter through the Join Link or Campus Earth.
 
-To update, push a new image and publish again. You can keep the same tag: every **Publish** resolves its current digest and rolls out that version. **Rollback**, **Unpublish**, **Republish**, **Join Link**, **Learners** and **Partner earnings** work as they do for built-in Apps. Rollback and Republish restore their saved image version, even if its tag now points elsewhere.
+To update, push a new image and publish again. You can keep the same tag: every **Publish** resolves its current digest and rolls out that version. Because OpenStep cannot see when you push, the Publish panel always lists an image App as **App changed**. **Rollback**, **Unpublish**, **Republish**, **Join Link**, **Learners** and **Partner earnings** work as they do for built-in Apps. Rollback and Republish restore their saved image version, even if its tag now points elsewhere.
 
 To return to code, the owner can choose **Switch back to Code** in the same Container Image section, including after partner authorization has been revoked. This removes the saved image source. Full Agent builds and planned Brainstorm builds require every App to use Code; a mixed Agent can still use CLI push to change its Code Apps while leaving image App snapshots unchanged.
