@@ -55,14 +55,14 @@ Le builder peut aussi vous le demander dans le chat, avec une carte. Cliquez sur
 
 ## Connectors de trading
 
-Les connectors de trading permettent au builder et à votre site de travailler avec votre compte d'exchange : lire les soldes et les positions, passer et clôturer des ordres. Chaque exchange fonctionne de la même façon : vous approuvez l'accès sur la page de l'exchange, ou avec votre wallet, et OpenStep se connecte avec ce qui en revient. Vous ne collez jamais de clé dans le chat ou le code.
+Les connectors de trading permettent au builder et à votre site de travailler avec votre compte d'exchange : lire les soldes et les positions, passer et clôturer des ordres. Vous connectez votre propre compte d'exchange dans **Plugins & connections** : approuvez sur la page de l'exchange ou avec votre wallet, ou, pour OKX, collez une API key de votre compte dans le formulaire de connexion. Les clés n'entrent jamais dans le chat ou le code.
 
 <Flow
   numbered
   steps={[
     { title: 'Cliquez sur Connect', text: 'Console → Plugins & connections.' },
-    { title: 'Approuvez sur l\'exchange', text: 'Connectez-vous-y, ou signez avec votre wallet. Choisissez ce que vous autorisez.' },
-    { title: 'OpenStep se connecte', text: 'Il garde l\'approbation, chiffrée.', highlight: true },
+    { title: 'Approuvez ou ajoutez une clé', text: 'Connectez-vous sur l\'exchange, signez avec votre wallet, ou collez une API key.' },
+    { title: 'OpenStep se connecte', text: 'Il garde l\'approbation ou la clé, chiffrée.', highlight: true },
     { title: 'Le builder et le site tradent', text: 'Lire les soldes, passer et clôturer des ordres.' },
   ]}
 />
@@ -70,7 +70,7 @@ Les connectors de trading permettent au builder et à votre site de travailler a
 | Exchange | Comment approuver | Ce qu'il peut faire |
 |---|---|---|
 | Hyperliquid | Signez une fois avec votre wallet pour approuver une clé de trading. Cette clé ne peut pas retirer de fonds. | Perpétuels : soldes, positions, ordres au marché et à cours limité, take-profit et stop-loss, annulation, clôture |
-| OKX | Connectez-vous sur OKX et autorisez l'accès. | Spot et swaps perpétuels : soldes, positions, ordres, données de marché |
+| OKX | Collez une API key, son secret et sa passphrase depuis votre compte OKX, créés avec Read et Trade seulement. Une clé qui peut retirer est refusée. Choisissez Demo ou Live. | Spot et swaps perpétuels : soldes, positions, ordres, données de marché |
 | Binance | Connectez-vous sur Binance et choisissez ce que vous autorisez. Les ordres passent dans un sous-compte Binance séparé que vous alimentez vous-même. Les retraits ne sont jamais autorisés. | Données de marché, soldes, ordres |
 
 :::caution[Les ordres sont réels]

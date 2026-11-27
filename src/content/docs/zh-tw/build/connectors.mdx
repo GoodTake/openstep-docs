@@ -55,14 +55,14 @@ builder 也可能在對話裡用一張卡片請你連線，點卡片上的 **Con
 
 ## 交易 Connector
 
-交易 Connector 讓 builder 和你的網站使用你的交易所帳戶：讀取餘額和持倉、下單、平倉。每家交易所的做法都一樣：你在交易所自己的頁面上、或用錢包授權，OpenStep 拿到授權結果後替你連線。你不用把金鑰貼進對話或程式碼。
+交易 Connector 讓 builder 和你的網站使用你的交易所帳戶：讀取餘額和持倉、下單、平倉。你在 **Plugins & connections** 連上自己的交易所帳戶：在交易所頁面上或用錢包授權；OKX 則是把你自己帳戶的 API key 貼進連線表單。金鑰不會進到對話或程式碼裡。
 
 <Flow
   numbered
   steps={[
     { title: '點 Connect', text: 'Console → Plugins & connections。' },
-    { title: '到交易所授權', text: '在那裡登入，或用錢包簽名。選擇要允許的權限。' },
-    { title: 'OpenStep 連線', text: '把授權結果加密保存。', highlight: true },
+    { title: '授權或填入 key', text: '在交易所登入、用錢包簽名，或貼上 API key。' },
+    { title: 'OpenStep 連線', text: '把授權結果或 key 加密保存。', highlight: true },
     { title: 'builder 和網站交易', text: '讀餘額、下單、平倉。' },
   ]}
 />
@@ -70,7 +70,7 @@ builder 也可能在對話裡用一張卡片請你連線，點卡片上的 **Con
 | 交易所 | 授權方式 | 能做什麼 |
 |---|---|---|
 | Hyperliquid | 用錢包簽一次名，批准一把交易用的金鑰。這把金鑰不能提領。 | 永續合約：餘額、持倉、市價與限價單、止盈止損、撤單、平倉 |
-| OKX | 在 OKX 登入並允許存取。 | 現貨和永續合約：餘額、持倉、下單、行情 |
+| OKX | 貼上你 OKX 帳戶的 API key、secret 和 passphrase，建立時只開 Read 和 Trade。能提領的 key 會被拒絕。可選 Demo 或 Live。 | 現貨和永續合約：餘額、持倉、下單、行情 |
 | Binance | 在 Binance 登入，選擇要允許的權限。交易在一個獨立的 Binance 子帳戶裡進行，資金由你自己轉入。永遠不允許提領。 | 行情、餘額、下單 |
 
 :::caution[下單是真的]

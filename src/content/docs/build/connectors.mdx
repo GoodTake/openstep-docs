@@ -55,14 +55,14 @@ The builder can also ask you in the chat, with a card. Click **Connect** on the 
 
 ## Trading connectors
 
-Trading connectors let the builder and your site work with your exchange account: read balances and positions, place and close orders. Every exchange works the same way: you approve access on the exchange's own page, or with your wallet, and OpenStep connects with what comes back. You never paste a key into the chat or the code.
+Trading connectors let the builder and your site work with your exchange account: read balances and positions, place and close orders. You connect your own exchange account in **Plugins & connections**: approve on the exchange's page or with your wallet, or, for OKX, paste an API key from your own account into the connect form. Keys never go into the chat or the code.
 
 <Flow
   numbered
   steps={[
     { title: 'Click Connect', text: 'Console → Plugins & connections.' },
-    { title: 'Approve on the exchange', text: 'Sign in there, or sign with your wallet. Choose what to allow.' },
-    { title: 'OpenStep connects', text: 'It keeps the approval, encrypted.', highlight: true },
+    { title: 'Approve or add a key', text: 'Sign in on the exchange, sign with your wallet, or paste an API key.' },
+    { title: 'OpenStep connects', text: 'It keeps the approval or key, encrypted.', highlight: true },
     { title: 'Builder and site trade', text: 'Read balances, place and close orders.' },
   ]}
 />
@@ -70,7 +70,7 @@ Trading connectors let the builder and your site work with your exchange account
 | Exchange | How you approve | What it can do |
 |---|---|---|
 | Hyperliquid | Sign once with your wallet to approve a trading key. That key cannot withdraw. | Perpetuals: balances, positions, market and limit orders, take-profit and stop-loss, cancel, close |
-| OKX | Sign in on OKX and approve access. | Spot and perpetual swaps: balances, positions, orders, market data |
+| OKX | Paste an API key, secret and passphrase from your OKX account, made with Read and Trade only. A key that can withdraw is refused. Choose Demo or Live. | Spot and perpetual swaps: balances, positions, orders, market data |
 | Binance | Sign in on Binance and choose what to allow. Trades run in a separate Binance sub-account that you fund. Withdrawals are never allowed. | Market data, balances, orders |
 
 :::caution[Orders are real]
